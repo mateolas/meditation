@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "53640419325",
+    "firebase_url": "https://health-parameters-tracker.firebaseio.com",
+    "project_id": "health-parameters-tracker",
+    "storage_bucket": "health-parameters-tracker.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:53640419325:android:23ebf60325a89452592b94",
+        "android_client_info": {
+          "package_name": "com.skylinestudio.health_parameters_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "53640419325-rkn31h9s9f3c4mufk68h46iespsop2ge.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTbyA06QH1ffDNyWzttWw7llyhIWT_ZbU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "53640419325-rkn31h9s9f3c4mufk68h46iespsop2ge.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
