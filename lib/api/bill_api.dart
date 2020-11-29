@@ -85,23 +85,33 @@ getBills(BillNotifier billNotifier) async {
       .orderBy("createdAt", descending: true)
       .getDocuments();
 
-  List<Bill> _billList = [];
+  List<Hparameter> _billList = [];
 
   snapshot.documents.forEach((document) {
-    Bill bill = Bill.fromMap(document.data);
+    Hparameter bill = Hparameter.fromMap(document.data);
     _billList.add(bill);
   });
 
   billNotifier.billList = _billList;
-
 }
 
 //function to get list of bills from the firebase
 getBillsBasedOnCategory(BillNotifier billNotifier, int index) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
-  List namesOfCategories = ['All', 'Electronics', 'Fashion','Sports','Books/Music/Culture','Home','Food','Health','Services','Other'];
-  
+  List namesOfCategories = [
+    'All',
+    'Electronics',
+    'Fashion',
+    'Sports',
+    'Books/Music/Culture',
+    'Home',
+    'Food',
+    'Health',
+    'Services',
+    'Other'
+  ];
+
   if (index == 0) {
     QuerySnapshot snapshot = await Firestore.instance
         .collection('userData')
@@ -110,21 +120,19 @@ getBillsBasedOnCategory(BillNotifier billNotifier, int index) async {
         .orderBy("createdAt", descending: true)
         .getDocuments();
 
-    List<Bill> _billList = [];
+    List<Hparameter> _billList = [];
 
     snapshot.documents.forEach((document) {
-      Bill bill = Bill.fromMap(document.data);
+      Hparameter bill = Hparameter.fromMap(document.data);
       _billList.add(bill);
     });
 
     billNotifier.billList = _billList;
-    
-    if(billNotifier.billList.isEmpty){
+
+    if (billNotifier.billList.isEmpty) {
       isAllSelected = true;
     }
-
-  } 
-  else {
+  } else {
     QuerySnapshot snapshot = await Firestore.instance
         .collection('userData')
         .document(firebaseUser.uid)
@@ -132,101 +140,72 @@ getBillsBasedOnCategory(BillNotifier billNotifier, int index) async {
         .where("category", isEqualTo: namesOfCategories[index])
         .getDocuments();
 
-    List<Bill> _billList = [];
+    List<Hparameter> _billList = [];
     snapshot.documents.forEach((document) {
-      Bill bill = Bill.fromMap(document.data);
+      Hparameter bill = Hparameter.fromMap(document.data);
       _billList.add(bill);
     });
 
     billNotifier.billList = _billList;
-       isAllSelected = false;
-  }
-
-}
-
-uploadBillAndImage(
-    Bill bill, bool isUpdating, File localFile, Function foodUploaded) async {
-  if (localFile != null) {
-    print("uploading image");
-
-    var fileExtension = path.extension(localFile.path);
-    print(fileExtension);
-
-    var uuid = Uuid().v4();
-
-    final StorageReference firebaseStorageRef = FirebaseStorage.instance
-        .ref()
-        .child('archive/images/$uuid$fileExtension');
-
-    await firebaseStorageRef
-        .putFile(localFile)
-        .onComplete
-        .catchError((onError) {
-      print(onError);
-      return false;
-    });
-
-    String url = await firebaseStorageRef.getDownloadURL();
-    print("download url: $url");
-    _uploadBill(bill, isUpdating, foodUploaded, imageUrl: url);
-  } else {
-    print('...skipping image upload');
-    _uploadBill(bill, isUpdating, foodUploaded);
+    isAllSelected = false;
   }
 }
 
-_uploadBill(Bill bill, bool isUpdating, Function billUploaded,
-    {String imageUrl}) async {
-  CollectionReference foodRef = Firestore.instance.collection('userData');
+// uploadBillAndImage(
+//     Hparameter bill, bool isUpdating, File localFile, Function foodUploaded) async {
+//   if (localFile != null) {
+//     print("uploading image");
 
-  if (imageUrl != null) {
-    bill.image = imageUrl;
-  }
+//     var fileExtension = path.extension(localFile.path);
+//     print(fileExtension);
 
-  if (isUpdating) {
-    bill.updatedAt = Timestamp.now();
-    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+//     var uuid = Uuid().v4();
 
-    await foodRef
-        .document(firebaseUser.uid)
-        .collection('bills')
-        .document(bill.id)
-        .updateData(bill.toMap());
+//     final StorageReference firebaseStorageRef = FirebaseStorage.instance
+//         .ref()
+//         .child('archive/images/$uuid$fileExtension');
 
-    billUploaded(bill);
+//     await firebaseStorageRef
+//         .putFile(localFile)
+//         .onComplete
+//         .catchError((onError) {
+//       print(onError);
+//       return false;
+//     });
 
-    print('updated food with id: ${bill.id}');
-  } else {
-    bill.createdAt = Timestamp.now();
+//     String url = await firebaseStorageRef.getDownloadURL();
+//     print("download url: $url");
+//     _uploadBill(bill, isUpdating, foodUploaded, imageUrl: url);
+//   } else {
+//     print('...skipping image upload');
+//     _uploadBill(bill, isUpdating, foodUploaded);
+//   }
+// }
 
-    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+uploadBill(Hparameter hParameter, Function billUploaded) async {
 
-    DocumentReference documentRef = await foodRef
-        .document(firebaseUser.uid)
-        .collection('bills')
-        .add(bill.toMap());
+  CollectionReference hParameterRef = Firestore.instance.collection('userData');
 
-    bill.id = documentRef.documentID;
+  hParameter.createdAt = Timestamp.now();
 
-    print('uploaded food successfully: ${bill.toString()}');
+  FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
-    await documentRef.setData(bill.toMap(), merge: true);
+  DocumentReference documentRef = await hParameterRef
+      .document(firebaseUser.uid)
+      .collection('hParameters')
+      .add(hParameter.toMap());
 
-    billUploaded(bill);
-  }
+  hParameter.id = documentRef.documentID;
+
+  print('uploaded hParameters successfully: ${hParameter.toString()}');
+
+  await documentRef.setData(hParameter.toMap(), merge: true);
+
+  billUploaded(hParameter);
 }
 
-deleteBill(Bill bill, Function foodDeleted) async {
-  if (bill.image != null) {
-    StorageReference storageReference =
-        await FirebaseStorage.instance.getReferenceFromUrl(bill.image);
-
-    print(storageReference.path);
-
-    await storageReference.delete();
-
-    print('image deleted');
-  }
+deleteBill(Hparameter bill, Function foodDeleted) async {
+ 
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   await Firestore.instance
       .collection('userData')
@@ -236,5 +215,4 @@ deleteBill(Bill bill, Function foodDeleted) async {
     ..delete();
 
   foodDeleted(bill);
- 
 }

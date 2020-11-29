@@ -5,29 +5,29 @@ import 'package:archive_your_bill/model/bill.dart';
 
 
 class BillNotifier with ChangeNotifier {
-  List<Bill> _billList = [];
-  Bill _currentBill;
+  List<Hparameter> _billList = [];
+  Hparameter _currentBill;
 
-  UnmodifiableListView<Bill> get billList => UnmodifiableListView(_billList);
+  UnmodifiableListView<Hparameter> get billList => UnmodifiableListView(_billList);
 
-  Bill get currentBill => _currentBill;
+  Hparameter get currentBill => _currentBill;
 
-  set billList(List<Bill> billList) {
+  set billList(List<Hparameter> billList) {
     _billList = billList;
     notifyListeners();
   }
 
-  set currentBill(Bill bill) {
+  set currentBill(Hparameter bill) {
     _currentBill = bill;
     notifyListeners();
   }
 
-  addBill(Bill bill) {
+  addBill(Hparameter bill) {
     _billList.insert(0, bill);
     notifyListeners();
   }
 
-  deleteBill(Bill bill) {
+  deleteBill(Hparameter bill) {
     _billList.removeWhere((_bill) => _bill.id == bill.id);
     notifyListeners();
   }
