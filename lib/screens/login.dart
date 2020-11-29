@@ -49,13 +49,12 @@ class _LoginState extends State<Login> {
   Widget _buildLogoPicture() {
     return Column(
       children: [
-        Image.asset(
-          'lib/assets/images/logo.png',
-          //height: 100,
-          //width: 400,
-          //scale: 0.8,
-          //fit: BoxFit.fitWidth,
-        ),
+        Text("Health parameters tracker",
+            style: TextStyle(
+              fontSize: 26,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            )),
         SizedBox(height: 52.0)
       ],
     );
@@ -119,8 +118,8 @@ class _LoginState extends State<Login> {
       begin: Alignment.topLeft,
       end: Alignment.topRight,
       colors: [
-        Color(0xff3438A4),
-        Color(0xff3438A4),
+        Colors.green[200],
+        Colors.green[200],
       ],
     ),
     borderRadius: BorderRadius.circular(10.0),
@@ -318,8 +317,8 @@ class _LoginState extends State<Login> {
                   end: Alignment.bottomRight,
                   colors: [
                     //Endless River
-                    Color(0xff0947B1),
-                    Color(0xffB1097C),
+                    Color(0xff56ab2f),
+                    Color(0xffa8e063),
                   ],
                   //stops: [0.1, 0.4],
                 ),
@@ -339,7 +338,7 @@ class _LoginState extends State<Login> {
                     child: Column(
                       children: <Widget>[
                         _buildLogoPicture(),
-                         SizedBox(height: 24),
+                        SizedBox(height: 24),
                         Text(
                           _authMode == AuthMode.Login ? 'Log In' : 'Sign Up',
                           textAlign: TextAlign.center,
@@ -378,7 +377,7 @@ class _LoginState extends State<Login> {
                                     : 'SIGNUP',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Color(0xff3438A4),
+                                  color:  Color(0xffa8e063),
                                   letterSpacing: 1.5,
                                   fontWeight: FontWeight.bold,
                                 ),

@@ -202,24 +202,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     });
   }
 
-  //Search field widget
-  Widget searchField() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(8, 10, 8, 10),
-      child: TextField(
-        controller: _searchController,
-        decoration: InputDecoration(
-          labelText: 'Search in: ${tabNames[_selectedIndex]}',
-          prefixIcon: Icon(Icons.search),
-          border: new OutlineInputBorder(
-            borderRadius: const BorderRadius.all(
-              const Radius.circular(24.0),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
 
   //function which draws Icon based on the chosen by user category
   categoryToIcon(String category) {
@@ -426,13 +409,13 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color(0xffB1097C),
-                      Color(0xff0947B1),
+                      Color(0xff56ab2f),
+                      Color(0xffa8e063),
                     ]),
               ),
             ),
             title: Text(
-              'Archive your bill',
+              'Health parameters tracker',
               style: TextStyle(color: Colors.white),
             ), //Image.asset('lib/assets/images/logo.png', scale: 5),
             centerTitle: true,
@@ -451,7 +434,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           ),
           body: Column(
             children: [
-              searchField(),
+        
               billNotifier.billList.isEmpty
                   ? noBillsYetText()
                   : Expanded(

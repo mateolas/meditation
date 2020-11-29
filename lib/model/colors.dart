@@ -15,8 +15,8 @@ Map<int, Color> color =
 };
 
 
-MaterialColor primaryCustomColor = MaterialColor(0xff0947B1, color);
-MaterialColor accentCustomColor = MaterialColor(0xffB1097C, color);
+MaterialColor primaryCustomColor = MaterialColor(0xffa8e063, color);
+MaterialColor accentCustomColor = MaterialColor(0xff56ab2f, color); 
 MaterialColor buttonCustomColor = MaterialColor(0xffE0E0E0, color);
 
 
