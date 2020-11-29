@@ -40,11 +40,11 @@ class _BillFormState extends State<BillForm> {
   @override
   void initState() {
     super.initState();
-    BillNotifier billNotifier =
-        Provider.of<BillNotifier>(context, listen: false);
+    HParameterNotifier billNotifier =
+        Provider.of<HParameterNotifier>(context, listen: false);
 
-    if (billNotifier.currentBill != null) {
-      _currentHparameter = billNotifier.currentBill;
+    if (billNotifier.currentHParameter != null) {
+      _currentHparameter = billNotifier.currentHParameter;
     } else {
       _currentHparameter = Hparameter();
     }
@@ -90,8 +90,8 @@ class _BillFormState extends State<BillForm> {
   }
 
   _onBillUploaded(Hparameter bill) {
-    BillNotifier billNotifier =
-        Provider.of<BillNotifier>(context, listen: false);
+    HParameterNotifier billNotifier =
+        Provider.of<HParameterNotifier>(context, listen: false);
     billNotifier.addBill(bill);
     Navigator.pop(context);
   }
@@ -125,8 +125,8 @@ class _BillFormState extends State<BillForm> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xffB1097C),
-                Color(0xff0947B1),
+                Color(0xff56ab2f),
+                Color(0xffa8e063),
               ]),
         )),
         title: Text(

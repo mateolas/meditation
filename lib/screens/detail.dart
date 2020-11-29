@@ -23,50 +23,7 @@ class BillDetail extends StatefulWidget {
 class _BillDetailState extends State<BillDetail> {
   @override
   Widget build(BuildContext context) {
-    BillNotifier billNotifier = Provider.of<BillNotifier>(context);
-
-    _onBillDeleted(Hparameter bill) {
-      Navigator.pop(context);
-      billNotifier.deleteBill(bill);
-    }
-
-    //function to get image from url, save it and share
-
-    showAlertDialog(BuildContext context) {
-      // set up the buttons
-      Widget cancelButton = FlatButton(
-        child: Text("Cancel"),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      );
-      Widget continueButton = FlatButton(
-        child: Text("Yes"),
-        onPressed: () {
-          Navigator.pop(context);
-          deleteBill(billNotifier.currentBill, _onBillDeleted);
-        },
-      );
-
-      // set up the AlertDialog
-      AlertDialog alert = AlertDialog(
-        title: Text("Delete Bill"),
-        content: Text("Would you like to delete this bill ? (no undo)"),
-        actions: [
-          cancelButton,
-          continueButton,
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
-
+    HParameterNotifier billNotifier = Provider.of<HParameterNotifier>(context);
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -75,15 +32,15 @@ class _BillDetailState extends State<BillDetail> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xffB1097C),
-                Color(0xff0947B1),
+                Color(0xff56ab2f),
+                Color(0xffa8e063),
               ]),
         )),
-        title: Text(billNotifier.currentBill.temperature),
+        title: Text(billNotifier.currentHParameter.temperature),
       ),
       body: SingleChildScrollView(
         child: FloatingActionButton(
-          heroTag: 'button2',
+          heroTag: 'button1',
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (BuildContext context) {
@@ -91,10 +48,8 @@ class _BillDetailState extends State<BillDetail> {
                   isUpdating: true,
                 );
               }),
-            ).then((value) => setState(() => {getBills(billNotifier)}));
+            ).then((value) => setState(() => {getHParameters(billNotifier)}));
           },
-          child: Icon(Icons.edit),
-          foregroundColor: Colors.white,
         ),
       ),
     );

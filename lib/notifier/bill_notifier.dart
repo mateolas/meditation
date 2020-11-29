@@ -4,31 +4,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:archive_your_bill/model/bill.dart';
 
 
-class BillNotifier with ChangeNotifier {
-  List<Hparameter> _billList = [];
-  Hparameter _currentBill;
+class HParameterNotifier with ChangeNotifier {
+  List<Hparameter> _hParameterList = [];
+  Hparameter _currentHParameter;
 
-  UnmodifiableListView<Hparameter> get billList => UnmodifiableListView(_billList);
+  UnmodifiableListView<Hparameter> get hParameterList => UnmodifiableListView(_hParameterList);
 
-  Hparameter get currentBill => _currentBill;
+  Hparameter get currentHParameter => _currentHParameter;
 
-  set billList(List<Hparameter> billList) {
-    _billList = billList;
+  set hParameterList(List<Hparameter> hParameterList) {
+    _hParameterList = hParameterList;
     notifyListeners();
   }
 
-  set currentBill(Hparameter bill) {
-    _currentBill = bill;
+  set currentHParameter(Hparameter hParameter) {
+    _currentHParameter = hParameter;
     notifyListeners();
   }
 
-  addBill(Hparameter bill) {
-    _billList.insert(0, bill);
+  addBill(Hparameter hParameter) {
+    _hParameterList.insert(0, hParameter);
     notifyListeners();
   }
 
-  deleteBill(Hparameter bill) {
-    _billList.removeWhere((_bill) => _bill.id == bill.id);
+  deleteBill(Hparameter hParameter) {
+    _hParameterList.removeWhere((_bill) => _bill.id == hParameter.id);
     notifyListeners();
   }
 }

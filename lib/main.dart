@@ -14,7 +14,7 @@ void main() => runApp(MultiProvider(
           create: (context) => AuthNotifier(),
         ),
         ChangeNotifierProvider(
-          create: (context) => BillNotifier(),
+          create: (context) => HParameterNotifier(),
         ),
       ],
       child: MyApp(),

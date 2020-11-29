@@ -10,6 +10,11 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 import 'package:uuid/uuid.dart';
 
+//
+//######### AUTHORIZATION #########
+//
+
+
 login(User user, AuthNotifier authNotifier) async {
   AuthResult authResult = await FirebaseAuth.instance
       .signInWithEmailAndPassword(email: user.email, password: user.password)
@@ -72,8 +77,13 @@ Future<String> getCurrentUID() async {
   return (await FirebaseAuth.instance.currentUser()).uid;
 }
 
+//
+//#################################
+//
+
+
 //function to get list of bills from the firebase
-getBills(BillNotifier billNotifier) async {
+getHParameters(HParameterNotifier billNotifier) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
   //DocumentReference documentRef = await Firestore.instance.collection('userData').document(firebaseUser.uid).collection('bills').add(food.toMap());
@@ -81,22 +91,22 @@ getBills(BillNotifier billNotifier) async {
   QuerySnapshot snapshot = await Firestore.instance
       .collection('userData')
       .document(firebaseUser.uid)
-      .collection('bills')
+      .collection('hParameters')
       .orderBy("createdAt", descending: true)
       .getDocuments();
 
-  List<Hparameter> _billList = [];
+  List<Hparameter> _hParametersList = [];
 
   snapshot.documents.forEach((document) {
     Hparameter bill = Hparameter.fromMap(document.data);
-    _billList.add(bill);
+    _hParametersList.add(bill);
   });
 
-  billNotifier.billList = _billList;
+  billNotifier.hParameterList = _hParametersList;
 }
 
 //function to get list of bills from the firebase
-getBillsBasedOnCategory(BillNotifier billNotifier, int index) async {
+getBillsBasedOnCategory(HParameterNotifier billNotifier, int index) async {
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
   List namesOfCategories = [
@@ -127,9 +137,9 @@ getBillsBasedOnCategory(BillNotifier billNotifier, int index) async {
       _billList.add(bill);
     });
 
-    billNotifier.billList = _billList;
+    billNotifier.hParameterList = _billList;
 
-    if (billNotifier.billList.isEmpty) {
+    if (billNotifier.hParameterList.isEmpty) {
       isAllSelected = true;
     }
   } else {
@@ -141,12 +151,13 @@ getBillsBasedOnCategory(BillNotifier billNotifier, int index) async {
         .getDocuments();
 
     List<Hparameter> _billList = [];
+
     snapshot.documents.forEach((document) {
       Hparameter bill = Hparameter.fromMap(document.data);
       _billList.add(bill);
     });
 
-    billNotifier.billList = _billList;
+    billNotifier.hParameterList = _billList;
     isAllSelected = false;
   }
 }

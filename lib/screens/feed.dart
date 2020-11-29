@@ -24,45 +24,37 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
-  TextEditingController _searchController = TextEditingController();
-  List _resultsList = [];
-  ScrollController _hideButtonController;
-  var _isVisible;
+   List _resultsList = [];
+ 
   //BottomTab controller
   TabController _controller;
   //Index of selected BottomTab
   int _selectedIndex = 0;
-  int _selectedIndexListView = 0;
   List tabNames = [
     'All',
-    'Electronics',
-    'Fashion',
-    'Sports',
-    'Books/Music/Culture',
-    'Home',
-    'Food',
-    'Health',
-    'Services',
-    'Other'
+    'Temperature',
+    'Pulse',
+    'Saturation',
+    'Weight',
+    
   ];
 
   @override
   void initState() {
-    _controller = TabController(length: tabNames.length, vsync: this);
-    _controller.addListener(() {
-      setState(() {
-        BillNotifier billNotifier =
-            Provider.of<BillNotifier>(context, listen: false);
-        _selectedIndex = _controller.index;
-        getBillsBasedOnCategory(billNotifier, _selectedIndex);
-      });
-      print("Selected Index: " + _controller.index.toString());
-    });
+    // _controller = TabController(length: tabNames.length, vsync: this);
+    // _controller.addListener(() {
+    //   setState(() {
+    //     HParameterNotifier billNotifier =
+    //         Provider.of<HParameterNotifier>(context, listen: false);
+    //     _selectedIndex = _controller.index;
+    //     getBillsBasedOnCategory(billNotifier, _selectedIndex);
+    //   });
+    //   print("Selected Index: " + _controller.index.toString());
+    // });
 
-    BillNotifier billNotifier =
-        Provider.of<BillNotifier>(context, listen: false);
-    getBills(billNotifier);
-    _resultsList = billNotifier.billList;
+    HParameterNotifier hParameterNotifier =
+        Provider.of<HParameterNotifier>(context, listen: false);
+    getHParameters(hParameterNotifier);
 
     //setSearchResultsList(billNotifier);
     super.initState();
@@ -73,112 +65,25 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  //function wcich creates a second filtered list
-  //bill notifier as a argument to get the list of the bills
-  setSearchResultsList(billNotifier) {
-    //list were filtered values will be kept
-    var showResults = [];
-
-    //if text field is not empty
-    if (_searchController.text != "") {
-      //search whole list from firebase
-      for (var bill in billNotifier.billList) {
-        var title = bill.nameShop.toLowerCase();
-        var title2 = bill.nameItem.toLowerCase();
-        //if typed by user value equals bill's nameShop or nameItem add bill to the filtered list - showResults
-        if (title.contains(_searchController.text.toLowerCase()) ||
-            title2.contains(_searchController.text.toLowerCase())) {
-          showResults.add(bill);
-        }
-      }
-      //if text field is empty copy all the items from list fetched from firebase to filtered list
-    } else {
-      showResults = billNotifier.billList;
-    }
-    //update the results
-    setState(() {
-      _resultsList = showResults;
-    });
-  }
-
-  //function to get image from url, save it and share
-  Future<Null> saveAndShare(
-      {String url,
-      String nameShop,
-      String nameItem,
-      String category,
-      String itemPrice,
-      String warrantyStart,
-      String warrantyEnd,
-      String warrantyLength,
-      String currencyItem}) async {
-    //enable permission to write/read from internal memory
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      await Permission.storage.request();
-    }
-
-    final RenderBox box = context.findRenderObject();
-    //message to be display in email sharing
-    String message = """
-    Hey ! 
-    ${warrantyStart} at ${nameShop} you 
-    
-    bought ${nameItem} for ${itemPrice} ${currencyItem}.
-    
-    
-    
-    Thanks for using Archive your bill. 
-    Your bill is save with us :).
-    AYB team
-    """;
-
-    //list of imagePaths
-    List<String> imagePaths = [];
-    var response = await get(url);
-    //get the directory of external storage
-    final documentDirectory = (await getExternalStorageDirectory()).path;
-    //create empty file
-    File imgFile = new File('$documentDirectory/flutter.png');
-    //"copy" file from url to created empty file
-    imgFile.writeAsBytesSync(response.bodyBytes);
-    //add to list of paths path of created file
-    imagePaths.add(imgFile.path);
-    //share function
-    Share.shareFiles(imagePaths,
-        subject: 'Bill from ${nameShop} bought at ${warrantyStart}',
-        text: message,
-        sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
-  }
-
+ 
   //function to used in RefreshIndicator widget
   //swipe to refresh
   Future<void> _refreshList() async {
-    BillNotifier billNotifier =
-        Provider.of<BillNotifier>(context, listen: false);
-    getBills(billNotifier);
+    HParameterNotifier billNotifier =
+        Provider.of<HParameterNotifier>(context, listen: false);
+    getHParameters(billNotifier);
     //setSearchResultsList(billNotifier);
-  }
-
-  updateResults() {
-    BillNotifier billNotifier =
-        Provider.of<BillNotifier>(context, listen: true);
-    _resultsList = billNotifier.billList;
   }
 
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-    BillNotifier billNotifier = Provider.of<BillNotifier>(context);
-    //Color color = Colors.blue;
-
-    //sets the search results
-    setSearchResultsList(billNotifier);
-
+    HParameterNotifier hParemterNotifier = Provider.of<HParameterNotifier>(context);
+    
     print("1 Building Feed");
     print('2 Authnotifier ${authNotifier.user.displayName}');
-    print("3 BUILD RESULT LIST LENGTH: ${_resultsList.length}");
-    print('4 isAllSelected ${isAllSelected}');
+    print("3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
+ 
 
     return DefaultTabController(
       length: tabNames.length,
@@ -221,39 +126,10 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           ),
           body: Column(
             children: [
-              Expanded(
-                child: RefreshIndicator(
-                  child: ListView.builder(
-                    //to monitor direction of scrolling (up / down)
-                    //and based on it show / hide the Floating action button
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          //after clicking setting up with notifier a current bill
-                          billNotifier.currentBill = _resultsList[index];
-                          _selectedIndexListView = index;
-                          Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BillDetail()))
-                              .then((value) {});
-                        },
-                        child: Card(
-                          elevation: 3,
-                          margin: EdgeInsets.all(6),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          shadowColor: primaryCustomColor,
-                          //color: Colors.transparent,
-                        ),
-                      );
-                    },
-                    itemCount: _resultsList.length,
-                  ),
-                  onRefresh: _refreshList,
-                ),
-              ),
+             
+                  
+                 for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
+           
             ],
           ),
           bottomNavigationBar: new Column(
@@ -288,7 +164,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
 
             child: FloatingActionButton(
               onPressed: () {
-                billNotifier.currentBill = null;
+                hParemterNotifier.currentHParameter = null;
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (BuildContext context) {
                     return BillForm(
