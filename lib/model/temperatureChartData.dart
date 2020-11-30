@@ -17,7 +17,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
       return new SimpleTimeSeriesChart(
         _createSampleDataIfEmpty(),
         // Disable animations for image tests.
-        animate: false,
+        animate: true,
       );
     } 
     //if list of hParameters is not empty
@@ -26,7 +26,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
       return new SimpleTimeSeriesChart(
         _createSampleData(hParameterNotifier),
         // Disable animations for image tests.
-        animate: false,
+        animate: true,
       );
     }
   }
@@ -45,52 +45,52 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     );
   }
 
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData(
+  /// Create one series with data fetched through hParameterNotifier from Firebase.
+  static List<charts.Series<TimeSeriesTemperature, DateTime>> _createSampleData(
       HParameterNotifier hParameterNotifier) {
-    final data = [
-      new TimeSeriesSales(new DateTime(2017, 9, 19),
-          int.parse(hParameterNotifier.hParameterList[0].temperature)),
-      new TimeSeriesSales(new DateTime(2017, 9, 26),
-          int.parse(hParameterNotifier.hParameterList[1].temperature)),
-      new TimeSeriesSales(new DateTime(2017, 10, 3),
-          int.parse(hParameterNotifier.hParameterList[2].temperature)),
-      new TimeSeriesSales(new DateTime(2017, 10, 10),
-          int.parse(hParameterNotifier.hParameterList[3].temperature)),
+
+   //loop to get all the items from the hParameterList
+    final data = <TimeSeriesTemperature>[
+
+        for (int i = 0; i < hParameterNotifier.hParameterList.length; i++) 
+    new TimeSeriesTemperature((hParameterNotifier.hParameterList[i].createdAt.toDate()),
+           int.parse(hParameterNotifier.hParameterList[i].temperature)),
+
+
     ];
 
     return [
-      new charts.Series<TimeSeriesSales, DateTime>(
-        id: 'Sales',
+      new charts.Series<TimeSeriesTemperature, DateTime>(
+        id: 'Temperature',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
+        measureFn: (TimeSeriesTemperature temperature, _) => temperature.temperature,
         data: data,
       )
     ];
   }
 }
 
-List<charts.Series<TimeSeriesSales, DateTime>> _createSampleDataIfEmpty() {
+List<charts.Series<TimeSeriesTemperature, DateTime>> _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesSales(new DateTime(2017, 9, 19), 1),
+    new TimeSeriesTemperature(new DateTime(2017, 9, 19), 1),
   ];
 
   return [
-    new charts.Series<TimeSeriesSales, DateTime>(
+    new charts.Series<TimeSeriesTemperature, DateTime>(
       id: 'Sales',
       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-      domainFn: (TimeSeriesSales sales, _) => sales.time,
-      measureFn: (TimeSeriesSales sales, _) => sales.sales,
+      domainFn: (TimeSeriesTemperature sales, _) => sales.time,
+      measureFn: (TimeSeriesTemperature sales, _) => sales.temperature,
       data: data,
     )
   ];
 }
 
 /// Sample time series data type.
-class TimeSeriesSales {
+class TimeSeriesTemperature {
   final DateTime time;
-  final int sales;
+  final int temperature;
 
-  TimeSeriesSales(this.time, this.sales);
+  TimeSeriesTemperature(this.time, this.temperature);
 }
