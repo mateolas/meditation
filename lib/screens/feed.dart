@@ -27,7 +27,6 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   List _resultsList = [];
-
   //BottomTab controller
   TabController _controller;
   //Index of selected BottomTab
@@ -40,7 +39,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Weight',
   ];
 
-  
+
 
   @override
   void initState() {
@@ -130,7 +129,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           ),
           body: Column(
             children: [
-              Expanded(flex: 5, child: SimpleTimeSeriesChart.withSampleData()),
+              Expanded(flex: 5, child: SimpleTimeSeriesChart.withSampleData(hParemterNotifier)),
                //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
             ],
           ),
