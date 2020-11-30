@@ -40,6 +40,8 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Weight',
   ];
 
+  
+
   @override
   void initState() {
     HParameterNotifier hParameterNotifier =
@@ -79,34 +81,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     HParameterNotifier hParemterNotifier =
         Provider.of<HParameterNotifier>(context);
 
-    var data = [
-      new TemperatureChartData('2016', 12, Colors.red),
-      new TemperatureChartData('2017', 42, Colors.blue),
-      new TemperatureChartData('2018', 24, Colors.green),
-    ];
 
-    var series = [
-      new charts.Series(
-        id: 'Clicks',
-        domainFn: (TemperatureChartData clickData, _) => clickData.date,
-        measureFn: (TemperatureChartData clickData, _) => clickData.temperature,
-        colorFn: (TemperatureChartData clickData, _) => clickData.color,
-        data: data,
-      ),
-    ];
-
-    var chart = charts.BarChart(
-      series,
-      animate: true,
-    );
-
-    var chartWidget = Padding(
-      padding: EdgeInsets.all(32.0),
-      child: SizedBox(
-        height: 200.0,
-        child: chart,
-      ),
-    );
 
     print("1 Building Feed");
     print('2 Authnotifier ${authNotifier.user.displayName}');
@@ -155,7 +130,8 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           ),
           body: Column(
             children: [
-                chartWidget,//for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
+              Expanded(flex: 5, child: SimpleTimeSeriesChart.withSampleData()),
+               //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
             ],
           ),
           bottomNavigationBar: new Column(
