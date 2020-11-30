@@ -1,5 +1,6 @@
 import 'package:archive_your_bill/api/bill_api.dart';
 import 'package:archive_your_bill/model/colors.dart';
+import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/notifier/auth_notifier.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:archive_your_bill/screens/bill_form.dart';
@@ -12,11 +13,12 @@ import 'dart:io';
 import 'package:share/share.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/rendering.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:archive_your_bill/model/globals.dart';
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:archive_your_bill/model/dateCheck.dart';
-import 'package:archive_your_bill/model/bill.dart';
+import 'package:archive_your_bill/model/hParameter.dart';
 
 class Feed extends StatefulWidget {
   @override
@@ -24,8 +26,8 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
-   List _resultsList = [];
- 
+  List _resultsList = [];
+
   //BottomTab controller
   TabController _controller;
   //Index of selected BottomTab
@@ -36,27 +38,14 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Pulse',
     'Saturation',
     'Weight',
-    
   ];
 
   @override
   void initState() {
-    // _controller = TabController(length: tabNames.length, vsync: this);
-    // _controller.addListener(() {
-    //   setState(() {
-    //     HParameterNotifier billNotifier =
-    //         Provider.of<HParameterNotifier>(context, listen: false);
-    //     _selectedIndex = _controller.index;
-    //     getBillsBasedOnCategory(billNotifier, _selectedIndex);
-    //   });
-    //   print("Selected Index: " + _controller.index.toString());
-    // });
-
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
     getHParameters(hParameterNotifier);
 
-    //setSearchResultsList(billNotifier);
     super.initState();
   }
 
@@ -65,25 +54,64 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
- 
+  _onTap(BuildContext context, Widget widget) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => Scaffold(
+          appBar: AppBar(),
+          body: widget,
+        ),
+      ),
+    );
+  }
+
   //function to used in RefreshIndicator widget
   //swipe to refresh
   Future<void> _refreshList() async {
     HParameterNotifier billNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
     getHParameters(billNotifier);
-    //setSearchResultsList(billNotifier);
   }
 
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-    HParameterNotifier hParemterNotifier = Provider.of<HParameterNotifier>(context);
-    
+    HParameterNotifier hParemterNotifier =
+        Provider.of<HParameterNotifier>(context);
+
+    var data = [
+      new TemperatureChartData('2016', 12, Colors.red),
+      new TemperatureChartData('2017', 42, Colors.blue),
+      new TemperatureChartData('2018', 24, Colors.green),
+    ];
+
+    var series = [
+      new charts.Series(
+        id: 'Clicks',
+        domainFn: (TemperatureChartData clickData, _) => clickData.date,
+        measureFn: (TemperatureChartData clickData, _) => clickData.temperature,
+        colorFn: (TemperatureChartData clickData, _) => clickData.color,
+        data: data,
+      ),
+    ];
+
+    var chart = charts.BarChart(
+      series,
+      animate: true,
+    );
+
+    var chartWidget = Padding(
+      padding: EdgeInsets.all(32.0),
+      child: SizedBox(
+        height: 200.0,
+        child: chart,
+      ),
+    );
+
     print("1 Building Feed");
     print('2 Authnotifier ${authNotifier.user.displayName}');
-    print("3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
- 
+    print(
+        "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
 
     return DefaultTabController(
       length: tabNames.length,
@@ -98,12 +126,13 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
             flexibleSpace: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      Color(0xff56ab2f),
-                      Color(0xffa8e063),
-                    ]),
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xff56ab2f),
+                    Color(0xffa8e063),
+                  ],
+                ),
               ),
             ),
             title: Text(
@@ -126,10 +155,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           ),
           body: Column(
             children: [
-             
-                  
-                 for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
-           
+                chartWidget,//for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
             ],
           ),
           bottomNavigationBar: new Column(

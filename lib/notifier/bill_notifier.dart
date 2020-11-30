@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:archive_your_bill/model/bill.dart';
+import 'package:archive_your_bill/model/hParameter.dart';
 
 
 class HParameterNotifier with ChangeNotifier {

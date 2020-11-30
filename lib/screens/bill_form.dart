@@ -3,7 +3,7 @@ import 'package:archive_your_bill/api/bill_api.dart';
 import 'package:archive_your_bill/model/colors.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:archive_your_bill/model/bill.dart';
+import 'package:archive_your_bill/model/hParameter.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

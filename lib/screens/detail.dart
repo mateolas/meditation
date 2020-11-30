@@ -3,7 +3,7 @@ import 'package:archive_your_bill/model/colors.dart';
 import 'package:archive_your_bill/screens/bill_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:archive_your_bill/model/bill.dart';
+import 'package:archive_your_bill/model/hParameter.dart';
 import 'package:intl/intl.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 

@@ -44,12 +44,6 @@
       "languageVersion": "2.1"
     },
     {
-      "name": "camera",
-      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/camera-0.5.8+11",
-      "packageUri": "lib/",
-      "languageVersion": "2.1"
-    },
-    {
       "name": "characters",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/characters-1.1.0-nullsafety",
       "packageUri": "lib/",
@@ -60,6 +54,18 @@
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/charcode-1.1.3",
       "packageUri": "lib/",
       "languageVersion": "2.0"
+    },
+    {
+      "name": "charts_common",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/charts_common-0.9.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
+      "name": "charts_flutter",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/charts_flutter-0.9.0",
+      "packageUri": "lib/",
+      "languageVersion": "1.23"
     },
     {
       "name": "clock",
@@ -620,7 +626,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2020-11-29T09:06:45.258309Z",
+  "generated": "2020-11-30T15:51:18.135261Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-21.0.dev.flutter-20bf2fcf56"
 }

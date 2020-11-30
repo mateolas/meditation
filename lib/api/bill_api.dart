@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:archive_your_bill/model/globals.dart';
-import 'package:archive_your_bill/model/bill.dart';
+import 'package:archive_your_bill/model/hParameter.dart';
 import 'package:archive_your_bill/model/user.dart';
 import 'package:archive_your_bill/notifier/auth_notifier.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
