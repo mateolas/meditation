@@ -130,9 +130,9 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                 child: Column(
                   children: [
                     Padding(
-                      padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      padding: new EdgeInsets.fromLTRB(6, 6, 6, 6),
                       child: SizedBox(
-                        height: 180,
+                        height: 304,
                         child: SimpleTimeSeriesChart.withSampleData(
                             hParemterNotifier),
                       ),

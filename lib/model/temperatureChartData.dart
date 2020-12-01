@@ -45,16 +45,25 @@ class SimpleTimeSeriesChart extends StatelessWidget {
         // specified, the default creates local date time.
         dateTimeFactory: const charts.LocalDateTimeFactory(),
 
-        domainAxis: charts.DateTimeAxisSpec(
-          tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
-            day: charts.TimeFormatterSpec(
-              format: 'HH',
-              transitionFormat: 'HH',
-            ),
-          ),
-        ),
+        // domainAxis: charts.DateTimeAxisSpec(
+        //   tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+        //     day: charts.TimeFormatterSpec(
+        //       format: 'HH:mm',
+        //       transitionFormat: 'd',
+        //     ),
+        //     hour: charts.TimeFormatterSpec(
+        //       format: 'H',
+        //       transitionFormat: '''dd/MM 
+        //       HH:mm''',
+        //     ),
+        //     minute: charts.TimeFormatterSpec(
+        //       format: 'mm',
+        //       transitionFormat: 'HH:mm',
+        //     ),
+        //   ),
+        // ),
         behaviors: [
-          new charts.SlidingViewport(),
+          //new charts.SlidingViewport(),
           //new charts.PanAndZoomBehavior(),
           //setting the title of the chart
           new charts.ChartTitle('Temperature',
