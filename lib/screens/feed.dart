@@ -39,8 +39,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Weight',
   ];
 
-
-
   @override
   void initState() {
     HParameterNotifier hParameterNotifier =
@@ -79,8 +77,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     HParameterNotifier hParemterNotifier =
         Provider.of<HParameterNotifier>(context);
-
-
 
     print("1 Building Feed");
     print('2 Authnotifier ${authNotifier.user.displayName}');
@@ -129,8 +125,60 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           ),
           body: Column(
             children: [
-              Expanded(flex: 5, child: SimpleTimeSeriesChart.withSampleData(hParemterNotifier)),
-               //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
+              Card(
+                elevation: 12,
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: new EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      child: SizedBox(
+                        height: 180,
+                        child: SimpleTimeSeriesChart.withSampleData(
+                            hParemterNotifier),
+                      ),
+                    ),
+                    SizedBox(height: 14),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                          child: Row(
+                            children: [
+                              Text('Add'),
+                              Text('   '),
+                              Text('Delete'),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          child: Row(
+                            children: [
+                              Text(' '),
+                              Text('View:'),
+                              Text(' '),
+                              Text('DAY'),
+                              Text(' '),
+                              Text('WEEK'),
+                              Text(' '),
+                              Text('MONTH'),
+                              Text(' '),
+                              Text('YEAR'),
+                              Text(' '),
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
+                          child: Text('DETAILS'),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 14),
+                  ],
+                ),
+              ),
+              //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
             ],
           ),
           bottomNavigationBar: new Column(
