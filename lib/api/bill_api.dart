@@ -14,7 +14,6 @@ import 'package:uuid/uuid.dart';
 //######### AUTHORIZATION #########
 //
 
-
 login(User user, AuthNotifier authNotifier) async {
   AuthResult authResult = await FirebaseAuth.instance
       .signInWithEmailAndPassword(email: user.email, password: user.password)
@@ -82,11 +81,13 @@ Future<String> getCurrentUID() async {
 //
 
 
-//function to get list of bills from the firebase
 getHParameters(HParameterNotifier billNotifier) async {
+ 
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
   //DocumentReference documentRef = await Firestore.instance.collection('userData').document(firebaseUser.uid).collection('bills').add(food.toMap());
+
+  
 
   QuerySnapshot snapshot = await Firestore.instance
       .collection('userData')
@@ -104,6 +105,70 @@ getHParameters(HParameterNotifier billNotifier) async {
 
   billNotifier.hParameterList = _hParametersList;
 }
+
+
+//function to get list of bills from the firebase
+// getHParameters(HParameterNotifier billNotifier,
+//     String temperatureDayWeekTypeOfView) async {
+//   var now = new DateTime.now();
+//   var now_1d = now.subtract(Duration(days: 1));
+//   var now_1w = now.subtract(Duration(days: 7));
+//   var now_1m = new DateTime(now.year, now.month - 1, now.day);
+//   var now_1y = new DateTime(now.year - 1, now.month, now.day);
+//   var timePeriod;
+//   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+
+//   //DocumentReference documentRef = await Firestore.instance.collection('userData').document(firebaseUser.uid).collection('bills').add(food.toMap());
+
+//   switch (temperatureDayWeekTypeOfView) {
+//     case 'Day':
+//       {
+//         timePeriod = now_1d;
+//       }
+//       break;
+
+//     case 'Week':
+//       {
+//         timePeriod = now_1w;
+//       }
+//       break;
+
+//     case 'Month':
+//       {
+//         timePeriod = now_1m;
+//       }
+//       break;
+
+//     case 'Year':
+//       {
+//         timePeriod = now_1y;
+//       }
+//       break;
+
+//     default:
+//       {
+//         timePeriod = now_1d;
+//       }
+//       break;
+//   }
+
+//   QuerySnapshot snapshot = await Firestore.instance
+//       .collection('userData')
+//       .document(firebaseUser.uid)
+//       .collection('hParameters')
+//       .orderBy("createdAt", descending: true)
+//       .where("createdAt", isGreaterThanOrEqualTo: timePeriod)
+//       .getDocuments();
+
+//   List<Hparameter> _hParametersList = [];
+
+//   snapshot.documents.forEach((document) {
+//     Hparameter bill = Hparameter.fromMap(document.data);
+//     _hParametersList.add(bill);
+//   });
+
+//   billNotifier.hParameterList = _hParametersList;
+// }
 
 //function to get list of bills from the firebase
 getBillsBasedOnCategory(HParameterNotifier billNotifier, int index) async {
@@ -194,7 +259,6 @@ getBillsBasedOnCategory(HParameterNotifier billNotifier, int index) async {
 // }
 
 uploadBill(Hparameter hParameter, Function billUploaded) async {
-
   CollectionReference hParameterRef = Firestore.instance.collection('userData');
 
   hParameter.createdAt = Timestamp.now();
@@ -216,7 +280,6 @@ uploadBill(Hparameter hParameter, Function billUploaded) async {
 }
 
 deleteBill(Hparameter bill, Function foodDeleted) async {
- 
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
   await Firestore.instance
       .collection('userData')

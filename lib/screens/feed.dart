@@ -111,33 +111,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     );
   }
 
-  //  Widget _buildTemperatureDayWeekField() {
-  //   return Container(
-  //     //width: 100,
-  //     child: DropdownButtonHideUnderline(
-  //       child: DropdownButton<String>(
-  //         value: temperatureDayWeekView,
-  //         style: TextStyle(fontSize: 14, color: Colors.black),
-  //         hint: Text('Choose category'),
-  //         onChanged: (newValue) =>
-  //             setState(() => temperatureDayWeekView = newValue),
-  //         //validator: (value) => value == null ? 'Item category required' : null,
-  //         items: [
-  //           'Day',
-  //           'Week',
-  //           'Month',
-  //           'Year',
-  //         ].map<DropdownMenuItem<String>>((String value) {
-  //           return DropdownMenuItem<String>(
-  //             value: value,
-  //             child: Text(value),
-  //           );
-  //         }).toList(),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
@@ -146,8 +119,9 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
 
     print("1 Building Feed");
     print('2 Authnotifier ${authNotifier.user.displayName}');
-    print(
-        "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
+    print("3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
+    print('Temperature day/week view value: $temperatureDayWeekTypeOfView');
+
 
     return DefaultTabController(
       length: tabNames.length,
@@ -200,7 +174,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                       child: SizedBox(
                         height: 304,
                         child: SimpleTimeSeriesChart.withSampleData(
-                            hParemterNotifier),
+                            hParemterNotifier, temperatureDayWeekTypeOfView),
                       ),
                     ),
                     SizedBox(height: 10),
