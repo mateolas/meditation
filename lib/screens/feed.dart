@@ -3,6 +3,7 @@ import 'package:archive_your_bill/model/colors.dart';
 import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/notifier/auth_notifier.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
+import 'package:archive_your_bill/screens/addParameter.dart';
 import 'package:archive_your_bill/screens/bill_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,7 @@ import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:archive_your_bill/model/dateCheck.dart';
 import 'package:archive_your_bill/model/hParameter.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class Feed extends StatefulWidget {
   @override
@@ -67,13 +69,14 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
       width: MediaQuery.of(context).size.width /
           4.6, //gives the width of the dropdown button
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(3)),
+          //borderRadius: BorderRadius.all(Radius.circular(3)),
           color: Colors.white),
       // padding: const EdgeInsets.symmetric(horizontal: 13), //you can include padding to control the menu items
       child: Theme(
           data: Theme.of(context).copyWith(
-            textSelectionHandleColor: primaryCustomColor,
-              canvasColor: primaryCustomColor, // background color for the dropdown items
+              textSelectionHandleColor: primaryCustomColor,
+              canvasColor:
+                  primaryCustomColor, // background color for the dropdown items
               buttonTheme: ButtonTheme.of(context).copyWith(
                 alignedDropdown:
                     true, //If false (the default), then the dropdown's menu will be wider than its button.
@@ -102,10 +105,12 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
               // setting hint
               onChanged: (String value) {
                 setState(() {
-                  temperatureDayWeekTypeOfView = value; // saving the selected value
+                  temperatureDayWeekTypeOfView =
+                      value; // saving the selected value
                 });
               },
-              value: temperatureDayWeekTypeOfView, // displaying the selected value
+              value:
+                  temperatureDayWeekTypeOfView, // displaying the selected value
             ),
           )),
     );
@@ -119,9 +124,9 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
 
     print("1 Building Feed");
     print('2 Authnotifier ${authNotifier.user.displayName}');
-    print("3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
+    print(
+        "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
     print('Temperature day/week view value: $temperatureDayWeekTypeOfView');
-
 
     return DefaultTabController(
       length: tabNames.length,
@@ -182,18 +187,33 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Container(
-                          padding: const EdgeInsets.fromLTRB(4, 0, 0, 0),
+                          padding: const EdgeInsets.fromLTRB(14, 0, 0, 0),
                           child: Row(
                             children: [
-                              Text('Add'),
-                              Text('   '),
-                              Text('Delete'),
+                              ClipOval(
+                                child: Material(
+                                  color: accentCustomColor, // button color
+                                  child: InkWell(
+                                    splashColor: Colors.white, // inkwell color
+                                    child: SizedBox(
+                                      width: 30,
+                                      height: 30,
+                                      child: Icon(Icons.add,
+                                          size: 18, color: Colors.white),
+                                    ),
+                                    onTap: () => showModalBottomSheet<void>(
+                                      context: context,
+                                      backgroundColor: Colors.white,
+                                      builder: (context) => new AddParameter()
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
-
                         Container(
-                          //width: 120,
+                          //height: 120,
                           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: Row(
                             children: [
@@ -202,17 +222,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                             ],
                           ),
                         ),
-
-                        // Text(' '),
-                        // buildDayView(),
-                        // Text(' '),
-                        // Text('WEEK'),
-                        // Text(' '),
-                        // Text('MONTH'),
-                        // Text(' '),
-                        // Text('YEAR'),
-                        // Text(' '),
-
                         Text('DETAILS'),
                       ],
                     ),
