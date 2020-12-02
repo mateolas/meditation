@@ -27,6 +27,7 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   List _resultsList = [];
+  String temperatureDayWeekTypeOfView;
   //BottomTab controller
   TabController _controller;
   //Index of selected BottomTab
@@ -44,24 +45,13 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
     getHParameters(hParameterNotifier);
-
+    temperatureDayWeekTypeOfView = 'Day';
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
-  }
-
-  _onTap(BuildContext context, Widget widget) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (_) => Scaffold(
-          appBar: AppBar(),
-          body: widget,
-        ),
-      ),
-    );
   }
 
   //function to used in RefreshIndicator widget
@@ -72,27 +62,81 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     getHParameters(billNotifier);
   }
 
-  Widget buildDayView() {
-    return ButtonTheme(
-      minWidth: 10.0,
-      height: 20.0,
-      child: FlatButton(
-        color: Colors.blue,
-        textColor: Colors.white,
-        disabledColor: Colors.grey,
-        disabledTextColor: Colors.black,
-        padding: EdgeInsets.all(0.0),
-        splashColor: Colors.blueAccent,
-        onPressed: () {
-          /*...*/
-        },
-        child: Text(
-          'DAY',
-          style: TextStyle(fontSize: 14.0),
-        ),
-      ),
+  Widget _buildTemperatureDayWeekField() {
+    return Container(
+      width: MediaQuery.of(context).size.width /
+          4.6, //gives the width of the dropdown button
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(3)),
+          color: Colors.white),
+      // padding: const EdgeInsets.symmetric(horizontal: 13), //you can include padding to control the menu items
+      child: Theme(
+          data: Theme.of(context).copyWith(
+            textSelectionHandleColor: primaryCustomColor,
+              canvasColor: primaryCustomColor, // background color for the dropdown items
+              buttonTheme: ButtonTheme.of(context).copyWith(
+                alignedDropdown:
+                    true, //If false (the default), then the dropdown's menu will be wider than its button.
+              )),
+          child: DropdownButtonHideUnderline(
+            // to hide the default underline of the dropdown button
+            child: DropdownButton<String>(
+              iconEnabledColor:
+                  primaryCustomColor, // icon color of the dropdown button
+              items: [
+                'Day',
+                'Week',
+                'Month',
+                'Year',
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: TextStyle(fontSize: 15),
+                  ),
+                );
+              }).toList(),
+              // style:  new TextStyle(
+              // color: accentCustomColor),
+              // setting hint
+              onChanged: (String value) {
+                setState(() {
+                  temperatureDayWeekTypeOfView = value; // saving the selected value
+                });
+              },
+              value: temperatureDayWeekTypeOfView, // displaying the selected value
+            ),
+          )),
     );
   }
+
+  //  Widget _buildTemperatureDayWeekField() {
+  //   return Container(
+  //     //width: 100,
+  //     child: DropdownButtonHideUnderline(
+  //       child: DropdownButton<String>(
+  //         value: temperatureDayWeekView,
+  //         style: TextStyle(fontSize: 14, color: Colors.black),
+  //         hint: Text('Choose category'),
+  //         onChanged: (newValue) =>
+  //             setState(() => temperatureDayWeekView = newValue),
+  //         //validator: (value) => value == null ? 'Item category required' : null,
+  //         items: [
+  //           'Day',
+  //           'Week',
+  //           'Month',
+  //           'Year',
+  //         ].map<DropdownMenuItem<String>>((String value) {
+  //           return DropdownMenuItem<String>(
+  //             value: value,
+  //             child: Text(value),
+  //           );
+  //         }).toList(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +203,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                             hParemterNotifier),
                       ),
                     ),
-                    SizedBox(height: 14),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -173,30 +217,32 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                             ],
                           ),
                         ),
+
                         Container(
+                          //width: 120,
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: Row(
                             children: [
-                              Text(' '),
-                              Text('View:'),
-                              Text(' '),
-                              buildDayView(),
-                              Text(' '),
-                              Text('WEEK'),
-                              Text(' '),
-                              Text('MONTH'),
-                              Text(' '),
-                              Text('YEAR'),
-                              Text(' '),
+                              Text('View: '),
+                              _buildTemperatureDayWeekField(),
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 4, 0),
-                          child: Text('DETAILS'),
-                        ),
+
+                        // Text(' '),
+                        // buildDayView(),
+                        // Text(' '),
+                        // Text('WEEK'),
+                        // Text(' '),
+                        // Text('MONTH'),
+                        // Text(' '),
+                        // Text('YEAR'),
+                        // Text(' '),
+
+                        Text('DETAILS'),
                       ],
                     ),
-                    SizedBox(height: 14),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),
