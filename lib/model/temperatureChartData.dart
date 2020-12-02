@@ -46,11 +46,17 @@ class SimpleTimeSeriesChart extends StatelessWidget {
         primaryMeasureAxis: new charts.NumericAxisSpec(
       tickProviderSpec: new charts.StaticNumericTickProviderSpec(
         <charts.TickSpec<num>>[
+          
+          
           charts.TickSpec<num>(34),
+          charts.TickSpec<num>(35),
           charts.TickSpec<num>(36),
+          charts.TickSpec<num>(37),
           charts.TickSpec<num>(38),
+          charts.TickSpec<num>(39),
           charts.TickSpec<num>(40),
-          charts.TickSpec<num>(42),
+          charts.TickSpec<num>(41),
+          
         ],
       ),
     ),
