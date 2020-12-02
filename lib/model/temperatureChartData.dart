@@ -43,10 +43,25 @@ class SimpleTimeSeriesChart extends StatelessWidget {
       body: new charts.TimeSeriesChart(
         seriesList,
         animate: animate,
+        primaryMeasureAxis: new charts.NumericAxisSpec(
+      tickProviderSpec: new charts.StaticNumericTickProviderSpec(
+        <charts.TickSpec<num>>[
+          charts.TickSpec<num>(34),
+          charts.TickSpec<num>(36),
+          charts.TickSpec<num>(38),
+          charts.TickSpec<num>(40),
+          charts.TickSpec<num>(42),
+        ],
+      ),
+    ),
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         behaviors: [
           new charts.SlidingViewport(),
-          new charts.PanAndZoomBehavior(),
+
+          // Set the initial viewport by providing a new AxisSpec with the
+          // desired viewport, in NumericExtents.
+
+          //new charts.PanAndZoomBehavior(),
           //setting the title of the chart
           new charts.ChartTitle('Temperature',
               behaviorPosition: charts.BehaviorPosition.top,
@@ -145,7 +160,6 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     //             int.parse(hParameterNotifier.hParameterList[i].temperature)),
     //   ];
     // }
-
 
     return [
       new charts.Series<TimeSeriesTemperature, DateTime>(
