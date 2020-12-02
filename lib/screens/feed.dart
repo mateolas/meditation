@@ -72,6 +72,28 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     getHParameters(billNotifier);
   }
 
+  Widget buildDayView() {
+    return ButtonTheme(
+      minWidth: 10.0,
+      height: 20.0,
+      child: FlatButton(
+        color: Colors.blue,
+        textColor: Colors.white,
+        disabledColor: Colors.grey,
+        disabledTextColor: Colors.black,
+        padding: EdgeInsets.all(0.0),
+        splashColor: Colors.blueAccent,
+        onPressed: () {
+          /*...*/
+        },
+        child: Text(
+          'DAY',
+          style: TextStyle(fontSize: 14.0),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
@@ -157,7 +179,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                               Text(' '),
                               Text('View:'),
                               Text(' '),
-                              Text('DAY'),
+                              buildDayView(),
                               Text(' '),
                               Text('WEEK'),
                               Text(' '),

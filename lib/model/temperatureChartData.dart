@@ -40,6 +40,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
       body: new charts.TimeSeriesChart(
         seriesList,
         animate: animate,
+
         // Optionally pass in a [DateTimeFactory] used by the chart. The factory
         // should create the same type of [DateTime] as the data provided. If none
         // specified, the default creates local date time.
@@ -47,24 +48,34 @@ class SimpleTimeSeriesChart extends StatelessWidget {
 
         // domainAxis: charts.DateTimeAxisSpec(
         //   tickFormatterSpec: charts.AutoDateTimeTickFormatterSpec(
+        //     // year: charts.TimeFormatterSpec(
+        //     //   format: 'dd HH:mm',
+        //     //   transitionFormat: '''dd/MM
+        //     //   HH:mm''',
+        //     // ),
+        //     month: charts.TimeFormatterSpec(
+        //       format: 'dd/MM HH:mm',
+        //       transitionFormat: 'dd/MM HH:mm',
+        //     ),
         //     day: charts.TimeFormatterSpec(
-        //       format: 'HH:mm',
-        //       transitionFormat: 'd',
+        //       format: '''dd/MM HH:mm''',
+        //       transitionFormat: '''dd/MM HH:mm''',
         //     ),
         //     hour: charts.TimeFormatterSpec(
-        //       format: 'H',
-        //       transitionFormat: '''dd/MM 
+        //       format: ''''dd 
         //       HH:mm''',
+        //       transitionFormat: 'HH',
         //     ),
         //     minute: charts.TimeFormatterSpec(
-        //       format: 'mm',
-        //       transitionFormat: 'HH:mm',
+        //       format: '''dd/MM
+        //       HH:mm''',
+        //       transitionFormat: 'mm',
         //     ),
         //   ),
         // ),
         behaviors: [
-          //new charts.SlidingViewport(),
-          //new charts.PanAndZoomBehavior(),
+          new charts.SlidingViewport(),
+          new charts.PanAndZoomBehavior(),
           //setting the title of the chart
           new charts.ChartTitle('Temperature',
               behaviorPosition: charts.BehaviorPosition.top,
@@ -83,12 +94,22 @@ class SimpleTimeSeriesChart extends StatelessWidget {
   /// Create one series with data fetched through hParameterNotifier from Firebase.
   static List<charts.Series<TimeSeriesTemperature, DateTime>> _createSampleData(
       HParameterNotifier hParameterNotifier) {
-    //loop to get all the items from the hParameterList
+    var now = new DateTime.now();
+    var now_1d = now.subtract(Duration(days: 1));
+    var now_1w = now.subtract(Duration(days: 7));
+    var now_1m = new DateTime(now.year, now.month - 1, now.day);
+    var now_1y = new DateTime(now.year - 1, now.month, now.day);
+
+    
     final data = <TimeSeriesTemperature>[
+      //loop to get all the items from the hParameterList
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
-        new TimeSeriesTemperature(
-            hParameterNotifier.hParameterList[i].createdAt.toDate(),
-            int.parse(hParameterNotifier.hParameterList[i].temperature)),
+        //check if it's last day, week or month
+        if (now_1w
+            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate()))
+          new TimeSeriesTemperature(
+              hParameterNotifier.hParameterList[i].createdAt.toDate(),
+              int.parse(hParameterNotifier.hParameterList[i].temperature)),
     ];
 
     return [
