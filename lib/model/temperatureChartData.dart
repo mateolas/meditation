@@ -45,9 +45,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
         animate: animate,
         primaryMeasureAxis: new charts.NumericAxisSpec(
       tickProviderSpec: new charts.StaticNumericTickProviderSpec(
-        <charts.TickSpec<num>>[
-          
-          
+        <charts.TickSpec<num>>[      
           charts.TickSpec<num>(34),
           charts.TickSpec<num>(35),
           charts.TickSpec<num>(36),
@@ -92,30 +90,37 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     var now_1w = now.subtract(Duration(days: 7));
     var now_1m = new DateTime(now.year, now.month - 1, now.day);
     var now_1y = new DateTime(now.year - 1, now.month, now.day);
+    var now_1000y = new DateTime(now.year - 1000, now.month, now.day);
     var timePeriod;
 
     switch (temperatureDayWeekTypeOfView) {
-      case 'Day':
+      case 'DAY':
         {
           timePeriod = now_1d;
         }
         break;
 
-      case 'Week':
+      case 'WEEK':
         {
           timePeriod = now_1w;
         }
         break;
 
-      case 'Month':
+      case 'MONTH':
         {
           timePeriod = now_1m;
         }
         break;
 
-      case 'Year':
+      case 'YEAR':
         {
           timePeriod = now_1y;
+        }
+        break;
+
+        case 'ALL':
+        {
+          timePeriod = now_1000y;
         }
         break;
 
@@ -138,34 +143,6 @@ class SimpleTimeSeriesChart extends StatelessWidget {
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
               int.parse(hParameterNotifier.hParameterList[i].temperature)),
     ];
-
-    // if (temperatureDayWeekTypeOfView == 'Day') {
-    //   print('We are in the _createSample function DAY if');
-    //   var dataDay = <TimeSeriesTemperature>[
-    //     //loop to get all the items from the hParameterList
-    //     for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
-    //       //check if it's last day, week or month
-    //       if (now_1d.isBefore(
-    //           hParameterNotifier.hParameterList[i].createdAt.toDate()))
-    //         new TimeSeriesTemperature(
-    //             hParameterNotifier.hParameterList[i].createdAt.toDate(),
-    //             int.parse(hParameterNotifier.hParameterList[i].temperature)),
-    //   ];
-    // }
-
-    // if (temperatureDayWeekTypeOfView == 'Week') {
-    //   print('We are in the _createSample function Week if');
-    //   var dataWeek = <TimeSeriesTemperature>[
-    //     //loop to get all the items from the hParameterList
-    //     for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
-    //       //check if it's last day, week or month
-    //       if (now_1d.isBefore(
-    //           hParameterNotifier.hParameterList[i].createdAt.toDate()))
-    //         new TimeSeriesTemperature(
-    //             hParameterNotifier.hParameterList[i].createdAt.toDate(),
-    //             int.parse(hParameterNotifier.hParameterList[i].temperature)),
-    //   ];
-    // }
 
     return [
       new charts.Series<TimeSeriesTemperature, DateTime>(

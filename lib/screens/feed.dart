@@ -29,12 +29,13 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   List _resultsList = [];
-  String temperatureDayWeekTypeOfView;
+  String selectedTimeTempView;
   //BottomTab controller
-  TabController _controller;
+  TabController _bottomTabcontroller;
+  TabController _timeTempTimeViewController;
   //Index of selected BottomTab
   int _selectedIndex = 0;
-  List tabNames = [
+  List bottonTabScreensNames = [
     'All',
     'Temperature',
     'Pulse',
@@ -42,12 +43,20 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Weight',
   ];
 
+  List timeTempView = [
+    'DAY',
+    'WEEK',
+    'MONTH',
+    'YEAR',
+    'ALL',
+  ];
+
   @override
   void initState() {
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
     getHParameters(hParameterNotifier);
-    temperatureDayWeekTypeOfView = 'Day';
+    selectedTimeTempView = 'Day';
     super.initState();
   }
 
@@ -105,15 +114,17 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
               // setting hint
               onChanged: (String value) {
                 setState(() {
-                  temperatureDayWeekTypeOfView =
-                      value; // saving the selected value
+                  selectedTimeTempView = value; // saving the selected value
                 });
               },
-              value:
-                  temperatureDayWeekTypeOfView, // displaying the selected value
+              value: selectedTimeTempView, // displaying the selected value
             ),
           )),
     );
+  }
+
+  void setTempTimeView(String timeTempView) {
+    selectedTimeTempView = timeTempView;
   }
 
   @override
@@ -126,156 +137,173 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     print('2 Authnotifier ${authNotifier.user.displayName}');
     print(
         "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
-    print('Temperature day/week view value: $temperatureDayWeekTypeOfView');
+    print('Temperature day/week view value: $selectedTimeTempView');
 
-    return DefaultTabController(
-      length: tabNames.length,
-      child: Container(
-        height: double.infinity,
-        width: double.infinity,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            automaticallyImplyLeading: false, // hides default back button
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xff56ab2f),
-                    Color(0xffa8e063),
-                  ],
-                ),
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          automaticallyImplyLeading: false, // hides default back button
+          flexibleSpace: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xff56ab2f),
+                  Color(0xffa8e063),
+                ],
               ),
             ),
-            title: Text(
-              'Health parameters tracker',
-              style: TextStyle(color: Colors.white),
-            ), //Image.asset('lib/assets/images/logo.png', scale: 5),
-            centerTitle: true,
-            actions: <Widget>[
-              // action button - logout
-              FlatButton(
-                onPressed: () => signout(authNotifier),
-                child: Icon(
-                  Icons.exit_to_app,
-                  color: Colors.white,
-                  size: 26.0,
-                  semanticLabel: 'Text to announce in accessibility modes',
-                ),
-              ),
-            ],
           ),
-          body: Column(
-            children: [
-              Card(
-                elevation: 12,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: new EdgeInsets.fromLTRB(6, 6, 6, 6),
-                      child: SizedBox(
-                        height: 304,
-                        child: SimpleTimeSeriesChart.withSampleData(
-                            hParemterNotifier, temperatureDayWeekTypeOfView),
-                      ),
+          title: Text(
+            'Health parameters tracker',
+            style: TextStyle(color: Colors.white),
+          ), //Image.asset('lib/assets/images/logo.png', scale: 5),
+          centerTitle: true,
+          actions: <Widget>[
+            // action button - logout
+            FlatButton(
+              onPressed: () => signout(authNotifier),
+              child: Icon(
+                Icons.exit_to_app,
+                color: Colors.white,
+                size: 26.0,
+                semanticLabel: 'Text to announce in accessibility modes',
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            Card(
+              elevation: 12,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: new EdgeInsets.fromLTRB(6, 0, 0, 6),
+                    child: SizedBox(
+                      height: 304,
+                      child: SimpleTimeSeriesChart.withSampleData(
+                          hParemterNotifier, selectedTimeTempView),
                     ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.fromLTRB(14, 0, 0, 0),
-                          child: Row(
-                            children: [
-                              ClipOval(
-                                child: Material(
-                                  color: accentCustomColor, // button color
-                                  child: InkWell(
-                                    splashColor: Colors.white, // inkwell color
-                                    child: SizedBox(
-                                      width: 30,
-                                      height: 30,
-                                      child: Icon(Icons.add,
-                                          size: 18, color: Colors.white),
-                                    ),
-                                    onTap: () => showModalBottomSheet<void>(
+                  ),
+                  DefaultTabController(
+                    length: timeTempView.length,
+                    child: TabBar(
+                      onTap: (index) {
+                        setState(() {
+                          selectedTimeTempView = timeTempView[index];
+                        });
+                      },
+                      controller: _timeTempTimeViewController,
+                      isScrollable: true,
+                      tabs: new List.generate(bottonTabScreensNames.length,
+                          (index) {
+                        return new Tab(
+                          iconMargin: EdgeInsets.only(bottom: 3),
+                          text: timeTempView[index].toUpperCase(),
+                        );
+                      }),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.fromLTRB(14, 0, 0, 0),
+                        child: Row(
+                          children: [
+                            ClipOval(
+                              child: Material(
+                                color: accentCustomColor, // button color
+                                child: InkWell(
+                                  splashColor: Colors.white, // inkwell color
+                                  child: SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: Icon(Icons.add,
+                                        size: 18, color: Colors.white),
+                                  ),
+                                  onTap: () => showModalBottomSheet<void>(
                                       context: context,
                                       backgroundColor: Colors.white,
-                                      builder: (context) => new AddParameter()
-                                    ),
-                                  ),
+                                      builder: (context) => new AddParameter()),
                                 ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          //height: 120,
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                          child: Row(
-                            children: [
-                              Text('View: '),
-                              _buildTemperatureDayWeekField(),
-                            ],
-                          ),
+                      ),
+                      Container(
+                        //height: 120,
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Row(
+                          children: [
+                            Text('View: '),
+                            //_buildTemperatureDayWeekField(),
+                          ],
                         ),
-                        Text('DETAILS'),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                  ],
-                ),
+                      ),
+                      Text('DETAILS'),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                ],
               ),
-              //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
-            ],
-          ),
-          bottomNavigationBar: new Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              new AnimatedCrossFade(
+            ),
+            //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
+          ],
+        ),
+        bottomNavigationBar: new Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DefaultTabController(
+              length: bottonTabScreensNames.length,
+              child: new AnimatedCrossFade(
                 firstChild: new Material(
                   color: Theme.of(context).primaryColor,
                   child: new TabBar(
-                    controller: _controller,
+                    controller: _bottomTabcontroller,
                     isScrollable: true,
-                    tabs: new List.generate(tabNames.length, (index) {
+                    tabs: new List.generate(bottonTabScreensNames.length,
+                        (index) {
                       return new Tab(
-                        text: tabNames[index].toUpperCase(),
+                        text: bottonTabScreensNames[index].toUpperCase(),
                       );
                     }),
                   ),
                 ),
                 secondChild: new Container(),
                 crossFadeState: CrossFadeState.showFirst,
-                //? CrossFadeState.showFirst
-                //: CrossFadeState.showSecond,
                 duration: const Duration(milliseconds: 300),
               ),
-            ],
-          ),
-          floatingActionButton: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-
-            //flag which is set depending on the scroll direction
-
-            child: FloatingActionButton(
-              onPressed: () {
-                hParemterNotifier.currentHParameter = null;
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (BuildContext context) {
-                    return BillForm(
-                      isUpdating: false,
-                    );
-                  }),
-                );
-              },
-              child: Icon(Icons.add),
-              foregroundColor: Colors.white,
             ),
+          ],
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+
+          //flag which is set depending on the scroll direction
+
+          child: FloatingActionButton(
+            onPressed: () {
+              hParemterNotifier.currentHParameter = null;
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (BuildContext context) {
+                  return BillForm(
+                    isUpdating: false,
+                  );
+                }),
+              );
+            },
+            child: Icon(Icons.add),
+            foregroundColor: Colors.white,
           ),
         ),
       ),
