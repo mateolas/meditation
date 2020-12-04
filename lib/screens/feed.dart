@@ -1,13 +1,12 @@
-import 'package:archive_your_bill/api/bill_api.dart';
+import 'package:archive_your_bill/api/hParameter_api.dart';
 import 'package:archive_your_bill/model/colors.dart';
 import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/notifier/auth_notifier.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:archive_your_bill/screens/addParameter.dart';
-import 'package:archive_your_bill/screens/bill_form.dart';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:archive_your_bill/screens/detail.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'dart:io';
@@ -28,14 +27,14 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
-  List _resultsList = [];
+  //what temperature time frame was selected: Day/Week/Month/Year/All
   String selectedTimeTempView;
-  //BottomTab controller
+  //Controller for bottom tab (temp, saturation etc.)
   TabController _bottomTabcontroller;
+  //Controller for time frame tab (day, week, month etc.)
   TabController _timeTempTimeViewController;
-  //Index of selected BottomTab
-  int _selectedIndex = 0;
-  List bottonTabScreensNames = [
+  //Name of screens to present for TabBar
+  List bottomTabScreensNames = [
     'All',
     'Temperature',
     'Pulse',
@@ -43,6 +42,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Weight',
   ];
 
+  //Name of time frames to present for TabBar
   List timeTempView = [
     'DAY',
     'WEEK',
@@ -53,9 +53,12 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
 
   @override
   void initState() {
+    //initializing notifier to fetch data from firebase
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
+    //fetching data from firebase
     getHParameters(hParameterNotifier);
+    //setting default temperature time frame view for 'Day'
     selectedTimeTempView = 'Day';
     super.initState();
   }
@@ -63,68 +66,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  //function to used in RefreshIndicator widget
-  //swipe to refresh
-  Future<void> _refreshList() async {
-    HParameterNotifier billNotifier =
-        Provider.of<HParameterNotifier>(context, listen: false);
-    getHParameters(billNotifier);
-  }
-
-  Widget _buildTemperatureDayWeekField() {
-    return Container(
-      width: MediaQuery.of(context).size.width /
-          4.6, //gives the width of the dropdown button
-      decoration: BoxDecoration(
-          //borderRadius: BorderRadius.all(Radius.circular(3)),
-          color: Colors.white),
-      // padding: const EdgeInsets.symmetric(horizontal: 13), //you can include padding to control the menu items
-      child: Theme(
-          data: Theme.of(context).copyWith(
-              textSelectionHandleColor: primaryCustomColor,
-              canvasColor:
-                  primaryCustomColor, // background color for the dropdown items
-              buttonTheme: ButtonTheme.of(context).copyWith(
-                alignedDropdown:
-                    true, //If false (the default), then the dropdown's menu will be wider than its button.
-              )),
-          child: DropdownButtonHideUnderline(
-            // to hide the default underline of the dropdown button
-            child: DropdownButton<String>(
-              iconEnabledColor:
-                  primaryCustomColor, // icon color of the dropdown button
-              items: [
-                'Day',
-                'Week',
-                'Month',
-                'Year',
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: TextStyle(fontSize: 15),
-                  ),
-                );
-              }).toList(),
-              // style:  new TextStyle(
-              // color: accentCustomColor),
-              // setting hint
-              onChanged: (String value) {
-                setState(() {
-                  selectedTimeTempView = value; // saving the selected value
-                });
-              },
-              value: selectedTimeTempView, // displaying the selected value
-            ),
-          )),
-    );
-  }
-
-  void setTempTimeView(String timeTempView) {
-    selectedTimeTempView = timeTempView;
   }
 
   @override
@@ -162,7 +103,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           title: Text(
             'Health parameters tracker',
             style: TextStyle(color: Colors.white),
-          ), //Image.asset('lib/assets/images/logo.png', scale: 5),
+          ),
           centerTitle: true,
           actions: <Widget>[
             // action button - logout
@@ -179,6 +120,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         ),
         body: Column(
           children: [
+            //card to hold chart + buttons
             Card(
               elevation: 12,
               child: Column(
@@ -186,31 +128,51 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                   Padding(
                     padding: new EdgeInsets.fromLTRB(6, 0, 0, 6),
                     child: SizedBox(
+                      //size of the chart
+                      //smaller value causes faults
                       height: 304,
+                      //prints chart
                       child: SimpleTimeSeriesChart.withSampleData(
                           hParemterNotifier, selectedTimeTempView),
                     ),
                   ),
+                  //tab controller for temperature time frame
                   DefaultTabController(
                     length: timeTempView.length,
-                    child: TabBar(
-                      onTap: (index) {
-                        setState(() {
-                          selectedTimeTempView = timeTempView[index];
-                        });
-                      },
-                      controller: _timeTempTimeViewController,
-                      isScrollable: true,
-                      tabs: new List.generate(bottonTabScreensNames.length,
-                          (index) {
-                        return new Tab(
-                          iconMargin: EdgeInsets.only(bottom: 3),
-                          text: timeTempView[index].toUpperCase(),
-                        );
-                      }),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
+                      child: TabBar(
+                        onTap: (index) {
+                          setState(() {
+                            //set the name of temperature time frame
+                            //selectedTimeTempView used as an argument in "draw a chart" function
+                            selectedTimeTempView = timeTempView[index];
+                          });
+                        },
+
+                        controller: _timeTempTimeViewController,
+                        isScrollable: true,
+                        labelStyle: TextStyle(
+                          fontSize: 12.0,
+                        ),
+                        //For Selected tab
+                        unselectedLabelStyle: TextStyle(
+                          fontSize: 12.0,
+                        ), //For Un-selected Tabs
+                        //funtion to generate tabs
+                        tabs: new List.generate(bottomTabScreensNames.length,
+                            (index) {
+                          return new Tab(
+                            iconMargin: EdgeInsets.only(bottom: 3),
+                            text: timeTempView[index].toUpperCase(),
+                          );
+                        }),
+                      ),
                     ),
                   ),
+
                   SizedBox(height: 10),
+                  //Row for buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -218,34 +180,29 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                         padding: const EdgeInsets.fromLTRB(14, 0, 0, 0),
                         child: Row(
                           children: [
-                            ClipOval(
-                              child: Material(
-                                color: accentCustomColor, // button color
-                                child: InkWell(
-                                  splashColor: Colors.white, // inkwell color
-                                  child: SizedBox(
-                                    width: 30,
-                                    height: 30,
-                                    child: Icon(Icons.add,
-                                        size: 18, color: Colors.white),
-                                  ),
-                                  onTap: () => showModalBottomSheet<void>(
-                                      context: context,
-                                      backgroundColor: Colors.white,
-                                      builder: (context) => new AddParameter()),
+                            //Add button
+                            ButtonTheme(
+                              //widht - half of the screen
+                              minWidth: MediaQuery.of(context).size.width / 3.5,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                  side: BorderSide(color: accentCustomColor),
                                 ),
+                                child: Text(
+                                  'ADD',
+                                  style: TextStyle(
+                                      fontSize: 14, color: Colors.white),
+                                ),
+                                color: accentCustomColor,
+                                //After pressing button modal botton sheet will appear
+                                onPressed: () => showModalBottomSheet<void>(
+                                    context: context,
+                                    backgroundColor: Colors.white,
+                                    //AddParameter - custom Class to add parameter
+                                    builder: (context) => new AddParameter()),
                               ),
                             ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        //height: 120,
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                        child: Row(
-                          children: [
-                            Text('View: '),
-                            //_buildTemperatureDayWeekField(),
                           ],
                         ),
                       ),
@@ -264,17 +221,17 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             DefaultTabController(
-              length: bottonTabScreensNames.length,
+              length: bottomTabScreensNames.length,
               child: new AnimatedCrossFade(
                 firstChild: new Material(
                   color: Theme.of(context).primaryColor,
                   child: new TabBar(
                     controller: _bottomTabcontroller,
                     isScrollable: true,
-                    tabs: new List.generate(bottonTabScreensNames.length,
+                    tabs: new List.generate(bottomTabScreensNames.length,
                         (index) {
                       return new Tab(
-                        text: bottonTabScreensNames[index].toUpperCase(),
+                        text: bottomTabScreensNames[index].toUpperCase(),
                       );
                     }),
                   ),
@@ -285,26 +242,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
               ),
             ),
           ],
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-
-          //flag which is set depending on the scroll direction
-
-          child: FloatingActionButton(
-            onPressed: () {
-              hParemterNotifier.currentHParameter = null;
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (BuildContext context) {
-                  return BillForm(
-                    isUpdating: false,
-                  );
-                }),
-              );
-            },
-            child: Icon(Icons.add),
-            foregroundColor: Colors.white,
-          ),
         ),
       ),
     );

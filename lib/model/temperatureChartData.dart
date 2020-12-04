@@ -1,9 +1,10 @@
+import 'package:archive_your_bill/model/colors.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:archive_your_bill/api/bill_api.dart';
+import 'package:archive_your_bill/api/hParameter_api.dart';
 
 class SimpleTimeSeriesChart extends StatelessWidget {
   final List<charts.Series> seriesList;
@@ -70,12 +71,13 @@ class SimpleTimeSeriesChart extends StatelessWidget {
           new charts.ChartTitle('Temperature',
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.middle,
-              titleStyleSpec: charts.TextStyleSpec(fontSize: 14),
+              titleStyleSpec: charts.TextStyleSpec(fontSize: 20, color: charts.ColorUtil.fromDartColor(accentCustomColor)),
               // Set a larger inner padding than the default (10) to avoid
               // rendering the text too close to the top measure axis tick label.
               // The top tick label may extend upwards into the top margin region
               // if it is located at the top of the draw area.
-              innerPadding: 12),
+              outerPadding: 16,
+              innerPadding: 0),
         ],
       ),
     );
@@ -141,7 +143,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
             .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate()))
           new TimeSeriesTemperature(
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
-              int.parse(hParameterNotifier.hParameterList[i].temperature)),
+              double.parse(hParameterNotifier.hParameterList[i].temperature)),
     ];
 
     return [
@@ -178,7 +180,7 @@ List<charts.Series<TimeSeriesTemperature, DateTime>>
 /// Sample time series data type.
 class TimeSeriesTemperature {
   final DateTime time;
-  final int temperature;
+  final double temperature;
 
   TimeSeriesTemperature(this.time, this.temperature);
 }

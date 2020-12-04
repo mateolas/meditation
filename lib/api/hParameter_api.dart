@@ -81,7 +81,7 @@ Future<String> getCurrentUID() async {
 //
 
 
-getHParameters(HParameterNotifier billNotifier) async {
+getHParameters(HParameterNotifier hParameterNotifier) async {
  
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
@@ -103,7 +103,7 @@ getHParameters(HParameterNotifier billNotifier) async {
     _hParametersList.add(bill);
   });
 
-  billNotifier.hParameterList = _hParametersList;
+  hParameterNotifier.hParameterList = _hParametersList;
 }
 
 
