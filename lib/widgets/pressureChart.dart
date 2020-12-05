@@ -5,19 +5,19 @@ import 'package:archive_your_bill/model/hParameter.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:archive_your_bill/model/temperatureChartData.dart';
+import 'package:archive_your_bill/model/pressureChartData.dart';
 import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
 import 'package:archive_your_bill/screens/temperatureDetails.dart';
 import 'package:flutter/rendering.dart';
 
-class TemperatureChart extends StatefulWidget {
-  TemperatureChart();
+class PressureChart extends StatefulWidget {
+  PressureChart();
 
   @override
   _TemperatureChartState createState() => _TemperatureChartState();
 }
 
-class _TemperatureChartState extends State<TemperatureChart> {
+class _TemperatureChartState extends State<PressureChart> {
   //what temperature time frame was selected: Day/Week/Month/Year/All
   String selectedTimeTempView;
 
@@ -61,7 +61,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
               //smaller value causes faults
               height: 304,
               //prints chart
-              child: LineChart.withSampleData(
+              child: PressureChartData.withSampleData(
                   hParameterNotifier, selectedTimeTempView),
             ),
           ),
@@ -115,13 +115,13 @@ class _TemperatureChartState extends State<TemperatureChart> {
                       child: RaisedButton(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: accentCustomColor),
+                          side: BorderSide(color: Colors.red),
                         ),
                         child: Text(
                           'ADD',
                           style: TextStyle(fontSize: 14, color: Colors.white),
                         ),
-                        color: accentCustomColor,
+                        color: Colors.red,
                         //After pressing button modal botton sheet will appear
                         onPressed: () => showModalBottomSheet<void>(
                             context: context,
@@ -139,13 +139,13 @@ class _TemperatureChartState extends State<TemperatureChart> {
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(color: accentCustomColor),
+                    side: BorderSide(color: Colors.red),
                   ),
                   child: Text(
                     'DETAILS',
                     style: TextStyle(fontSize: 14, color: Colors.white),
                   ),
-                  color: accentCustomColor,
+                  color: Colors.red,
                   //After pressing button modal botton sheet will appear
                   onPressed: () => showModalBottomSheet<void>(
                       context: context,

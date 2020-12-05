@@ -13,21 +13,21 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:charts_flutter/src/text_element.dart';
 import 'package:charts_flutter/src/text_style.dart' as style;
 
-class TemperatureChartData extends StatelessWidget {
+class PressureChartData extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
   //from intl package formatter
   final formatter = new DateFormat.yMMMMd();
 
-  TemperatureChartData(this.seriesList, {this.animate});
+  PressureChartData(this.seriesList, {this.animate});
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.
-  factory TemperatureChartData.withSampleData(HParameterNotifier hParameterNotifier,
+  factory PressureChartData.withSampleData(HParameterNotifier hParameterNotifier,
       String temperatureDayWeekTypeOfView) {
     //if list of hParameters is empty
     //draw an empty Chart
     if (hParameterNotifier.hParameterList.isEmpty) {
-      return new TemperatureChartData(
+      return new PressureChartData(
         _createSampleDataIfEmpty(),
         // Disable animations for image tests.
         animate: true,
@@ -36,7 +36,7 @@ class TemperatureChartData extends StatelessWidget {
     //if list of hParameters is not empty
     //draw chart based on data fetched from firebase (throught notifier)
     else {
-      return new TemperatureChartData(
+      return new PressureChartData(
         _createSampleData(hParameterNotifier, temperatureDayWeekTypeOfView),
         // Disable animations for image tests.
         animate: true,
@@ -47,7 +47,7 @@ class TemperatureChartData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final celsiusFormatter = new charts.BasicNumericTickFormatterSpec(
-        (num value) => '$value \u2103 ');
+        (num value) => '$value BPM ');
 
     return Scaffold(
       body: new charts.TimeSeriesChart(
@@ -74,12 +74,12 @@ class TemperatureChartData extends StatelessWidget {
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         behaviors: [
           new charts.SlidingViewport(),
-          new charts.ChartTitle('Temperature',
+          new charts.ChartTitle('Pressure',
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.middle,
               titleStyleSpec: charts.TextStyleSpec(
                   fontSize: 20,
-                  color: charts.ColorUtil.fromDartColor(accentCustomColor)),
+                  color: charts.ColorUtil.fromDartColor(Colors.red)),
               // Set a larger inner padding than the default (10) to avoid
               // rendering the text too close to the top measure axis tick label.
               // The top tick label may extend upwards into the top margin region
@@ -157,7 +157,7 @@ class TemperatureChartData extends StatelessWidget {
     return [
       new charts.Series<TimeSeriesTemperature, DateTime>(
         id: 'Temperature',
-        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
         domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
         measureFn: (TimeSeriesTemperature temperature, _) =>
             temperature.temperature,
@@ -184,31 +184,6 @@ List<charts.Series<TimeSeriesTemperature, DateTime>>
     )
   ];
 }
-
-// class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
-//   static String value;
-//   @override
-//   void paint(ChartCanvas canvas, Rectangle<num> bounds,
-//       {List<int> dashPattern,
-//       Color fillColor,
-//       Color strokeColor,
-//       double strokeWidthPx}) {
-//     super.paint(canvas, bounds,
-//         dashPattern: dashPattern,
-//         fillColor: fillColor,
-//         strokeColor: strokeColor,
-//         strokeWidthPx: strokeWidthPx);
-//     canvas.drawRect(
-//         Rectangle(bounds.left - 5, bounds.top - 30, bounds.width + 10,
-//             bounds.height + 10),
-//         fill: Color.white);
-//     var textStyle = style.TextStyle();
-//     textStyle.color = Color.black;
-//     textStyle.fontSize = 15;
-//     canvas.drawText(TextElement("$value", style: textStyle),
-//         (bounds.left).round(), (bounds.top - 28).round());
-//   }
-// }
 
 /// Sample time series data type.
 class TimeSeriesTemperature {

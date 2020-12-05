@@ -4,7 +4,8 @@ import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/notifier/auth_notifier.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
-import 'package:archive_your_bill/widgets/temperatureChart.dart';
+import 'package:archive_your_bill/widgets/generalChart.dart';
+import 'package:archive_your_bill/widgets/pressureChart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -111,12 +112,15 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
             ),
           ],
         ),
-        body: Column(
-          children: [
-            //card to hold chart + buttons
-            TemperatureChart(),
-            //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
-          ],
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              //card to hold chart + buttons
+              TemperatureChart(),
+              PressureChart(),
+              //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
+            ],
+          ),
         ),
         bottomNavigationBar: new Column(
           mainAxisSize: MainAxisSize.min,
