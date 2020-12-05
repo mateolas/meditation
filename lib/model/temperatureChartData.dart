@@ -40,25 +40,28 @@ class SimpleTimeSeriesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final celsiusFormatter =
+        new charts.BasicNumericTickFormatterSpec((num value) => '$value \u2103 ');
+
     return Scaffold(
       body: new charts.TimeSeriesChart(
         seriesList,
         animate: animate,
         primaryMeasureAxis: new charts.NumericAxisSpec(
-      tickProviderSpec: new charts.StaticNumericTickProviderSpec(
-        <charts.TickSpec<num>>[      
-          charts.TickSpec<num>(34),
-          charts.TickSpec<num>(35),
-          charts.TickSpec<num>(36),
-          charts.TickSpec<num>(37),
-          charts.TickSpec<num>(38),
-          charts.TickSpec<num>(39),
-          charts.TickSpec<num>(40),
-          charts.TickSpec<num>(41),
-          
-        ],
-      ),
-    ),
+          tickFormatterSpec: celsiusFormatter,
+          tickProviderSpec: new charts.StaticNumericTickProviderSpec(
+            <charts.TickSpec<num>>[
+              charts.TickSpec<num>(34),
+              charts.TickSpec<num>(35),
+              charts.TickSpec<num>(36),
+              charts.TickSpec<num>(37),
+              charts.TickSpec<num>(38),
+              charts.TickSpec<num>(39),
+              charts.TickSpec<num>(40),
+              charts.TickSpec<num>(41),
+            ],
+          ),
+        ),
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         behaviors: [
           new charts.SlidingViewport(),
@@ -71,7 +74,9 @@ class SimpleTimeSeriesChart extends StatelessWidget {
           new charts.ChartTitle('Temperature',
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.middle,
-              titleStyleSpec: charts.TextStyleSpec(fontSize: 20, color: charts.ColorUtil.fromDartColor(accentCustomColor)),
+              titleStyleSpec: charts.TextStyleSpec(
+                  fontSize: 20,
+                  color: charts.ColorUtil.fromDartColor(accentCustomColor)),
               // Set a larger inner padding than the default (10) to avoid
               // rendering the text too close to the top measure axis tick label.
               // The top tick label may extend upwards into the top margin region
@@ -120,7 +125,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
         }
         break;
 
-        case 'ALL':
+      case 'ALL':
         {
           timePeriod = now_1000y;
         }
