@@ -6,22 +6,28 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:archive_your_bill/api/hParameter_api.dart';
 
-class SimpleTimeSeriesChart extends StatelessWidget {
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:charts_flutter/flutter.dart';
+import 'package:charts_flutter/src/text_element.dart';
+import 'package:charts_flutter/src/text_style.dart' as style;
+
+class LineChart extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
   //from intl package formatter
   final formatter = new DateFormat.yMMMMd();
 
-  SimpleTimeSeriesChart(this.seriesList, {this.animate});
+  LineChart(this.seriesList, {this.animate});
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.
-  factory SimpleTimeSeriesChart.withSampleData(
-      HParameterNotifier hParameterNotifier,
+  factory LineChart.withSampleData(HParameterNotifier hParameterNotifier,
       String temperatureDayWeekTypeOfView) {
     //if list of hParameters is empty
     //draw an empty Chart
     if (hParameterNotifier.hParameterList.isEmpty) {
-      return new SimpleTimeSeriesChart(
+      return new LineChart(
         _createSampleDataIfEmpty(),
         // Disable animations for image tests.
         animate: true,
@@ -30,7 +36,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     //if list of hParameters is not empty
     //draw chart based on data fetched from firebase (throught notifier)
     else {
-      return new SimpleTimeSeriesChart(
+      return new LineChart(
         _createSampleData(hParameterNotifier, temperatureDayWeekTypeOfView),
         // Disable animations for image tests.
         animate: true,
@@ -40,12 +46,14 @@ class SimpleTimeSeriesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final celsiusFormatter =
-        new charts.BasicNumericTickFormatterSpec((num value) => '$value \u2103 ');
+    final celsiusFormatter = new charts.BasicNumericTickFormatterSpec(
+        (num value) => '$value \u2103 ');
 
     return Scaffold(
       body: new charts.TimeSeriesChart(
         seriesList,
+        defaultRenderer:
+            new charts.LineRendererConfig(includeArea: true, stacked: true),
         animate: animate,
         primaryMeasureAxis: new charts.NumericAxisSpec(
           tickFormatterSpec: celsiusFormatter,
@@ -59,18 +67,13 @@ class SimpleTimeSeriesChart extends StatelessWidget {
               charts.TickSpec<num>(39),
               charts.TickSpec<num>(40),
               charts.TickSpec<num>(41),
+              charts.TickSpec<num>(42),
             ],
           ),
         ),
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         behaviors: [
           new charts.SlidingViewport(),
-
-          // Set the initial viewport by providing a new AxisSpec with the
-          // desired viewport, in NumericExtents.
-
-          //new charts.PanAndZoomBehavior(),
-          //setting the title of the chart
           new charts.ChartTitle('Temperature',
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.middle,
@@ -81,8 +84,8 @@ class SimpleTimeSeriesChart extends StatelessWidget {
               // rendering the text too close to the top measure axis tick label.
               // The top tick label may extend upwards into the top margin region
               // if it is located at the top of the draw area.
-              outerPadding: 16,
-              innerPadding: 0),
+              outerPadding: 20,
+              innerPadding: 20),
         ],
       ),
     );
@@ -154,7 +157,7 @@ class SimpleTimeSeriesChart extends StatelessWidget {
     return [
       new charts.Series<TimeSeriesTemperature, DateTime>(
         id: 'Temperature',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
         measureFn: (TimeSeriesTemperature temperature, _) =>
             temperature.temperature,
@@ -167,13 +170,13 @@ class SimpleTimeSeriesChart extends StatelessWidget {
 List<charts.Series<TimeSeriesTemperature, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesTemperature(new DateTime.now(), 4),
+    new TimeSeriesTemperature(new DateTime.now(), 0),
   ];
 
   return [
     new charts.Series<TimeSeriesTemperature, DateTime>(
       id: 'Temperature',
-      colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
       domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
       measureFn: (TimeSeriesTemperature temperature, _) =>
           temperature.temperature,
@@ -181,6 +184,31 @@ List<charts.Series<TimeSeriesTemperature, DateTime>>
     )
   ];
 }
+
+// class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
+//   static String value;
+//   @override
+//   void paint(ChartCanvas canvas, Rectangle<num> bounds,
+//       {List<int> dashPattern,
+//       Color fillColor,
+//       Color strokeColor,
+//       double strokeWidthPx}) {
+//     super.paint(canvas, bounds,
+//         dashPattern: dashPattern,
+//         fillColor: fillColor,
+//         strokeColor: strokeColor,
+//         strokeWidthPx: strokeWidthPx);
+//     canvas.drawRect(
+//         Rectangle(bounds.left - 5, bounds.top - 30, bounds.width + 10,
+//             bounds.height + 10),
+//         fill: Color.white);
+//     var textStyle = style.TextStyle();
+//     textStyle.color = Color.black;
+//     textStyle.fontSize = 15;
+//     canvas.drawText(TextElement("$value", style: textStyle),
+//         (bounds.left).round(), (bounds.top - 28).round());
+//   }
+// }
 
 /// Sample time series data type.
 class TimeSeriesTemperature {

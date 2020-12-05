@@ -3,8 +3,8 @@ import 'package:archive_your_bill/model/colors.dart';
 import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/notifier/auth_notifier.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
-import 'package:archive_your_bill/screens/addParameter.dart';
-
+import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
+import 'package:archive_your_bill/screens/temperatureDetails.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -134,7 +134,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                       //smaller value causes faults
                       height: 304,
                       //prints chart
-                      child: SimpleTimeSeriesChart.withSampleData(
+                      child: LineChart.withSampleData(
                           hParemterNotifier, selectedTimeTempView),
                     ),
                   ),
@@ -208,7 +208,27 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                           ],
                         ),
                       ),
-                      Text('DETAILS'),
+                      ButtonTheme(
+                        //widht - half of the screen
+                        minWidth: MediaQuery.of(context).size.width / 3.5,
+                        child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(18.0),
+                            side: BorderSide(color: accentCustomColor),
+                          ),
+                          child: Text(
+                            'DETAILS',
+                            style: TextStyle(fontSize: 14, color: Colors.white),
+                          ),
+                          color: accentCustomColor,
+                          //After pressing button modal botton sheet will appear
+                          onPressed: () => showModalBottomSheet<void>(
+                              context: context,
+                              backgroundColor: Colors.white,
+                              //AddParameter - custom Class to add parameter
+                              builder: (context) => new TemperatureDetails()),
+                        ),
+                      ),
                     ],
                   ),
                   SizedBox(height: 10),

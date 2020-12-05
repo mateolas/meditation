@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:archive_your_bill/api/hParameter_api.dart';
 import 'package:archive_your_bill/model/colors.dart';
-
 import 'package:archive_your_bill/model/hParameter.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 
@@ -72,6 +67,8 @@ class _AddParameterState extends State<AddParameter> {
   @override
   Widget build(BuildContext context) {
     _initializeNumberPicker();
+    
+
     return Column(
       children: [
         Container(
