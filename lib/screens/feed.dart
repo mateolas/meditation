@@ -4,7 +4,7 @@ import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/notifier/auth_notifier.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
-import 'package:archive_your_bill/screens/temperatureDetails.dart';
+import 'package:archive_your_bill/widgets/temperatureChart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
@@ -29,12 +29,10 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
-  //what temperature time frame was selected: Day/Week/Month/Year/All
-  String selectedTimeTempView;
+  
   //Controller for bottom tab (temp, saturation etc.)
   TabController _bottomTabcontroller;
-  //Controller for time frame tab (day, week, month etc.)
-  TabController _timeTempTimeViewController;
+  
   //Name of screens to present for TabBar
   List bottomTabScreensNames = [
     'All',
@@ -44,14 +42,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Weight',
   ];
 
-  //Name of time frames to present for TabBar
-  List timeTempView = [
-    'DAY',
-    'WEEK',
-    'MONTH',
-    'YEAR',
-    'ALL',
-  ];
+  
 
   @override
   void initState() {
@@ -61,7 +52,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     //fetching data from firebase
     getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
-    selectedTimeTempView = 'Day';
+    
     super.initState();
   }
 
@@ -80,7 +71,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     print('2 Authnotifier ${authNotifier.user.displayName}');
     print(
         "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
-    print('Temperature day/week view value: $selectedTimeTempView');
+    
 
     return Container(
       height: double.infinity,
@@ -123,118 +114,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         body: Column(
           children: [
             //card to hold chart + buttons
-            Card(
-              elevation: 12,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: new EdgeInsets.fromLTRB(6, 0, 0, 6),
-                    child: SizedBox(
-                      //size of the chart
-                      //smaller value causes faults
-                      height: 304,
-                      //prints chart
-                      child: LineChart.withSampleData(
-                          hParemterNotifier, selectedTimeTempView),
-                    ),
-                  ),
-                  //tab controller for temperature time frame
-                  DefaultTabController(
-                    length: timeTempView.length,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
-                      child: TabBar(
-                        onTap: (index) {
-                          setState(() {
-                            //set the name of temperature time frame
-                            //selectedTimeTempView used as an argument in "draw a chart" function
-                            selectedTimeTempView = timeTempView[index];
-                          });
-                        },
-
-                        controller: _timeTempTimeViewController,
-                        isScrollable: true,
-                        labelStyle: TextStyle(
-                          fontSize: 12.0,
-                        ),
-                        //For Selected tab
-                        unselectedLabelStyle: TextStyle(
-                          fontSize: 12.0,
-                        ), //For Un-selected Tabs
-                        //funtion to generate tabs
-                        tabs: new List.generate(bottomTabScreensNames.length,
-                            (index) {
-                          return new Tab(
-                            iconMargin: EdgeInsets.only(bottom: 3),
-                            text: timeTempView[index].toUpperCase(),
-                          );
-                        }),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: 10),
-                  //Row for buttons
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.fromLTRB(14, 0, 0, 0),
-                        child: Row(
-                          children: [
-                            //Add button
-                            ButtonTheme(
-                              //widht - half of the screen
-                              minWidth: MediaQuery.of(context).size.width / 3.5,
-                              child: RaisedButton(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18.0),
-                                  side: BorderSide(color: accentCustomColor),
-                                ),
-                                child: Text(
-                                  'ADD',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.white),
-                                ),
-                                color: accentCustomColor,
-                                //After pressing button modal botton sheet will appear
-                                onPressed: () => showModalBottomSheet<void>(
-                                    context: context,
-                                    backgroundColor: Colors.white,
-                                    //AddParameter - custom Class to add parameter
-                                    builder: (context) => new AddParameter()),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ButtonTheme(
-                        //widht - half of the screen
-                        minWidth: MediaQuery.of(context).size.width / 3.5,
-                        child: RaisedButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(18.0),
-                            side: BorderSide(color: accentCustomColor),
-                          ),
-                          child: Text(
-                            'DETAILS',
-                            style: TextStyle(fontSize: 14, color: Colors.white),
-                          ),
-                          color: accentCustomColor,
-                          //After pressing button modal botton sheet will appear
-                          onPressed: () => showModalBottomSheet<void>(
-                              context: context,
-                              backgroundColor: Colors.white,
-                              //AddParameter - custom Class to add parameter
-                              builder: (context) => new TemperatureDetails()),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                ],
-              ),
-            ),
+            TemperatureChart(),
             //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
           ],
         ),
