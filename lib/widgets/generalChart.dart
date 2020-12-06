@@ -6,7 +6,10 @@ import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:archive_your_bill/model/temperatureChartData.dart';
+import 'package:archive_your_bill/model/weightChartData.dart';
+import 'package:archive_your_bill/model/saturationChartData.dart';
 import 'package:archive_your_bill/model/pressureChartData.dart';
+import 'package:archive_your_bill/widgets/temperatureSetOfButtons.dart';
 import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
 import 'package:archive_your_bill/screens/temperatureDetails.dart';
 import 'package:flutter/rendering.dart';
@@ -74,6 +77,54 @@ class _TemperatureChartState extends State<TemperatureChart> {
                   hParameterNotifier, selectedTimeTempView);
    } 
    break; 
+
+    case 'SATURATION': { 
+      return SaturationChartData.withSampleData(
+                  hParameterNotifier, selectedTimeTempView);
+   } 
+   break; 
+
+   case 'WEIGHT': { 
+      return WeightChartData.withSampleData(
+                  hParameterNotifier, selectedTimeTempView);
+   } 
+   break; 
+      
+   default: { 
+         return TemperatureChartData.withSampleData(
+                  hParameterNotifier, selectedTimeTempView);
+   }
+   break; 
+} 
+
+  }
+
+  Widget whatTypeOfButtonsToPresent(HParameterNotifier hParameterNotifier, String typesOfCharts, String selectedTimeTempView){
+
+   switch(typesOfCharts) { 
+   case 'TEMPERATURE': { 
+    return  TemperatureChartData.withSampleData(
+                  hParameterNotifier, selectedTimeTempView);
+   } 
+   break; 
+  
+   case 'PULSE': { 
+      return PressureChartData.withSampleData(
+                  hParameterNotifier, selectedTimeTempView);
+   } 
+   break; 
+
+    case 'SATURATION': { 
+      return SaturationChartData.withSampleData(
+                  hParameterNotifier, selectedTimeTempView);
+   } 
+   break; 
+
+   case 'WEIGHT': { 
+      return WeightChartData.withSampleData(
+                  hParameterNotifier, selectedTimeTempView);
+   } 
+   break; 
       
    default: { 
          return TemperatureChartData.withSampleData(
@@ -89,7 +140,6 @@ class _TemperatureChartState extends State<TemperatureChart> {
   Widget build(BuildContext context) {
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
-
     return Card(
       elevation: 12,
       child: Column(
@@ -104,8 +154,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
               child: whatTypeOfChartToPresent(hParameterNotifier, selectedTypeOfCharts, selectedTimeTempView)
             ),
           ),
-
-          /// tab controller for temperature time frame ///
+          /// tab controller for time frame ///
           DefaultTabController(
             length: timeTempView.length,
             child: Padding(
@@ -138,7 +187,6 @@ class _TemperatureChartState extends State<TemperatureChart> {
             ),
           ),
           SizedBox(height: 4),
-
           /// tab controller for type of chart (Temperature, pressure, etc.) ///
           DefaultTabController(
             length: typesOfCharts.length,
@@ -185,61 +233,7 @@ class _TemperatureChartState extends State<TemperatureChart> {
           ),
           SizedBox(height: 12),
           //Row for buttons
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 3.5,
-                decoration: ShapeDecoration(
-                  shape: const StadiumBorder(),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      accentCustomColor,
-                      primaryCustomColor,
-                    ],
-                  ),
-                ),
-                child: MaterialButton(
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  shape: const StadiumBorder(),
-                  child: Text('ADD',
-                      style: TextStyle(fontSize: 14, color: Colors.white)),
-                  onPressed: () => showModalBottomSheet<void>(
-                      context: context,
-                      backgroundColor: Colors.white,
-                      //AddParameter - custom Class to add parameter
-                      builder: (context) => new AddParameter()),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width / 3.5,
-                decoration: ShapeDecoration(
-                  shape: const StadiumBorder(),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      accentCustomColor,
-                      primaryCustomColor,
-                    ],
-                  ),
-                ),
-                child: MaterialButton(
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  shape: const StadiumBorder(),
-                  child: Text('DETAILS',
-                      style: TextStyle(fontSize: 14, color: Colors.white)),
-                  onPressed: () => showModalBottomSheet<void>(
-                      context: context,
-                      backgroundColor: Colors.white,
-                      //AddParameter - custom Class to add parameter
-                      builder: (context) => new TemperatureDetails()),
-                ),
-              ),
-            ],
-          ),
+          TemperatureSetOfButtons(),
           SizedBox(height: 40),
         ],
       ),

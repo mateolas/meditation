@@ -6,14 +6,14 @@ import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-class AddParameter extends StatefulWidget {
-  AddParameter();
+class AddTemperatureParameter extends StatefulWidget {
+  AddTemperatureParameter();
 
   @override
-  _AddParameterState createState() => _AddParameterState();
+  _AddTemperatureParameter createState() => _AddTemperatureParameter();
 }
 
-class _AddParameterState extends State<AddParameter> {
+class _AddTemperatureParameter extends State<AddTemperatureParameter> {
   //Hparameter which will be "uploading"
   Hparameter _currentHparameter;
   //new decimal picker

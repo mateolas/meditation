@@ -1,26 +1,10 @@
 import 'package:archive_your_bill/api/hParameter_api.dart';
-import 'package:archive_your_bill/model/colors.dart';
-import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/notifier/auth_notifier.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
-import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
 import 'package:archive_your_bill/widgets/generalChart.dart';
-import 'package:archive_your_bill/widgets/pressureChart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
-import 'dart:async';
-import 'dart:io';
-import 'package:share/share.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/rendering.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:archive_your_bill/model/globals.dart';
-import 'package:http/http.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:archive_your_bill/model/dateCheck.dart';
-import 'package:archive_your_bill/model/hParameter.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 //https://medium.com/@agungsurya/take-a-screenshot-of-a-certain-widget-in-flutter-ad263edc4e55
 
@@ -30,10 +14,9 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
-  
   //Controller for bottom tab (temp, saturation etc.)
   TabController _bottomTabcontroller;
-  
+
   //Name of screens to present for TabBar
   List bottomTabScreensNames = [
     'All',
@@ -43,8 +26,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Weight',
   ];
 
-  
-
   @override
   void initState() {
     //initializing notifier to fetch data from firebase
@@ -53,7 +34,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     //fetching data from firebase
     getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
-    
+
     super.initState();
   }
 
@@ -72,7 +53,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     print('2 Authnotifier ${authNotifier.user.displayName}');
     print(
         "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
-    
 
     return Container(
       height: double.infinity,
@@ -117,7 +97,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
             children: [
               //card to hold chart + buttons
               TemperatureChart(),
-              PressureChart(),
+
               //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
             ],
           ),
