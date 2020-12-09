@@ -96,39 +96,39 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           child: Column(
             children: [
               //card to hold chart + buttons
-              TemperatureChart(),
+              MainGeneralChart(),
 
               //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
             ],
           ),
         ),
-        bottomNavigationBar: new Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            DefaultTabController(
-              length: bottomTabScreensNames.length,
-              child: new AnimatedCrossFade(
-                firstChild: new Material(
-                  color: Theme.of(context).primaryColor,
-                  child: new TabBar(
-                    controller: _bottomTabcontroller,
-                    isScrollable: true,
-                    tabs: new List.generate(bottomTabScreensNames.length,
-                        (index) {
-                      return new Tab(
-                        text: bottomTabScreensNames[index].toUpperCase(),
-                      );
-                    }),
-                  ),
-                ),
-                secondChild: new Container(),
-                crossFadeState: CrossFadeState.showFirst,
-                duration: const Duration(milliseconds: 300),
-              ),
-            ),
-          ],
-        ),
+        // bottomNavigationBar: new Column(
+        //   mainAxisSize: MainAxisSize.min,
+        //   crossAxisAlignment: CrossAxisAlignment.stretch,
+        //   children: [
+        //     DefaultTabController(
+        //       length: bottomTabScreensNames.length,
+        //       child: new AnimatedCrossFade(
+        //         firstChild: new Material(
+        //           color: Theme.of(context).primaryColor,
+        //           child: new TabBar(
+        //             controller: _bottomTabcontroller,
+        //             isScrollable: true,
+        //             tabs: new List.generate(bottomTabScreensNames.length,
+        //                 (index) {
+        //               return new Tab(
+        //                 text: bottomTabScreensNames[index].toUpperCase(),
+        //               );
+        //             }),
+        //           ),
+        //         ),
+        //         secondChild: new Container(),
+        //         crossFadeState: CrossFadeState.showFirst,
+        //         duration: const Duration(milliseconds: 300),
+        //       ),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }
