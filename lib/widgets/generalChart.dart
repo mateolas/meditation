@@ -10,6 +10,9 @@ import 'package:archive_your_bill/model/weightChartData.dart';
 import 'package:archive_your_bill/model/saturationChartData.dart';
 import 'package:archive_your_bill/model/pressureChartData.dart';
 import 'package:archive_your_bill/widgets/temperatureSetOfButtons.dart';
+import 'package:archive_your_bill/widgets/saturationSetOfButtons.dart';
+import 'package:archive_your_bill/widgets/weightSetOfButtons.dart';
+import 'package:archive_your_bill/widgets/pulseSetOfButtons.dart';
 import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
 import 'package:archive_your_bill/screens/temperatureDetails.dart';
 import 'package:flutter/rendering.dart';
@@ -21,7 +24,8 @@ class MainGeneralChart extends StatefulWidget {
   _MainGeneralChartState createState() => _MainGeneralChartState();
 }
 
-class _MainGeneralChartState extends State<MainGeneralChart> {
+class _MainGeneralChartState extends State<MainGeneralChart>
+    with SingleTickerProviderStateMixin {
   //what temperature time frame was selected: Day/Week/Month/Year/All
   String selectedTimeTempView;
   String selectedTypeOfCharts;
@@ -40,7 +44,7 @@ class _MainGeneralChartState extends State<MainGeneralChart> {
 //Controller for time frame tab (day, week, month etc.)
   TabController _timeTempTimeViewController;
 
-//Name of time frames to present for TabBar
+//Name of type of charts (Temp, Pulse etc.) to present for TabBar
   List typesOfCharts = [
     'TEMPERATURE',
     'PULSE',
@@ -48,8 +52,11 @@ class _MainGeneralChartState extends State<MainGeneralChart> {
     'WEIGHT',
   ];
 
-  //Controller for type of chart
+  //Controller for types of chart
   TabController _typeOfChartController;
+  //variable to have different colors on tab bar
+  Color _activeColor;
+  int tabIndex = 0;
 
   //calling initState function to initialize _currentHparameter
   @override
@@ -61,6 +68,7 @@ class _MainGeneralChartState extends State<MainGeneralChart> {
     getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
     selectedTimeTempView = 'Day';
+    _typeOfChartController = new TabController(vsync: this, length: 3);
   }
 
   Widget whatTypeOfChartToPresent(HParameterNotifier hParameterNotifier,
@@ -103,43 +111,49 @@ class _MainGeneralChartState extends State<MainGeneralChart> {
     }
   }
 
-  Widget whatTypeOfButtonsToPresent(HParameterNotifier hParameterNotifier,
-      String typesOfCharts, String selectedTimeTempView) {
+  Widget whatTypeOfButtonsToPresent(String typesOfCharts) {
     switch (typesOfCharts) {
       case 'TEMPERATURE':
         {
-          return TemperatureChartData.withSampleData(
-              hParameterNotifier, selectedTimeTempView);
+          return TemperatureSetOfButtons();
         }
         break;
 
       case 'PULSE':
         {
-          return PressureChartData.withSampleData(
-              hParameterNotifier, selectedTimeTempView);
+          return PulseSetOfButtons();
         }
         break;
 
       case 'SATURATION':
         {
-          return SaturationChartData.withSampleData(
-              hParameterNotifier, selectedTimeTempView);
+          return SaturationSetOfButtons();
         }
         break;
 
       case 'WEIGHT':
         {
-          return WeightChartData.withSampleData(
-              hParameterNotifier, selectedTimeTempView);
+          return WeightSetOfButtons();
         }
         break;
 
       default:
         {
-          return TemperatureChartData.withSampleData(
-              hParameterNotifier, selectedTimeTempView);
+          return TemperatureSetOfButtons();
         }
         break;
+    }
+  }
+
+  setTabColor(int tabIndex) {
+    if (tabIndex == 0) {
+      return Colors.green;
+    } else if (tabIndex == 1) {
+      return Colors.red;
+    } else if (tabIndex == 2) {
+      return Colors.blue;
+    } else if (tabIndex == 3) {
+      return Colors.purple;
     }
   }
 
@@ -153,7 +167,6 @@ class _MainGeneralChartState extends State<MainGeneralChart> {
           padding: new EdgeInsets.fromLTRB(6, 0, 0, 6),
           child: SizedBox(
               //size of the chart
-              //smaller value causes faults
               height: MediaQuery.of(context).size.height / 2.4,
               //prints chart
               child: whatTypeOfChartToPresent(hParameterNotifier,
@@ -209,6 +222,7 @@ class _MainGeneralChartState extends State<MainGeneralChart> {
                     //set the name of type of the chart
                     //selectedTypeOfCharts used as an argument in switch function
                     selectedTypeOfCharts = typesOfCharts[index];
+                    tabIndex = index;
                   });
                 },
                 indicator: ShapeDecoration(
@@ -219,7 +233,7 @@ class _MainGeneralChartState extends State<MainGeneralChart> {
                       bottomRight: radius,
                       bottomLeft: radius,
                     )),
-                    color: accentCustomColor),
+                    color: setTabColor(tabIndex)),
                 controller: _typeOfChartController,
                 isScrollable: true,
                 //For Selected tab
@@ -240,7 +254,7 @@ class _MainGeneralChartState extends State<MainGeneralChart> {
         ),
         SizedBox(height: 12),
         //Row for buttons
-        TemperatureSetOfButtons(),
+        whatTypeOfButtonsToPresent(selectedTypeOfCharts),
         SizedBox(height: 40),
       ],
     );

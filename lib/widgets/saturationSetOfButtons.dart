@@ -13,8 +13,8 @@ import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
 import 'package:archive_your_bill/screens/temperatureDetails.dart';
 import 'package:flutter/rendering.dart';
 
-class PulseSetOfButtons extends StatelessWidget {
-  PulseSetOfButtons();
+class SaturationSetOfButtons extends StatelessWidget {
+  SaturationSetOfButtons();
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +29,8 @@ class PulseSetOfButtons extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Colors.red,
-                Colors.red[100]
-                ,
+                Colors.blue,
+                Colors.blue[100],
               ],
             ),
           ),
@@ -54,8 +53,8 @@ class PulseSetOfButtons extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                    Colors.red,
-                Colors.red[100]
+                Colors.blue,
+                Colors.blue[100],
               ],
             ),
           ),
