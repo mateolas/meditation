@@ -15,14 +15,8 @@ class TemperatureDetails extends StatefulWidget {
 }
 
 class _TemperatureDetailsState extends State<TemperatureDetails> {
-  //Hparameter which will be "uploading"
-  Hparameter _currentHparameter;
   //new decimal picker
   NumberPicker decimalNumberPicker;
-  //default value of a decimal picker
-  double _currentDoubleValue = 36.6;
-
-  
 
   //calling initState function to get all temperature data
   @override
@@ -41,6 +35,19 @@ class _TemperatureDetailsState extends State<TemperatureDetails> {
   Widget createTable() {
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
+
+    //Two lists and for loop to get list without null values
+    //To get non null temperature values
+    List<String> listWithNoEmptyRecordsTemperatureValues = [];
+    //To get corresponding to non null temperature values Date values
+    List<DateTime> listWithNoEmptyRecordsDateTimeValues = [];
+    //Loop through the hParameter list and add to two new lists non null temperature values
+    for (int i = 0; i < hParameterNotifier.hParameterList.length; i++) {
+      if (hParameterNotifier.hParameterList[i].temperature != null) {
+        listWithNoEmptyRecordsTemperatureValues.add(hParameterNotifier.hParameterList[i].temperature);
+        listWithNoEmptyRecordsDateTimeValues.add(hParameterNotifier.hParameterList[i].createdAt.toDate());
+      }
+    }
 
     return DataTable(
       //columns data
@@ -66,43 +73,23 @@ class _TemperatureDetailsState extends State<TemperatureDetails> {
       ],
       //rows data
       rows: List<DataRow>.generate(
-        hParameterNotifier.hParameterList.length,
+        listWithNoEmptyRecordsTemperatureValues.length,
         (index) => DataRow(
           cells: [
             DataCell(
-              Text("${index+1}"),
+              Text("${index + 1}"),
             ),
             DataCell(
-              Text("${DateFormat.MMMd().add_jm().format(hParameterNotifier.hParameterList[index].createdAt.toDate())}"),
+              Text(
+                  "${DateFormat.MMMd().add_jm().format(listWithNoEmptyRecordsDateTimeValues[index])}"),
             ),
             DataCell(
-              Text("${hParameterNotifier.hParameterList[index].temperature}"),
+              Text("${listWithNoEmptyRecordsTemperatureValues[index]}"),
             ),
           ],
         ),
       ),
     );
-  }
-
-  //funtion to add _currenthParameter to the list of hParameters
-  _onBillUploaded(Hparameter hParameter) {
-    HParameterNotifier hParameterNotifier =
-        Provider.of<HParameterNotifier>(context, listen: false);
-    hParameterNotifier.addBill(hParameter);
-    Navigator.pop(context);
-  }
-
-  //function to upload _currentHparameter to firebase
-  _saveBill() {
-    print('saveBill Called');
-
-    _currentHparameter.temperature = _currentDoubleValue.toString();
-
-    uploadBill(_currentHparameter, _onBillUploaded);
-
-    print("name: ${_currentHparameter.temperature}");
-    print("category: ${_currentHparameter.weight}");
-    print('form saved');
   }
 
   @override
