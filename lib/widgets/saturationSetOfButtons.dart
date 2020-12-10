@@ -8,7 +8,7 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/model/weightChartData.dart';
 import 'package:archive_your_bill/model/saturationChartData.dart';
-import 'package:archive_your_bill/model/pressureChartData.dart';
+import 'package:archive_your_bill/model/pulseChartData.dart';
 import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
 import 'package:archive_your_bill/screens/temperatureDetails.dart';
 import 'package:flutter/rendering.dart';

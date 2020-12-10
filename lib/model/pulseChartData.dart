@@ -59,15 +59,15 @@ class PressureChartData extends StatelessWidget {
           tickFormatterSpec: celsiusFormatter,
           tickProviderSpec: new charts.StaticNumericTickProviderSpec(
             <charts.TickSpec<num>>[
-              charts.TickSpec<num>(34),
-              charts.TickSpec<num>(35),
-              charts.TickSpec<num>(36),
-              charts.TickSpec<num>(37),
-              charts.TickSpec<num>(38),
-              charts.TickSpec<num>(39),
               charts.TickSpec<num>(40),
-              charts.TickSpec<num>(41),
-              charts.TickSpec<num>(42),
+              charts.TickSpec<num>(60),
+              charts.TickSpec<num>(80),
+              charts.TickSpec<num>(100),
+              charts.TickSpec<num>(120),
+              charts.TickSpec<num>(140),
+              charts.TickSpec<num>(160),
+              charts.TickSpec<num>(180),
+              charts.TickSpec<num>(200),
             ],
           ),
         ),
@@ -92,7 +92,7 @@ class PressureChartData extends StatelessWidget {
   }
 
   /// Create one series with data fetched through hParameterNotifier from Firebase.
-  static List<charts.Series<TimeSeriesTemperature, DateTime>> _createSampleData(
+  static List<charts.Series<TimeSeriesPulse, DateTime>> _createSampleData(
       HParameterNotifier hParameterNotifier,
       String temperatureDayWeekTypeOfView) {
     var now = new DateTime.now();
@@ -141,54 +141,54 @@ class PressureChartData extends StatelessWidget {
         break;
     }
 
-    //final data = <TimeSeriesTemperature>[];
+    
 
-    final data = <TimeSeriesTemperature>[
+    final data = <TimeSeriesPulse>[
       //loop to get all the items from the hParameterList
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
         //check if it's last day, week or month
         if (timePeriod
-            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate()))
-          new TimeSeriesTemperature(
+            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate()) && hParameterNotifier.hParameterList[i].pulse != null)
+          new TimeSeriesPulse(
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
-              double.parse(hParameterNotifier.hParameterList[i].temperature)),
+              double.parse(hParameterNotifier.hParameterList[i].pulse)),
     ];
 
     return [
-      new charts.Series<TimeSeriesTemperature, DateTime>(
-        id: 'Temperature',
+      new charts.Series<TimeSeriesPulse, DateTime>(
+        id: 'Pulse',
         colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
-        measureFn: (TimeSeriesTemperature temperature, _) =>
-            temperature.temperature,
+        domainFn: (TimeSeriesPulse pulse, _) => pulse.time,
+        measureFn: (TimeSeriesPulse pulse, _) =>
+            pulse.pulse,
         data: data,
       )
     ];
   }
 }
 
-List<charts.Series<TimeSeriesTemperature, DateTime>>
+List<charts.Series<TimeSeriesPulse, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesTemperature(new DateTime.now(), 0),
+    new TimeSeriesPulse(new DateTime.now(), 0),
   ];
 
   return [
-    new charts.Series<TimeSeriesTemperature, DateTime>(
-      id: 'Temperature',
+    new charts.Series<TimeSeriesPulse, DateTime>(
+      id: 'Pulse',
       colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-      domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
-      measureFn: (TimeSeriesTemperature temperature, _) =>
-          temperature.temperature,
+      domainFn: (TimeSeriesPulse pulse, _) => pulse.time,
+      measureFn: (TimeSeriesPulse pulse, _) =>
+          pulse.pulse,
       data: data,
     )
   ];
 }
 
 /// Sample time series data type.
-class TimeSeriesTemperature {
+class TimeSeriesPulse {
   final DateTime time;
-  final double temperature;
+  final double pulse;
 
-  TimeSeriesTemperature(this.time, this.temperature);
+  TimeSeriesPulse(this.time, this.pulse);
 }
