@@ -68,7 +68,7 @@ class _MainGeneralChartState extends State<MainGeneralChart>
     getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
     selectedTimeTempView = 'Day';
-    _typeOfChartController = new TabController(vsync: this, length: 3);
+    _typeOfChartController = new TabController(vsync: this, length: 4);
   }
 
   Widget whatTypeOfChartToPresent(HParameterNotifier hParameterNotifier,
