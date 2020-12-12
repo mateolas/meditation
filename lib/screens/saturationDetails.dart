@@ -84,7 +84,7 @@ class _SaturationDetailsState extends State<SaturationDetails> {
                   "${DateFormat.MMMd().add_jm().format(listWithNoEmptyRecordsDateTimeValues[index])}"),
             ),
             DataCell(
-              Text("${listWithNoEmptyRecordsSaturationValues[index]}"),
+              Text("${listWithNoEmptyRecordsSaturationValues[index]}% SpO\u2082 "),
             ),
           ],
         ),

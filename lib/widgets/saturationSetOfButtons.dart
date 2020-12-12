@@ -15,14 +15,7 @@ class SaturationSetOfButtons extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.blue,
-                Colors.blue[100],
-              ],
-            ),
+            color: Colors.blue,
           ),
           child: MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -39,14 +32,7 @@ class SaturationSetOfButtons extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.blue,
-                Colors.blue[100],
-              ],
-            ),
+            color: Colors.blue,
           ),
           child: MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

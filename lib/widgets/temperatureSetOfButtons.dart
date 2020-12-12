@@ -25,14 +25,7 @@ class TemperatureSetOfButtons extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                accentCustomColor,
-                primaryCustomColor,
-              ],
-            ),
+            color: accentCustomColor,
           ),
           child: MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -49,14 +42,7 @@ class TemperatureSetOfButtons extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                accentCustomColor,
-                primaryCustomColor,
-              ],
-            ),
+            color: accentCustomColor,
           ),
           child: MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

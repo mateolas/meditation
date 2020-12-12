@@ -15,14 +15,7 @@ class WeightSetOfButtons extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.purple,
-                Colors.purple[100],
-              ],
-            ),
+            color: Colors.purple,
           ),
           child: MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -39,14 +32,7 @@ class WeightSetOfButtons extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.purple,
-                Colors.purple[100],
-              ],
-            ),
+            color: Colors.purple,
           ),
           child: MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

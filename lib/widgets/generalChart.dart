@@ -147,7 +147,7 @@ class _MainGeneralChartState extends State<MainGeneralChart>
 
   setTabColor(int tabIndex) {
     if (tabIndex == 0) {
-      return Colors.green;
+      return accentCustomColor;
     } else if (tabIndex == 1) {
       return Colors.red;
     } else if (tabIndex == 2) {
@@ -177,7 +177,7 @@ class _MainGeneralChartState extends State<MainGeneralChart>
         DefaultTabController(
           length: timeTempView.length,
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 24),
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 34),
             child: TabBar(
               onTap: (index) {
                 setState(() {
@@ -186,6 +186,8 @@ class _MainGeneralChartState extends State<MainGeneralChart>
                   selectedTimeTempView = timeTempView[index];
                 });
               },
+              indicatorColor: setTabColor(tabIndex),
+
               controller: _timeTempTimeViewController,
               isScrollable: true,
               labelStyle: TextStyle(
@@ -226,14 +228,15 @@ class _MainGeneralChartState extends State<MainGeneralChart>
                   });
                 },
                 indicator: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                      topRight: radius,
-                      topLeft: radius,
-                      bottomRight: radius,
-                      bottomLeft: radius,
-                    )),
-                    color: setTabColor(tabIndex)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                    topRight: radius,
+                    topLeft: radius,
+                    bottomRight: radius,
+                    bottomLeft: radius,
+                  )),
+                  color: setTabColor(tabIndex),
+                ),
                 controller: _typeOfChartController,
                 isScrollable: true,
                 //For Selected tab
@@ -252,7 +255,7 @@ class _MainGeneralChartState extends State<MainGeneralChart>
             ),
           ),
         ),
-        SizedBox(height: 12),
+        SizedBox(height: 44),
         //Row for buttons
         whatTypeOfButtonsToPresent(selectedTypeOfCharts),
         SizedBox(height: 40),

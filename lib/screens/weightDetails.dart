@@ -38,13 +38,13 @@ class _WeightDetailsState extends State<WeightDetails> {
 
     //Two lists and for loop to get list without null values
     //To get non null temperature values
-    List<String> listWithNoEmptyRecordsTemperatureValues = [];
+    List<String> listWithNoEmptyRecordsWeightValues = [];
     //To get corresponding to non null temperature values Date values
     List<DateTime> listWithNoEmptyRecordsDateTimeValues = [];
     //Loop through the hParameter list and add to two new lists non null temperature values
     for (int i = 0; i < hParameterNotifier.hParameterList.length; i++) {
-      if (hParameterNotifier.hParameterList[i].temperature != null) {
-        listWithNoEmptyRecordsTemperatureValues.add(hParameterNotifier.hParameterList[i].temperature);
+      if (hParameterNotifier.hParameterList[i].weight != null) {
+        listWithNoEmptyRecordsWeightValues.add(hParameterNotifier.hParameterList[i].weight);
         listWithNoEmptyRecordsDateTimeValues.add(hParameterNotifier.hParameterList[i].createdAt.toDate());
       }
     }
@@ -55,25 +55,25 @@ class _WeightDetailsState extends State<WeightDetails> {
         DataColumn(
           label: Text(
             'Nr',
-            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold),
           ),
         ),
         DataColumn(
           label: Text(
             'Date',
-            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+            style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold),
           ),
         ),
         DataColumn(
           label: Text(
-            'Temperature value',
-            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+            'Weight value',
+            style: TextStyle(color: Colors.purple, fontWeight: FontWeight.bold),
           ),
         ),
       ],
       //rows data
       rows: List<DataRow>.generate(
-        listWithNoEmptyRecordsTemperatureValues.length,
+        listWithNoEmptyRecordsWeightValues.length,
         (index) => DataRow(
           cells: [
             DataCell(
@@ -84,7 +84,7 @@ class _WeightDetailsState extends State<WeightDetails> {
                   "${DateFormat.MMMd().add_jm().format(listWithNoEmptyRecordsDateTimeValues[index])}"),
             ),
             DataCell(
-              Text("${listWithNoEmptyRecordsTemperatureValues[index]}"),
+              Text("${listWithNoEmptyRecordsWeightValues[index]} kg"),
             ),
           ],
         ),
@@ -105,10 +105,10 @@ class _WeightDetailsState extends State<WeightDetails> {
             child: new Padding(
               padding: const EdgeInsets.fromLTRB(0, 24, 0, 32),
               child: Text(
-                'TEMPERATURE DETAILS',
+                'WEIGHT DETAILS',
                 style: TextStyle(
                   fontSize: 24,
-                  color: accentCustomColor,
+                  color: Colors.purple,
                 ),
               ),
             ),

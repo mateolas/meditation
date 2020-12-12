@@ -84,7 +84,7 @@ class _PulseDetailsState extends State<PulseDetails> {
                   "${DateFormat.MMMd().add_jm().format(listWithNoEmptyRecordsDateTimeValues[index])}"),
             ),
             DataCell(
-              Text("${listWithNoEmptyRecordsPulseValues[index]}"),
+              Text("${listWithNoEmptyRecordsPulseValues[index]} BPM"),
             ),
           ],
         ),

@@ -26,15 +26,7 @@ class PulseSetOfButtons extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Colors.red,
-                Colors.red[100]
-                ,
-              ],
-            ),
+            color: Colors.red,
           ),
           child: MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -51,14 +43,7 @@ class PulseSetOfButtons extends StatelessWidget {
           width: MediaQuery.of(context).size.width / 3.5,
           decoration: ShapeDecoration(
             shape: const StadiumBorder(),
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                    Colors.red,
-                Colors.red[100]
-              ],
-            ),
+            color: Colors.red,
           ),
           child: MaterialButton(
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

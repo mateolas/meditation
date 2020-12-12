@@ -48,7 +48,7 @@ class SaturationChartData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final spo2Formatter =
-        new charts.BasicNumericTickFormatterSpec((num value) => '$value SpO\u2082 %');
+        new charts.BasicNumericTickFormatterSpec((num value) => '$value% SpO\u2082');
 
     return Scaffold(
       body: new charts.TimeSeriesChart(
