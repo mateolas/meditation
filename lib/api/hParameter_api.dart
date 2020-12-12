@@ -107,7 +107,7 @@ getHParameters(HParameterNotifier hParameterNotifier) async {
 }
 
 
-uploadBill(Hparameter hParameter, Function billUploaded) async {
+uploadBill(Hparameter hParameter, Function hParameterUploaded) async {
   CollectionReference hParameterRef = Firestore.instance.collection('userData');
 
   hParameter.createdAt = Timestamp.now();
@@ -125,7 +125,7 @@ uploadBill(Hparameter hParameter, Function billUploaded) async {
 
   await documentRef.setData(hParameter.toMap(), merge: true);
 
-  billUploaded(hParameter);
+  hParameterUploaded(hParameter);
 }
 
 deleteBill(Hparameter bill, Function foodDeleted) async {

@@ -24,7 +24,7 @@ class SaturationChartData extends StatelessWidget {
   /// Creates a [TimeSeriesChart] with sample data and no transition.
   factory SaturationChartData.withSampleData(
       HParameterNotifier hParameterNotifier,
-      String temperatureDayWeekTypeOfView) {
+      String dayWeekTypeOfView) {
     //if list of hParameters is empty
     //draw an empty Chart
     if (hParameterNotifier.hParameterList.isEmpty) {
@@ -38,7 +38,7 @@ class SaturationChartData extends StatelessWidget {
     //draw chart based on data fetched from firebase (throught notifier)
     else {
       return new SaturationChartData(
-        _createSampleData(hParameterNotifier, temperatureDayWeekTypeOfView),
+        _createSampleData(hParameterNotifier, dayWeekTypeOfView),
         // Disable animations for image tests.
         animate: true,
       );
@@ -47,8 +47,8 @@ class SaturationChartData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final celsiusFormatter =
-        new charts.BasicNumericTickFormatterSpec((num value) => '$value SpO\u2082 % ');
+    final spo2Formatter =
+        new charts.BasicNumericTickFormatterSpec((num value) => '$value SpO\u2082 %');
 
     return Scaffold(
       body: new charts.TimeSeriesChart(
@@ -57,7 +57,7 @@ class SaturationChartData extends StatelessWidget {
             new charts.LineRendererConfig(includeArea: true, stacked: true),
         animate: animate,
         primaryMeasureAxis: new charts.NumericAxisSpec(
-          tickFormatterSpec: celsiusFormatter,
+          tickFormatterSpec: spo2Formatter,
           tickProviderSpec: new charts.StaticNumericTickProviderSpec(
             <charts.TickSpec<num>>[
               charts.TickSpec<num>(86),
@@ -92,7 +92,7 @@ class SaturationChartData extends StatelessWidget {
   }
 
   /// Create one series with data fetched through hParameterNotifier from Firebase.
-  static List<charts.Series<TimeSeriesTemperature, DateTime>> _createSampleData(
+  static List<charts.Series<TimeSeriesSaturation, DateTime>> _createSampleData(
       HParameterNotifier hParameterNotifier,
       String temperatureDayWeekTypeOfView) {
     var now = new DateTime.now();
@@ -141,54 +141,56 @@ class SaturationChartData extends StatelessWidget {
         break;
     }
 
-    //final data = <TimeSeriesTemperature>[];
-
-    final data = <TimeSeriesTemperature>[
+    //get data to present the chart
+    //loop through all list items where:
+    //- in proper "data frame" range
+    //- parameter is not empty
+    final data = <TimeSeriesSaturation>[
       //loop to get all the items from the hParameterList
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
         //check if it's last day, week or month
         if (timePeriod
-            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].temperature != null)
-          new TimeSeriesTemperature(
+            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].saturation != null)
+          new TimeSeriesSaturation(
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
-              double.parse(hParameterNotifier.hParameterList[i].temperature)),
+              double.parse(hParameterNotifier.hParameterList[i].saturation)),
     ];
 
     return [
-      new charts.Series<TimeSeriesTemperature, DateTime>(
-        id: 'Temperature',
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
-        measureFn: (TimeSeriesTemperature temperature, _) =>
-            temperature.temperature,
+      new charts.Series<TimeSeriesSaturation, DateTime>(
+        id: 'Saturation',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (TimeSeriesSaturation saturation, _) => saturation.time,
+        measureFn: (TimeSeriesSaturation saturation, _) =>
+            saturation.saturation,
         data: data,
       )
     ];
   }
 }
 
-List<charts.Series<TimeSeriesTemperature, DateTime>>
+List<charts.Series<TimeSeriesSaturation, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesTemperature(new DateTime.now(), 0),
+    new TimeSeriesSaturation(new DateTime.now(), 0),
   ];
 
   return [
-    new charts.Series<TimeSeriesTemperature, DateTime>(
-      id: 'Temperature',
-      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-      domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
-      measureFn: (TimeSeriesTemperature temperature, _) =>
-          temperature.temperature,
+    new charts.Series<TimeSeriesSaturation, DateTime>(
+      id: 'Saturation',
+      colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+      domainFn: (TimeSeriesSaturation saturation, _) => saturation.time,
+      measureFn: (TimeSeriesSaturation saturation, _) =>
+          saturation.saturation,
       data: data,
     )
   ];
 }
 
 /// Sample time series data type.
-class TimeSeriesTemperature {
+class TimeSeriesSaturation {
   final DateTime time;
-  final double temperature;
+  final double saturation;
 
-  TimeSeriesTemperature(this.time, this.temperature);
+  TimeSeriesSaturation(this.time, this.saturation);
 }

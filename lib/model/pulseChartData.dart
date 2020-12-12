@@ -141,8 +141,10 @@ class PressureChartData extends StatelessWidget {
         break;
     }
 
-    
-
+    //get data to present the chart
+    //loop through all list items where:
+    //- in proper "data frame" range
+    //- parameter is not empty
     final data = <TimeSeriesPulse>[
       //loop to get all the items from the hParameterList
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
