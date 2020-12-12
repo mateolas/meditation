@@ -11,6 +11,7 @@ import 'package:archive_your_bill/model/saturationChartData.dart';
 import 'package:archive_your_bill/model/pulseChartData.dart';
 import 'package:archive_your_bill/screens/addPulseParameter.dart';
 import 'package:archive_your_bill/screens/temperatureDetails.dart';
+import 'package:archive_your_bill/screens/pulseDetails.dart';
 import 'package:flutter/rendering.dart';
 
 class PulseSetOfButtons extends StatelessWidget {
@@ -68,7 +69,7 @@ class PulseSetOfButtons extends StatelessWidget {
                 context: context,
                 backgroundColor: Colors.white,
                 //AddParameter - custom Class to add parameter
-                builder: (context) => new TemperatureDetails()),
+                builder: (context) => new PulseDetails()),
           ),
         ),
       ],

@@ -48,7 +48,7 @@ class SaturationChartData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final celsiusFormatter =
-        new charts.BasicNumericTickFormatterSpec((num value) => '$value BPM ');
+        new charts.BasicNumericTickFormatterSpec((num value) => '$value SpO\u2082 % ');
 
     return Scaffold(
       body: new charts.TimeSeriesChart(
@@ -148,7 +148,7 @@ class SaturationChartData extends StatelessWidget {
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
         //check if it's last day, week or month
         if (timePeriod
-            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate()))
+            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].temperature != null)
           new TimeSeriesTemperature(
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
               double.parse(hParameterNotifier.hParameterList[i].temperature)),
