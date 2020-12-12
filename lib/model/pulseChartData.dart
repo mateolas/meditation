@@ -178,7 +178,7 @@ List<charts.Series<TimeSeriesPulse, DateTime>>
   return [
     new charts.Series<TimeSeriesPulse, DateTime>(
       id: 'Pulse',
-      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+      colorFn: (_, __) => charts.MaterialPalette.transparent,
       domainFn: (TimeSeriesPulse pulse, _) => pulse.time,
       measureFn: (TimeSeriesPulse pulse, _) =>
           pulse.pulse,

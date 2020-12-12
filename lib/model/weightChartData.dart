@@ -24,7 +24,7 @@ class WeightChartData extends StatelessWidget {
   /// Creates a [TimeSeriesChart] with sample data and no transition.
   factory WeightChartData.withSampleData(
       HParameterNotifier hParameterNotifier,
-      String temperatureDayWeekTypeOfView) {
+      String dayWeekTypeOfView) {
     //if list of hParameters is empty
     //draw an empty Chart
     if (hParameterNotifier.hParameterList.isEmpty) {
@@ -38,7 +38,7 @@ class WeightChartData extends StatelessWidget {
     //draw chart based on data fetched from firebase (throught notifier)
     else {
       return new WeightChartData(
-        _createSampleData(hParameterNotifier, temperatureDayWeekTypeOfView),
+        _createSampleData(hParameterNotifier, dayWeekTypeOfView),
         // Disable animations for image tests.
         animate: true,
       );
@@ -47,9 +47,8 @@ class WeightChartData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final celsiusFormatter =
-        new charts.BasicNumericTickFormatterSpec((num value) => '$value BPM ');
-
+    final kilogramFormatter =
+        new charts.BasicNumericTickFormatterSpec((num value) => '$value kg ');
     return Scaffold(
       body: new charts.TimeSeriesChart(
         seriesList,
@@ -57,19 +56,7 @@ class WeightChartData extends StatelessWidget {
             new charts.LineRendererConfig(includeArea: true, stacked: true),
         animate: animate,
         primaryMeasureAxis: new charts.NumericAxisSpec(
-          tickFormatterSpec: celsiusFormatter,
-          tickProviderSpec: new charts.StaticNumericTickProviderSpec(
-            <charts.TickSpec<num>>[
-              charts.TickSpec<num>(86),
-              charts.TickSpec<num>(88),
-              charts.TickSpec<num>(90),
-              charts.TickSpec<num>(92),
-              charts.TickSpec<num>(94),
-              charts.TickSpec<num>(96),
-              charts.TickSpec<num>(98),
-              charts.TickSpec<num>(100),
-            ],
-          ),
+          tickFormatterSpec: kilogramFormatter,
         ),
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         behaviors: [
@@ -92,7 +79,7 @@ class WeightChartData extends StatelessWidget {
   }
 
   /// Create one series with data fetched through hParameterNotifier from Firebase.
-  static List<charts.Series<TimeSeriesTemperature, DateTime>> _createSampleData(
+  static List<charts.Series<TimeSeriesWeight, DateTime>> _createSampleData(
       HParameterNotifier hParameterNotifier,
       String temperatureDayWeekTypeOfView) {
     var now = new DateTime.now();
@@ -141,54 +128,56 @@ class WeightChartData extends StatelessWidget {
         break;
     }
 
-    //final data = <TimeSeriesTemperature>[];
-
-    final data = <TimeSeriesTemperature>[
+    //get data to present the chart
+    //loop through all list items where:
+    //- in proper "data frame" range
+    //- parameter is not empty
+    final data = <TimeSeriesWeight>[
       //loop to get all the items from the hParameterList
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
-        //check if it's last day, week or month
+        //check if it's last day, week or month and the parameter is not null
         if (timePeriod
-            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].temperature != null)
-          new TimeSeriesTemperature(
+            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].weight != null)
+          new TimeSeriesWeight(
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
-              double.parse(hParameterNotifier.hParameterList[i].temperature)),
+              double.parse(hParameterNotifier.hParameterList[i].weight)),
     ];
 
     return [
-      new charts.Series<TimeSeriesTemperature, DateTime>(
-        id: 'Temperature',
-        colorFn: (_, __) => charts.MaterialPalette.red.shadeDefault,
-        domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
-        measureFn: (TimeSeriesTemperature temperature, _) =>
-            temperature.temperature,
+      new charts.Series<TimeSeriesWeight, DateTime>(
+        id: 'Weight',
+        colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
+        domainFn: (TimeSeriesWeight weight, _) => weight.time,
+        measureFn: (TimeSeriesWeight weight, _) =>
+            weight.weight,
         data: data,
       )
     ];
   }
 }
 
-List<charts.Series<TimeSeriesTemperature, DateTime>>
+List<charts.Series<TimeSeriesWeight, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesTemperature(new DateTime.now(), 0),
+    new TimeSeriesWeight(new DateTime.now(), 0),
   ];
 
   return [
-    new charts.Series<TimeSeriesTemperature, DateTime>(
-      id: 'Temperature',
-      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-      domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
-      measureFn: (TimeSeriesTemperature temperature, _) =>
-          temperature.temperature,
+    new charts.Series<TimeSeriesWeight, DateTime>(
+      id: 'Weight',
+      colorFn: (_, __) => charts.MaterialPalette.transparent,
+      domainFn: (TimeSeriesWeight weight, _) => weight.time,
+      measureFn: (TimeSeriesWeight weight, _) =>
+          weight.weight,
       data: data,
     )
   ];
 }
 
 /// Sample time series data type.
-class TimeSeriesTemperature {
+class TimeSeriesWeight {
   final DateTime time;
-  final double temperature;
+  final double weight;
 
-  TimeSeriesTemperature(this.time, this.temperature);
+  TimeSeriesWeight(this.time, this.weight);
 }

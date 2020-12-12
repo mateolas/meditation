@@ -178,7 +178,7 @@ List<charts.Series<TimeSeriesTemperature, DateTime>>
   return [
     new charts.Series<TimeSeriesTemperature, DateTime>(
       id: 'Temperature',
-      colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+      colorFn: (_, __) => charts.MaterialPalette.transparent,
       domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
       measureFn: (TimeSeriesTemperature temperature, _) =>
           temperature.temperature,
@@ -186,31 +186,6 @@ List<charts.Series<TimeSeriesTemperature, DateTime>>
     )
   ];
 }
-
-// class CustomCircleSymbolRenderer extends CircleSymbolRenderer {
-//   static String value;
-//   @override
-//   void paint(ChartCanvas canvas, Rectangle<num> bounds,
-//       {List<int> dashPattern,
-//       Color fillColor,
-//       Color strokeColor,
-//       double strokeWidthPx}) {
-//     super.paint(canvas, bounds,
-//         dashPattern: dashPattern,
-//         fillColor: fillColor,
-//         strokeColor: strokeColor,
-//         strokeWidthPx: strokeWidthPx);
-//     canvas.drawRect(
-//         Rectangle(bounds.left - 5, bounds.top - 30, bounds.width + 10,
-//             bounds.height + 10),
-//         fill: Color.white);
-//     var textStyle = style.TextStyle();
-//     textStyle.color = Color.black;
-//     textStyle.fontSize = 15;
-//     canvas.drawText(TextElement("$value", style: textStyle),
-//         (bounds.left).round(), (bounds.top - 28).round());
-//   }
-// }
 
 /// Sample time series data type.
 class TimeSeriesTemperature {

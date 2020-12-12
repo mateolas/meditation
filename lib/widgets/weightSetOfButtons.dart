@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:archive_your_bill/api/hParameter_api.dart';
-import 'package:archive_your_bill/model/colors.dart';
-import 'package:archive_your_bill/model/hParameter.dart';
-import 'package:archive_your_bill/notifier/bill_notifier.dart';
-import 'package:provider/provider.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'package:archive_your_bill/model/temperatureChartData.dart';
-import 'package:archive_your_bill/model/weightChartData.dart';
-import 'package:archive_your_bill/model/saturationChartData.dart';
-import 'package:archive_your_bill/model/pulseChartData.dart';
-import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
-import 'package:archive_your_bill/screens/temperatureDetails.dart';
+import 'package:archive_your_bill/screens/addWeightParameter.dart';
+import 'package:archive_your_bill/screens/weightDetails.dart';
 import 'package:flutter/rendering.dart';
 
 class WeightSetOfButtons extends StatelessWidget {
@@ -42,7 +32,7 @@ class WeightSetOfButtons extends StatelessWidget {
             onPressed: () => showModalBottomSheet<void>(
                 context: context,
                 backgroundColor: Colors.white,
-                builder: (context) => new AddTemperatureParameter()),
+                builder: (context) => new AddWeightParameter()),
           ),
         ),
         Container(
@@ -67,7 +57,7 @@ class WeightSetOfButtons extends StatelessWidget {
                 context: context,
                 backgroundColor: Colors.white,
                 //AddParameter - custom Class to add parameter
-                builder: (context) => new TemperatureDetails()),
+                builder: (context) => new WeightDetails()),
           ),
         ),
       ],

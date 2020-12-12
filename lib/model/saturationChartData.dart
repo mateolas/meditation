@@ -178,7 +178,7 @@ List<charts.Series<TimeSeriesSaturation, DateTime>>
   return [
     new charts.Series<TimeSeriesSaturation, DateTime>(
       id: 'Saturation',
-      colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+      colorFn: (_, __) => charts.MaterialPalette.transparent,
       domainFn: (TimeSeriesSaturation saturation, _) => saturation.time,
       measureFn: (TimeSeriesSaturation saturation, _) =>
           saturation.saturation,
