@@ -17,6 +17,9 @@ import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
 import 'package:archive_your_bill/screens/temperatureDetails.dart';
 import 'package:flutter/rendering.dart';
 
+import 'package:flutter/services.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+
 class MainGeneralChart extends StatefulWidget {
   MainGeneralChart();
 

@@ -50,6 +50,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.3.1"
+  camera:
+    dependency: "direct main"
+    description:
+      name: camera
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.8+17"
+  camerakit:
+    dependency: "direct main"
+    description:
+      name: camerakit
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.68"
   characters:
     dependency: transitive
     description:
@@ -286,6 +300,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.8.1"
+  flutter_native_timezone:
+    dependency: "direct main"
+    description:
+      name: flutter_native_timezone
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.4"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:
@@ -707,6 +728,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.2"
+  visibility_detector:
+    dependency: transitive
+    description:
+      name: visibility_detector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.5"
+  wakelock:
+    dependency: "direct main"
+    description:
+      name: wakelock
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.4+2"
   win32:
     dependency: transitive
     description:
