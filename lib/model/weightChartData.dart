@@ -1,17 +1,10 @@
-import 'package:archive_your_bill/model/colors.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
-import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
-import 'package:archive_your_bill/api/hParameter_api.dart';
 
-import 'dart:math';
-
-import 'package:flutter/material.dart';
 import 'package:charts_flutter/flutter.dart';
-import 'package:charts_flutter/src/text_element.dart';
-import 'package:charts_flutter/src/text_style.dart' as style;
+
 
 class WeightChartData extends StatelessWidget {
   final List<charts.Series> seriesList;

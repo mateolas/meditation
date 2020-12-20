@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:archive_your_bill/api/hParameter_api.dart';
 import 'package:archive_your_bill/model/colors.dart';
-import 'package:archive_your_bill/model/hParameter.dart';
+
 import 'package:archive_your_bill/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
-import 'package:numberpicker/numberpicker.dart';
+
 import 'package:archive_your_bill/model/temperatureChartData.dart';
 import 'package:archive_your_bill/model/weightChartData.dart';
 import 'package:archive_your_bill/model/saturationChartData.dart';
@@ -13,12 +13,10 @@ import 'package:archive_your_bill/widgets/temperatureSetOfButtons.dart';
 import 'package:archive_your_bill/widgets/saturationSetOfButtons.dart';
 import 'package:archive_your_bill/widgets/weightSetOfButtons.dart';
 import 'package:archive_your_bill/widgets/pulseSetOfButtons.dart';
-import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
-import 'package:archive_your_bill/screens/temperatureDetails.dart';
+
 import 'package:flutter/rendering.dart';
 
-import 'package:flutter/services.dart';
-import 'package:flutter_native_timezone/flutter_native_timezone.dart';
+
 
 class MainGeneralChart extends StatefulWidget {
   MainGeneralChart();
@@ -57,8 +55,6 @@ class _MainGeneralChartState extends State<MainGeneralChart>
 
   //Controller for types of chart
   TabController _typeOfChartController;
-  //variable to have different colors on tab bar
-  Color _activeColor;
   int tabIndex = 0;
 
   //calling initState function to initialize _currentHparameter

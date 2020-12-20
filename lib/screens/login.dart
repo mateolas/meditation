@@ -5,6 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
+//TODO: Login with Google
+
+//TODO: Prepare the icon
+
+//TODO: Prepare first screen
+
 enum AuthMode { Signup, Login }
 
 class Login extends StatefulWidget {

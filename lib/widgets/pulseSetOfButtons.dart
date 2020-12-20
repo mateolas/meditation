@@ -1,14 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:archive_your_bill/api/hParameter_api.dart';
-import 'package:archive_your_bill/model/colors.dart';
-import 'package:archive_your_bill/model/hParameter.dart';
-import 'package:archive_your_bill/notifier/bill_notifier.dart';
-import 'package:provider/provider.dart';
-import 'package:numberpicker/numberpicker.dart';
-import 'package:archive_your_bill/model/temperatureChartData.dart';
-import 'package:archive_your_bill/model/weightChartData.dart';
-import 'package:archive_your_bill/model/saturationChartData.dart';
-import 'package:archive_your_bill/model/pulseChartData.dart';
 import 'package:archive_your_bill/screens/addPulseParameter.dart';
 import 'package:archive_your_bill/screens/PulseMeasurementMainPage.dart';
 import 'package:archive_your_bill/screens/pulseDetails.dart';

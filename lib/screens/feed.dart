@@ -14,9 +14,7 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
-  //Controller for bottom tab (temp, saturation etc.)
-  TabController _bottomTabcontroller;
-
+  
   //Name of screens to present for TabBar
   List bottomTabScreensNames = [
     'All',

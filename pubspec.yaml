@@ -44,7 +44,7 @@ dependencies:
   flutter_native_timezone: ^1.0.4
   wakelock: ^0.1.4+1
   camera:
-  camerakit: ^0.0.68
+  camerakit: ^0.0.71
  
 
 

@@ -63,7 +63,7 @@ packages:
       name: camerakit
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.68"
+    version: "0.0.71"
   characters:
     dependency: transitive
     description:
