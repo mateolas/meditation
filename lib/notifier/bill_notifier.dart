@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:archive_your_bill/model/hParameter.dart';
+import 'package:health_parameters_tracker/model/hParameter.dart';
 
 //TO-DO: Last day, week, 
 //https://stackoverflow.com/questions/61949626/flutter-filter-list-based-on-last-week-last-month-and-last-year

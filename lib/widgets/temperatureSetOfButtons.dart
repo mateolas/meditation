@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:archive_your_bill/model/colors.dart';
+import 'package:health_parameters_tracker/model/colors.dart';
 
-import 'package:archive_your_bill/screens/addTemperatureParameter.dart';
-import 'package:archive_your_bill/screens/temperatureDetails.dart';
+import 'package:health_parameters_tracker/screens/addTemperatureParameter.dart';
+import 'package:health_parameters_tracker/screens/temperatureDetails.dart';
 import 'package:flutter/rendering.dart';
 
 class TemperatureSetOfButtons extends StatelessWidget {

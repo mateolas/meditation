@@ -1,15 +1,12 @@
-import 'package:archive_your_bill/api/hParameter_api.dart';
-import 'package:archive_your_bill/model/user.dart';
-import 'package:archive_your_bill/notifier/auth_notifier.dart';
+import 'package:health_parameters_tracker/api/hParameter_api.dart';
+import 'package:health_parameters_tracker/model/user.dart';
+import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
-//TODO: Login with Google
+import 'package:google_sign_in/google_sign_in.dart';
 
-//TODO: Prepare the icon
-
-//TODO: Prepare first screen
 
 enum AuthMode { Signup, Login }
 
@@ -116,6 +113,38 @@ class _LoginState extends State<Login> {
         ),
         SizedBox(height: 16.0),
       ],
+    );
+  }
+
+
+  Widget _signInGoogleButton() {
+    return OutlineButton(
+      splashColor: Colors.grey,
+      color: Colors.white,
+      onPressed: () {},
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+      highlightElevation: 0,
+      borderSide: BorderSide(color: Colors.grey),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            //Image(image: AssetImage("assets/images/google_logo.png"), height: 25.0),
+            Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                'Sign in with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.grey,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -392,6 +421,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                         SizedBox(height: 20),
+                        _signInGoogleButton(),
                         ButtonTheme(
                           minWidth: 200,
                           child: FlatButton(

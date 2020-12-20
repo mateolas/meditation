@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:archive_your_bill/screens/addPulseParameter.dart';
-import 'package:archive_your_bill/screens/PulseMeasurementMainPage.dart';
-import 'package:archive_your_bill/screens/pulseDetails.dart';
+import 'package:health_parameters_tracker/screens/addPulseParameter.dart';
+//import 'package:health_parameters_tracker/screens/PulseMeasurementMainPage.dart';
+import 'package:health_parameters_tracker/screens/pulseDetails.dart';
 import 'package:flutter/rendering.dart';
 
 class PulseSetOfButtons extends StatelessWidget {
@@ -62,20 +62,21 @@ class PulseSetOfButtons extends StatelessWidget {
                   shape: const StadiumBorder(),
                   color: Colors.white,
                 ),
-                child: OutlineButton(
-                    disabledBorderColor: Colors.red,
-                    borderSide: BorderSide(color: Colors.red),
-                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    shape: const StadiumBorder(),
-                    child: Text('MEASURE',
-                        style: TextStyle(fontSize: 14, color: Colors.red)),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PulseMeasurementMainPage()),
-                      );
-                    }),
+                //TODO: Work with pulse measurement
+                // child: OutlineButton(
+                //     disabledBorderColor: Colors.red,
+                //     borderSide: BorderSide(color: Colors.red),
+                //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                //     shape: const StadiumBorder(),
+                //     child: Text('MEASURE',
+                //         style: TextStyle(fontSize: 14, color: Colors.red)),
+                //     onPressed: () {
+                //       Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => PulseMeasurementMainPage()),
+                //       );
+                //     }),
               ),
             ),
           ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:archive_your_bill/screens/addWeightParameter.dart';
-import 'package:archive_your_bill/screens/weightDetails.dart';
+import 'package:health_parameters_tracker/screens/addWeightParameter.dart';
+import 'package:health_parameters_tracker/screens/weightDetails.dart';
 import 'package:flutter/rendering.dart';
 
 class WeightSetOfButtons extends StatelessWidget {

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:archive_your_bill/api/hParameter_api.dart';
-import 'package:archive_your_bill/model/colors.dart';
+import 'package:health_parameters_tracker/api/hParameter_api.dart';
+import 'package:health_parameters_tracker/model/colors.dart';
 
-import 'package:archive_your_bill/notifier/bill_notifier.dart';
+import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 
-import 'package:archive_your_bill/model/temperatureChartData.dart';
-import 'package:archive_your_bill/model/weightChartData.dart';
-import 'package:archive_your_bill/model/saturationChartData.dart';
-import 'package:archive_your_bill/model/pulseChartData.dart';
-import 'package:archive_your_bill/widgets/temperatureSetOfButtons.dart';
-import 'package:archive_your_bill/widgets/saturationSetOfButtons.dart';
-import 'package:archive_your_bill/widgets/weightSetOfButtons.dart';
-import 'package:archive_your_bill/widgets/pulseSetOfButtons.dart';
+import 'package:health_parameters_tracker/model/temperatureChartData.dart';
+import 'package:health_parameters_tracker/model/weightChartData.dart';
+import 'package:health_parameters_tracker/model/saturationChartData.dart';
+import 'package:health_parameters_tracker/model/pulseChartData.dart';
+import 'package:health_parameters_tracker/widgets/temperatureSetOfButtons.dart';
+import 'package:health_parameters_tracker/widgets/saturationSetOfButtons.dart';
+import 'package:health_parameters_tracker/widgets/weightSetOfButtons.dart';
+import 'package:health_parameters_tracker/widgets/pulseSetOfButtons.dart';
 
 import 'package:flutter/rendering.dart';
 

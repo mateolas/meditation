@@ -1,7 +1,7 @@
-import 'package:archive_your_bill/api/hParameter_api.dart';
-import 'package:archive_your_bill/notifier/auth_notifier.dart';
-import 'package:archive_your_bill/notifier/bill_notifier.dart';
-import 'package:archive_your_bill/widgets/generalChart.dart';
+import 'package:health_parameters_tracker/api/hParameter_api.dart';
+import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
+import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
+import 'package:health_parameters_tracker/widgets/generalChart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/rendering.dart';

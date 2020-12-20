@@ -1,4 +1,4 @@
-name: archive_your_bill
+name: health_parameters_tracker
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -45,6 +45,7 @@ dependencies:
   wakelock: ^0.1.4+1
   camera:
   camerakit: ^0.0.71
+  google_sign_in: ^4.5.6
  
 
 
@@ -78,6 +79,7 @@ flutter:
     - lib/assets/images/logo.png
     - lib/assets/images/arrow.png
     - lib/assets/images/empty box.png
+    - lib/assets/images/google_logo.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

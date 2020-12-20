@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:archive_your_bill/api/hParameter_api.dart';
-import 'package:archive_your_bill/model/colors.dart';
-import 'package:archive_your_bill/notifier/bill_notifier.dart';
+import 'package:health_parameters_tracker/api/hParameter_api.dart';
+import 'package:health_parameters_tracker/model/colors.dart';
+import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:intl/intl.dart';
