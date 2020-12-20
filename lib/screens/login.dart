@@ -4,9 +4,9 @@ import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
+import 'package:health_parameters_tracker/screens/feed.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
-
 
 enum AuthMode { Signup, Login }
 
@@ -116,12 +116,18 @@ class _LoginState extends State<Login> {
     );
   }
 
-
   Widget _signInGoogleButton() {
+    AuthNotifier authNotifier =
+        Provider.of<AuthNotifier>(context, listen: false);
+
     return OutlineButton(
       splashColor: Colors.grey,
       color: Colors.white,
-      onPressed: () {},
+      onPressed: () {
+        signInWithGoogle(authNotifier);
+          
+      
+      },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
       borderSide: BorderSide(color: Colors.grey),
@@ -412,7 +418,7 @@ class _LoginState extends State<Login> {
                                     : 'SIGNUP',
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color:  Color(0xffa8e063),
+                                  color: Color(0xffa8e063),
                                   letterSpacing: 1.5,
                                   fontWeight: FontWeight.bold,
                                 ),

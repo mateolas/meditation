@@ -48,7 +48,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         Provider.of<HParameterNotifier>(context);
 
     print("1 Building Feed");
-    print('2 Authnotifier ${authNotifier.user.displayName}');
+    //print('2 Authnotifier ${authNotifier.user.displayName}');
     print(
         "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
 
@@ -80,7 +80,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           actions: <Widget>[
             // action button - logout
             FlatButton(
-              onPressed: () => signout(authNotifier),
+              onPressed: () => signOutGoogle(authNotifier),
               child: Icon(
                 Icons.exit_to_app,
                 color: Colors.white,

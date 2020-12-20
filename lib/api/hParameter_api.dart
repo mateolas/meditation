@@ -4,11 +4,55 @@ import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 
 //
 //######### AUTHORIZATION #########
 //
+
+
+
+ final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+
+  Future<String> signInWithGoogle(AuthNotifier authNotifier) async {
+  final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
+  final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
+
+  final AuthCredential credential = GoogleAuthProvider.getCredential(
+    accessToken: googleSignInAuthentication.accessToken,
+    idToken: googleSignInAuthentication.idToken,
+  );
+
+  final AuthResult authResult = await _auth.signInWithCredential(credential);
+  final FirebaseUser user = authResult.user;
+
+  assert(!user.isAnonymous);
+  assert(await user.getIdToken() != null);
+
+  final FirebaseUser currentUser = await _auth.currentUser();
+  assert(user.uid == currentUser.uid);
+
+     if (user != null) {
+  authNotifier.setUser(user);
+  print("'signInWithGoogle succeeded: $user'");
+     }
+
+  return 'signInWithGoogle succeeded: $user';
+}
+
+void signOutGoogle(AuthNotifier authNotifier) async {
+  await googleSignIn.signOut();
+
+    await FirebaseAuth.instance
+      .signOut()
+      .catchError((error) => print(error.code));
+
+  authNotifier.setUser(null);
+
+  print("User Sign Out");
+}
 
 login(User user, AuthNotifier authNotifier) async {
   AuthResult authResult = await FirebaseAuth.instance
@@ -76,14 +120,10 @@ Future<String> getCurrentUID() async {
 //#################################
 //
 
-
 getHParameters(HParameterNotifier hParameterNotifier) async {
- 
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
   //DocumentReference documentRef = await Firestore.instance.collection('userData').document(firebaseUser.uid).collection('bills').add(food.toMap());
-
-  
 
   QuerySnapshot snapshot = await Firestore.instance
       .collection('userData')
@@ -102,13 +142,13 @@ getHParameters(HParameterNotifier hParameterNotifier) async {
   hParameterNotifier.hParameterList = _hParametersList;
 }
 
-
 uploadBill(Hparameter hParameter, Function hParameterUploaded) async {
   CollectionReference hParameterRef = Firestore.instance.collection('userData');
 
   hParameter.createdAt = Timestamp.now();
 
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+  print("FirebaseUser $firebaseUser");
 
   DocumentReference documentRef = await hParameterRef
       .document(firebaseUser.uid)
