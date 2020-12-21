@@ -22,9 +22,7 @@ void main() => runApp(MultiProvider(
     ));
 
 
-
 class MyApp extends StatelessWidget {
-
 
   @override
   Widget build(BuildContext context) {

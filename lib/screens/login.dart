@@ -24,6 +24,37 @@ class _LoginState extends State<Login> {
 
   User _user = User();
 
+  final kBoxDecorationStyle = BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.topRight,
+      colors: [
+        Colors.green[200],
+        Colors.green[200],
+      ],
+    ),
+    borderRadius: BorderRadius.circular(10.0),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black12,
+        blurRadius: 6.0,
+        offset: Offset(0, 2),
+      ),
+    ],
+  );
+
+  final kHintTextStyle = TextStyle(
+    color: Colors.white54,
+    fontFamily: 'Calibri',
+    fontSize: 20,
+  );
+
+  final kLabelStyle = TextStyle(
+    color: Colors.white,
+    fontFamily: 'Calibri',
+    fontSize: 20,
+  );
+
   @override
   void initState() {
     AuthNotifier authNotifier =
@@ -120,70 +151,108 @@ class _LoginState extends State<Login> {
     AuthNotifier authNotifier =
         Provider.of<AuthNotifier>(context, listen: false);
 
-    return OutlineButton(
-      splashColor: Colors.grey,
-      color: Colors.white,
-      onPressed: () {
-        signInWithGoogle(authNotifier);
-          
-      
-      },
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-      highlightElevation: 0,
-      borderSide: BorderSide(color: Colors.grey),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            //Image(image: AssetImage("assets/images/google_logo.png"), height: 25.0),
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Text(
-                'Sign in with Google',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.grey,
+    return ButtonTheme(
+      //minWidth: 200,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(0, 12, 0, 32),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          color: Colors.white,
+          padding: EdgeInsets.all(15.0),
+          onPressed: () => signInWithGoogle(authNotifier),
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image(
+                width: 24,
+                height: 24,
+                image: AssetImage(
+                  'lib/assets/images/google_logo.png',
                 ),
               ),
-            )
-          ],
+              Text(
+                '  Signup with Google',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color(0xffa8e063),
+                  letterSpacing: 1.5,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    // return OutlineButton(
+    //   splashColor: Colors.white,
+    //   color: Colors.white,
+    //   onPressed: () {
+    //     signInWithGoogle(authNotifier);
+    //   },
+    //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+    //   highlightElevation: 0,
+    //   borderSide: BorderSide(color: Colors.white),
+    //   child: Padding(
+    //     padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+    //     child: Row(
+    //       mainAxisSize: MainAxisSize.max,
+    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       children: <Widget>[
+    //         Image(
+    //           width: 14,
+    //           height: 14,
+    //           image: AssetImage('lib/assets/images/google_logo.png',),
+    //         ),
+    //         Padding(
+    //           padding: const EdgeInsets.all(0),
+    //           child: Text(
+    //             'Sign in with Google',
+    //             style: TextStyle(
+    //               fontSize: 20,
+    //               color: Colors.green,
+    //             ),
+    //           ),
+    //         )
+    //       ],
+    //     ),
+    //   ),
+    // );
+  }
+
+  Widget _buildLoginButton() {
+    return ButtonTheme(
+      //minWidth: 200,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30.0),
+      ),
+      child: Container(
+        padding: EdgeInsets.fromLTRB(0, 72, 0, 12),
+        width: double.infinity,
+        child: RaisedButton(
+          elevation: 5.0,
+          color: Colors.white,
+          padding: EdgeInsets.all(15.0),
+          onPressed: () => _submitForm(),
+          child: Text(
+            _authMode == AuthMode.Login ? 'LOGIN' : 'SIGNUP',
+            style: TextStyle(
+              fontSize: 20,
+              color: Color(0xffa8e063),
+              letterSpacing: 1.5,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );
   }
-
-  final kBoxDecorationStyle = BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.topLeft,
-      end: Alignment.topRight,
-      colors: [
-        Colors.green[200],
-        Colors.green[200],
-      ],
-    ),
-    borderRadius: BorderRadius.circular(10.0),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.black12,
-        blurRadius: 6.0,
-        offset: Offset(0, 2),
-      ),
-    ],
-  );
-
-  final kHintTextStyle = TextStyle(
-    color: Colors.white54,
-    fontFamily: 'Calibri',
-    fontSize: 20,
-  );
-
-  final kLabelStyle = TextStyle(
-    color: Colors.white,
-    fontFamily: 'Calibri',
-    fontSize: 20,
-  );
 
   Widget _buildEmailField() {
     return Column(
@@ -341,7 +410,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     print("Building login screen");
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -389,7 +457,7 @@ class _LoginState extends State<Login> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 72),
+                        SizedBox(height: 48),
                         _authMode == AuthMode.Signup
                             ? _buildDisplayNameField()
                             : Container(),
@@ -398,35 +466,17 @@ class _LoginState extends State<Login> {
                         _authMode == AuthMode.Signup
                             ? _buildConfirmPasswordField()
                             : Container(),
-                        SizedBox(height: 32),
-                        ButtonTheme(
-                          //minWidth: 200,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                          ),
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(0, 92, 0, 12),
-                            width: double.infinity,
-                            child: RaisedButton(
-                              elevation: 5.0,
-                              color: Colors.white,
-                              padding: EdgeInsets.all(15.0),
-                              onPressed: () => _submitForm(),
-                              child: Text(
-                                _authMode == AuthMode.Login
-                                    ? 'LOGIN'
-                                    : 'SIGNUP',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color(0xffa8e063),
-                                  letterSpacing: 1.5,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
+                        SizedBox(height: 12),
+                        _buildLoginButton(),
+                        Text(
+                          'or',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(height: 20),
                         _signInGoogleButton(),
                         ButtonTheme(
                           minWidth: 200,
