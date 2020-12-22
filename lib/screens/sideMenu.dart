@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:health_parameters_tracker/screens/aboutScreen.dart';
+import 'package:health_parameters_tracker/screens/feedbackScreen.dart';
+import 'package:health_parameters_tracker/screens/settingsScreen.dart';
+import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
+import 'package:health_parameters_tracker/api/hParameter_api.dart';
+import 'package:provider/provider.dart';
 
 class SideMenu extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -50,27 +58,42 @@ class SideMenu extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.input),
             title: Text('Welcome'),
-            onTap: () => {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AboutScreen()),
+              );
+            },
           ),
-          ListTile(
-            leading: Icon(Icons.verified_user),
-            title: Text('Profile'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
+          // ListTile(
+          //   leading: Icon(Icons.verified_user),
+          //   title: Text('Profile'),
+          //   onTap: () => {Navigator.of(context).pop()},
+          // ),
           ListTile(
             leading: Icon(Icons.settings),
             title: Text('Settings'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsScreen()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.border_color),
             title: Text('Feedback'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => FeedbackScreen()),
+              );
+            },
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => signOutGoogle(authNotifier),
           ),
         ],
       ),
