@@ -2,6 +2,7 @@ import 'package:health_parameters_tracker/api/hParameter_api.dart';
 import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:health_parameters_tracker/widgets/generalChart.dart';
+import 'package:health_parameters_tracker/screens/sideMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/rendering.dart';
@@ -23,7 +24,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Saturation',
     'Weight',
   ];
-
+  
   @override
   void initState() {
     //initializing notifier to fetch data from firebase
@@ -52,14 +53,16 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     print(
         "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
 
-    return Container(
-      height: double.infinity,
-      width: double.infinity,
-      child: Scaffold(
+    return 
+       Scaffold(
+        drawer: SideMenu(),
+        
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         appBar: AppBar(
-          automaticallyImplyLeading: false, // hides default back button
+          iconTheme: IconThemeData(color: Colors.white),
+
+          automaticallyImplyLeading: true, // hides default back button
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -100,34 +103,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
             ],
           ),
         ),
-        // bottomNavigationBar: new Column(
-        //   mainAxisSize: MainAxisSize.min,
-        //   crossAxisAlignment: CrossAxisAlignment.stretch,
-        //   children: [
-        //     DefaultTabController(
-        //       length: bottomTabScreensNames.length,
-        //       child: new AnimatedCrossFade(
-        //         firstChild: new Material(
-        //           color: Theme.of(context).primaryColor,
-        //           child: new TabBar(
-        //             controller: _bottomTabcontroller,
-        //             isScrollable: true,
-        //             tabs: new List.generate(bottomTabScreensNames.length,
-        //                 (index) {
-        //               return new Tab(
-        //                 text: bottomTabScreensNames[index].toUpperCase(),
-        //               );
-        //             }),
-        //           ),
-        //         ),
-        //         secondChild: new Container(),
-        //         crossFadeState: CrossFadeState.showFirst,
-        //         duration: const Duration(milliseconds: 300),
-        //       ),
-        //     ),
-        //   ],
-        // ),
-      ),
+      
     );
   }
 }
