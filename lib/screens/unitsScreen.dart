@@ -16,8 +16,10 @@
 // Requires one of its ancestors to be a [Material] widget.
 
 import 'package:flutter/material.dart';
+import 'package:health_parameters_tracker/notifier/units_notifier.dart';
+import 'package:provider/provider.dart';
 
-enum SingingCharacter { lafayette, jefferson }
+enum TemperatureUnits { celsius, fahrenheit }
 
 /// This is the stateful widget that the main application instantiates.
 class UnitsScreen extends StatefulWidget {
@@ -30,9 +32,23 @@ class UnitsScreen extends StatefulWidget {
 }
 
 class _UnitsScreenState extends State<UnitsScreen> {
-  SingingCharacter _character = SingingCharacter.lafayette;
+  TemperatureUnits _temperatureUnits; 
+
+
+
+  @override
+  void initState() {
+    
+    //initializing notifier to fetch data from firebase
+    UnitsNotifier unitsNotifier =
+        Provider.of<UnitsNotifier>(context, listen: false);
+    super.initState();
+  }
 
   Widget build(BuildContext context) {
+    UnitsNotifier unitsNotifier =
+        Provider.of<UnitsNotifier>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -54,31 +70,95 @@ class _UnitsScreenState extends State<UnitsScreen> {
         ),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Container(
+            padding: EdgeInsets.fromLTRB(24, 12, 0, 0),
+            child: Text(
+              'Temperature units:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
           ListTile(
-            title: const Text('Lafayette'),
+            title:
+                const Text('Celsius (\u2103)', style: TextStyle(fontSize: 16)),
             leading: Radio(
-              value: SingingCharacter.lafayette,
-              groupValue: _character,
-              onChanged: (SingingCharacter value) {
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              value: unitsNotifier.getIsCelsius,
+              groupValue: _temperatureUnits,
+              onChanged: (value) {
                 setState(() {
-                  _character = value;
+                    UnitsNotifier unitsNotifier =
+                      Provider.of<UnitsNotifier>(context, listen: false);
+                   unitsNotifier.setTemperatureUnitToCelsius(value);
+                  _temperatureUnits = value;
+                
+                 
+                  print('Celsis boolean: ${unitsNotifier.getIsCelsius}');
+                  print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
                 });
               },
             ),
           ),
           ListTile(
-            title: const Text('Thomas Jefferson'),
+            title: const Text('Fahrenheit (\u2109)'),
             leading: Radio(
-              value: SingingCharacter.jefferson,
-              groupValue: _character,
-              onChanged: (SingingCharacter value) {
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              value: unitsNotifier.getIsFahrenheit,
+              groupValue: _temperatureUnits,
+              onChanged: (value) {
                 setState(() {
-                  _character = value;
+                
+                  UnitsNotifier unitsNotifier =
+                      Provider.of<UnitsNotifier>(context, listen: false);
+                  unitsNotifier.setTemperatureUnitToFahrenheit(value);
+                   _temperatureUnits = value;
+                  print('Celsis boolean: ${unitsNotifier.getIsCelsius}');
+                  print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
                 });
               },
             ),
           ),
+          Divider(),
+          // Container(
+          //   padding: EdgeInsets.fromLTRB(24, 12, 0, 0),
+          //   child: Text(
+          //     'Weight units:',
+          //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          //   ),
+          // ),
+          // ListTile(
+          //   title: const Text('Kilograms (kg)', style: TextStyle(fontSize: 16)),
+          //   leading: Radio(
+          //     visualDensity: VisualDensity.compact,
+          //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          //     value: TemperatureUnits.celsius,
+          //     groupValue: _temperatureUnits,
+          //     onChanged: (TemperatureUnits value) {
+          //       setState(() {
+          //         _temperatureUnits = value;
+          //       });
+          //     },
+          //   ),
+          // ),
+          // ListTile(
+          //   title: const Text('Pounds (lbs)'),
+          //   leading: Radio(
+          //     visualDensity: VisualDensity.compact,
+          //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          //     value: TemperatureUnits.fahrenheit,
+          //     groupValue: _temperatureUnits,
+          //     onChanged: (TemperatureUnits value) {
+          //       setState(() {
+          //         _temperatureUnits = value;
+          //       });
+          //     },
+          //   ),
+          // ),
+          Divider(),
         ],
       ),
     );

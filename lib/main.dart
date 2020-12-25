@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 import 'model/colors.dart';
 import 'notifier/auth_notifier.dart';
-
+import 'notifier/units_notifier.dart';
 
 void main() => runApp(MultiProvider(
       providers: [
@@ -17,13 +17,14 @@ void main() => runApp(MultiProvider(
         ChangeNotifierProvider(
           create: (context) => HParameterNotifier(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => UnitsNotifier(),
+        ),
       ],
       child: MyApp(),
     ));
 
-
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,4 +43,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
