@@ -1,25 +1,10 @@
-/// Flutter code sample for Radio
-
-// Here is an example of Radio widgets wrapped in ListTiles, which is similar
-// to what you could get with the RadioListTile widget.
-//
-// The currently selected character is passed into `groupValue`, which is
-// maintained by the example's `State`. In this case, the first `Radio`
-// will start off selected because `_character` is initialized to
-// `SingingCharacter.lafayette`.
-//
-// If the second radio button is pressed, the example's state is updated
-// with `setState`, updating `_character` to `SingingCharacter.jefferson`.
-// This causes the buttons to rebuild with the updated `groupValue`, and
-// therefore the selection of the second button.
-//
-// Requires one of its ancestors to be a [Material] widget.
-
 import 'package:flutter/material.dart';
 import 'package:health_parameters_tracker/notifier/units_notifier.dart';
 import 'package:provider/provider.dart';
 
+//enum values to "name" the different radio buttons (just like "one", "two" etc. )
 enum TemperatureUnits { celsius, fahrenheit }
+enum WeightUnits { kilograms, pounds }
 
 /// This is the stateful widget that the main application instantiates.
 class UnitsScreen extends StatefulWidget {
@@ -32,16 +17,58 @@ class UnitsScreen extends StatefulWidget {
 }
 
 class _UnitsScreenState extends State<UnitsScreen> {
-  TemperatureUnits _temperatureUnits = TemperatureUnits.celsius;
-
-
+  var _pickedTemperatureUnitsRadioValue;
+  var _pickedWeightUnitsRadioValue;
 
   @override
   void initState() {
-    
-    //initializing notifier to fetch data from firebase
+    //init state with unitsNotifier
     UnitsNotifier unitsNotifier =
         Provider.of<UnitsNotifier>(context, listen: false);
+
+    //
+    //TEMPERATURE UNIT
+    //
+    //check if unitsNotifier is null
+    //if unitsNotifier is null, set default value to celsius values
+    if (unitsNotifier.getIsCelsius == null &&
+        unitsNotifier.getIsFahrenheit == null) {
+      _pickedTemperatureUnitsRadioValue = TemperatureUnits.celsius;
+    }
+    //if unitsNotifier is not empty, check if celsius is true or fahrenheit is true
+    else {
+      print("i'm in if without nulls");
+      if (unitsNotifier.getIsCelsius == true) {
+        _pickedTemperatureUnitsRadioValue = TemperatureUnits.celsius;
+      }
+      if (unitsNotifier.getIsFahrenheit == true) {
+        _pickedTemperatureUnitsRadioValue = TemperatureUnits.fahrenheit;
+      }
+    }
+
+    //
+    //WEIGHT UNIT
+    //
+    //check if unitsNotifier is null
+    //if unitsNotifier is null, set default value to celsius values
+    if (unitsNotifier.getIsKilogram == null &&
+        unitsNotifier.getIsPound == null) {
+      _pickedWeightUnitsRadioValue = WeightUnits.kilograms;
+    }
+    //if unitsNotifier is not empty, check if celsius is true or fahrenheit is true
+    else {
+      print("i'm in if without nulls");
+      if (unitsNotifier.getIsKilogram == true) {
+        _pickedWeightUnitsRadioValue = WeightUnits.kilograms;
+      }
+      if (unitsNotifier.getIsPound == true) {
+        _pickedWeightUnitsRadioValue = WeightUnits.pounds;
+      }
+    }
+
+    //for debug puproses
+    print('Init getCelsius value: ${unitsNotifier.getIsCelsius}');
+    print('Init getFahrenheit value: ${unitsNotifier.getIsFahrenheit}');
     super.initState();
   }
 
@@ -49,6 +76,10 @@ class _UnitsScreenState extends State<UnitsScreen> {
     UnitsNotifier unitsNotifier =
         Provider.of<UnitsNotifier>(context, listen: false);
 
+    print('BUILD Celsius boolean: ${unitsNotifier.getIsCelsius}');
+    print('BUILD Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
+    print('BUILD Kilograms boolean: ${unitsNotifier.getIsKilogram}');
+    print('BUILD Pounds boolean: ${unitsNotifier.getIsPound}');
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -86,15 +117,19 @@ class _UnitsScreenState extends State<UnitsScreen> {
             leading: Radio(
               visualDensity: VisualDensity.compact,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              //value - "label" of a particular radio button
               value: TemperatureUnits.celsius,
-              groupValue: _temperatureUnits,
-              onChanged: (TemperatureUnits value) {
+              //groupValue - output value of a particular group of radio buttons
+              groupValue: _pickedTemperatureUnitsRadioValue,
+              onChanged: (value) {
                 setState(() {
-                  _temperatureUnits = value;
+                  //to mark proper radio button
+                  _pickedTemperatureUnitsRadioValue = value;
                   UnitsNotifier unitsNotifier =
                       Provider.of<UnitsNotifier>(context, listen: false);
+                  //updating the Notifier state
                   unitsNotifier.setTemperatureUnitToCelsius();
-                  print('Celsis boolean: ${unitsNotifier.getIsCelsius}');
+                  print('Celsius boolean: ${unitsNotifier.getIsCelsius}');
                   print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
                 });
               },
@@ -105,56 +140,78 @@ class _UnitsScreenState extends State<UnitsScreen> {
             leading: Radio(
               visualDensity: VisualDensity.compact,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              //value - "label" of a particular radio button
               value: TemperatureUnits.fahrenheit,
-              groupValue: _temperatureUnits,
-              onChanged: (TemperatureUnits value) {
+              //groupValue - output value of a particular group of radio buttons
+              groupValue: _pickedTemperatureUnitsRadioValue,
+              onChanged: (value) {
                 setState(() {
-                  _temperatureUnits = value;
+                  //to mark proper radio button
+                  _pickedTemperatureUnitsRadioValue = value;
                   UnitsNotifier unitsNotifier =
                       Provider.of<UnitsNotifier>(context, listen: false);
+                  //updating the Notifier state
                   unitsNotifier.setTemperatureUnitToFahrenheit();
-                  print('Celsis boolean: ${unitsNotifier.getIsCelsius}');
+                  print('Celsius boolean: ${unitsNotifier.getIsCelsius}');
                   print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
                 });
               },
             ),
           ),
           Divider(),
-          // Container(
-          //   padding: EdgeInsets.fromLTRB(24, 12, 0, 0),
-          //   child: Text(
-          //     'Weight units:',
-          //     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          //   ),
-          // ),
-          // ListTile(
-          //   title: const Text('Kilograms (kg)', style: TextStyle(fontSize: 16)),
-          //   leading: Radio(
-          //     visualDensity: VisualDensity.compact,
-          //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          //     value: TemperatureUnits.celsius,
-          //     groupValue: _temperatureUnits,
-          //     onChanged: (TemperatureUnits value) {
-          //       setState(() {
-          //         _temperatureUnits = value;
-          //       });
-          //     },
-          //   ),
-          // ),
-          // ListTile(
-          //   title: const Text('Pounds (lbs)'),
-          //   leading: Radio(
-          //     visualDensity: VisualDensity.compact,
-          //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          //     value: TemperatureUnits.fahrenheit,
-          //     groupValue: _temperatureUnits,
-          //     onChanged: (TemperatureUnits value) {
-          //       setState(() {
-          //         _temperatureUnits = value;
-          //       });
-          //     },
-          //   ),
-          // ),
+          Container(
+            padding: EdgeInsets.fromLTRB(24, 12, 0, 0),
+            child: Text(
+              'Weight units:',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListTile(
+            title: const Text('Kilograms (kg)', style: TextStyle(fontSize: 16)),
+            leading: Radio(
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              //value - "label" of a particular radio button
+              value: WeightUnits.kilograms,
+              //groupValue - output value of a particular group of radio buttons
+              groupValue: _pickedWeightUnitsRadioValue,
+              onChanged: (value) {
+                setState(() {
+                  //to mark proper radio button
+                  _pickedWeightUnitsRadioValue = value;
+                  UnitsNotifier unitsNotifier =
+                      Provider.of<UnitsNotifier>(context, listen: false);
+                  //updating the Notifier state
+                  unitsNotifier.setWeightUnitToKilograms();
+                  print('Kilograms boolean: ${unitsNotifier.getIsKilogram}');
+                  print('Pounds boolean: ${unitsNotifier.getIsPound}');
+                });
+              },
+            ),
+          ),
+          ListTile(
+            title: const Text('Pounds (lbs)'),
+            leading: Radio(
+              visualDensity: VisualDensity.compact,
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              //value - "label" of a particular radio button
+              value: WeightUnits.pounds,
+              //groupValue - output value of a particular group of radio buttons
+              groupValue: _pickedWeightUnitsRadioValue,
+              onChanged: (value) {
+                setState(() {
+                  //to mark proper radio button
+                  _pickedWeightUnitsRadioValue = value;
+                  UnitsNotifier unitsNotifier =
+                      Provider.of<UnitsNotifier>(context, listen: false);
+                  //updating the Notifier state
+                  unitsNotifier.setWeightUnitToPounds();
+                  print('Kilograms boolean: ${unitsNotifier.getIsKilogram}');
+                  print('Pounds boolean: ${unitsNotifier.getIsPound}');
+                });
+              },
+            ),
+          ),
           Divider(),
         ],
       ),
