@@ -10,14 +10,14 @@ class UnitsNotifier with ChangeNotifier {
   get getIsCelsius => _isCelsius;
   get getIsFahrenheit => _isFahrenheit;
 
-  void setTemperatureUnitToCelsius(bool isCelsius) {
-    _isCelsius = isCelsius;
+  void setTemperatureUnitToCelsius() {
+    _isCelsius = true;
     _isFahrenheit = false;
     notifyListeners();
   }
 
-  void setTemperatureUnitToFahrenheit(bool isFahrenheit) {
-    _isFahrenheit = isFahrenheit;
+  void setTemperatureUnitToFahrenheit() {
+    _isFahrenheit = true;
     _isCelsius = false;
     notifyListeners();
   }

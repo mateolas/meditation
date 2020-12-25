@@ -32,7 +32,7 @@ class UnitsScreen extends StatefulWidget {
 }
 
 class _UnitsScreenState extends State<UnitsScreen> {
-  TemperatureUnits _temperatureUnits; 
+  TemperatureUnits _temperatureUnits = TemperatureUnits.celsius;
 
 
 
@@ -86,16 +86,14 @@ class _UnitsScreenState extends State<UnitsScreen> {
             leading: Radio(
               visualDensity: VisualDensity.compact,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              value: unitsNotifier.getIsCelsius,
+              value: TemperatureUnits.celsius,
               groupValue: _temperatureUnits,
-              onChanged: (value) {
+              onChanged: (TemperatureUnits value) {
                 setState(() {
-                    UnitsNotifier unitsNotifier =
-                      Provider.of<UnitsNotifier>(context, listen: false);
-                   unitsNotifier.setTemperatureUnitToCelsius(value);
                   _temperatureUnits = value;
-                
-                 
+                  UnitsNotifier unitsNotifier =
+                      Provider.of<UnitsNotifier>(context, listen: false);
+                  unitsNotifier.setTemperatureUnitToCelsius();
                   print('Celsis boolean: ${unitsNotifier.getIsCelsius}');
                   print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
                 });
@@ -107,15 +105,14 @@ class _UnitsScreenState extends State<UnitsScreen> {
             leading: Radio(
               visualDensity: VisualDensity.compact,
               materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-              value: unitsNotifier.getIsFahrenheit,
+              value: TemperatureUnits.fahrenheit,
               groupValue: _temperatureUnits,
-              onChanged: (value) {
+              onChanged: (TemperatureUnits value) {
                 setState(() {
-                
+                  _temperatureUnits = value;
                   UnitsNotifier unitsNotifier =
                       Provider.of<UnitsNotifier>(context, listen: false);
-                  unitsNotifier.setTemperatureUnitToFahrenheit(value);
-                   _temperatureUnits = value;
+                  unitsNotifier.setTemperatureUnitToFahrenheit();
                   print('Celsis boolean: ${unitsNotifier.getIsCelsius}');
                   print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
                 });
