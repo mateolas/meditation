@@ -167,7 +167,7 @@ class CelsiusTemperatureChartData extends StatelessWidget {
 List<charts.Series<TimeSeriesTemperature, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesTemperature(new DateTime.now(), 0),
+    new TimeSeriesTemperature(new DateTime.now(), 36),
   ];
 
   return [

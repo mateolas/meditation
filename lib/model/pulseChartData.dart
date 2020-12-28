@@ -165,7 +165,7 @@ class PressureChartData extends StatelessWidget {
 List<charts.Series<TimeSeriesPulse, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesPulse(new DateTime.now(), 0),
+    new TimeSeriesPulse(new DateTime.now(), 80),
   ];
 
   return [

@@ -5,14 +5,14 @@ import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-class AddWeightParameter extends StatefulWidget {
-  AddWeightParameter();
+class AddPoundsWeightParameter extends StatefulWidget {
+  AddPoundsWeightParameter();
 
   @override
-  _AddWeightParameter createState() => _AddWeightParameter();
+  _AddPoundsWeightParameter createState() => _AddPoundsWeightParameter();
 }
 
-class _AddWeightParameter extends State<AddWeightParameter> {
+class _AddPoundsWeightParameter extends State<AddPoundsWeightParameter> {
   //Hparameter which will be "uploading"
   Hparameter _currentHparameter;
   //new decimal picker
@@ -29,8 +29,8 @@ class _AddWeightParameter extends State<AddWeightParameter> {
         Provider.of<HParameterNotifier>(context, listen: false);
 
     //if last record is null, last record is an init value
-    if(hParameterNotifier.hParameterList[0].weight == null || hParameterNotifier.hParameterList.isEmpty){
-      _initialWeightValue = 62; 
+    if(hParameterNotifier.hParameterList[0].weight == null){
+      _initialWeightValue = 136.7; 
     //if last record isn't null, init value equals to last record
     } else {
       _initialWeightValue = double.parse(hParameterNotifier.hParameterList[0].weight);
@@ -47,7 +47,7 @@ class _AddWeightParameter extends State<AddWeightParameter> {
       selectedTextStyle: TextStyle(color: Colors.purple, fontSize: 24),
       initialValue: _initialWeightValue,
       minValue: 0,
-      maxValue: 500,
+      maxValue: 1100,
       decimalPlaces: 1,
       onChanged: (value) => setState(() {
         _initialWeightValue = value;
@@ -68,22 +68,20 @@ class _AddWeightParameter extends State<AddWeightParameter> {
   _saveBill() {
     print('saveBill Called');
 
-    //weight in kilograms
-    _currentHparameter.weight = _initialWeightValue.toString();
     //weight in pounds
-    _currentHparameter.weightPounds = (double.parse(_currentHparameter.weight)*2.2046).toString();
+    _currentHparameter.weightPounds = _initialWeightValue.toString();
 
+    //weight in kilograms
+    _currentHparameter.weight = (double.parse(_currentHparameter.weightPounds)/0.4536).toString();
 
     uploadBill(_currentHparameter, _onBillUploaded);
 
-    //print("name: ${_currentHparameter.weight}");
-    //print("category: ${_currentHparameter.weight}");
+    print("name: ${_currentHparameter.weightPounds}");
     print('form saved');
   }
 
   @override
   Widget build(BuildContext context) {
-    
     _initializeNumberPicker();
     return Column(
       children: [
@@ -108,7 +106,7 @@ class _AddWeightParameter extends State<AddWeightParameter> {
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 49),
           child: Text(
-            "$_initialWeightValue" + " kg",
+            "$_initialWeightValue" + " lbs",
             style: TextStyle(color: Colors.purple),
           ),
         ),

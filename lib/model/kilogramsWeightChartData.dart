@@ -1,29 +1,27 @@
-
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
-
 import 'package:intl/intl.dart';
 
 import 'package:charts_flutter/flutter.dart';
 
 
-class SaturationChartData extends StatelessWidget {
+class KilogramsWeightChartData extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
   //from intl package formatter
   final formatter = new DateFormat.yMMMMd();
 
-  SaturationChartData(this.seriesList, {this.animate});
+  KilogramsWeightChartData(this.seriesList, {this.animate});
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.
-  factory SaturationChartData.withSampleData(
+  factory KilogramsWeightChartData.withSampleData(
       HParameterNotifier hParameterNotifier,
       String dayWeekTypeOfView) {
     //if list of hParameters is empty
     //draw an empty Chart
     if (hParameterNotifier.hParameterList.isEmpty) {
-      return new SaturationChartData(
+      return new KilogramsWeightChartData(
         _createSampleDataIfEmpty(),
         // Disable animations for image tests.
         animate: true,
@@ -32,7 +30,7 @@ class SaturationChartData extends StatelessWidget {
     //if list of hParameters is not empty
     //draw chart based on data fetched from firebase (throught notifier)
     else {
-      return new SaturationChartData(
+      return new KilogramsWeightChartData(
         _createSampleData(hParameterNotifier, dayWeekTypeOfView),
         // Disable animations for image tests.
         animate: true,
@@ -42,9 +40,8 @@ class SaturationChartData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final spo2Formatter =
-        new charts.BasicNumericTickFormatterSpec((num value) => '$value% SpO\u2082');
-
+    final kilogramFormatter =
+        new charts.BasicNumericTickFormatterSpec((num value) => '$value kg ');
     return Scaffold(
       body: new charts.TimeSeriesChart(
         seriesList,
@@ -52,29 +49,17 @@ class SaturationChartData extends StatelessWidget {
             new charts.LineRendererConfig(includeArea: true, stacked: true),
         animate: animate,
         primaryMeasureAxis: new charts.NumericAxisSpec(
-          tickFormatterSpec: spo2Formatter,
-          tickProviderSpec: new charts.StaticNumericTickProviderSpec(
-            <charts.TickSpec<num>>[
-              charts.TickSpec<num>(86),
-              charts.TickSpec<num>(88),
-              charts.TickSpec<num>(90),
-              charts.TickSpec<num>(92),
-              charts.TickSpec<num>(94),
-              charts.TickSpec<num>(96),
-              charts.TickSpec<num>(98),
-              charts.TickSpec<num>(100),
-            ],
-          ),
+          tickFormatterSpec: kilogramFormatter,
         ),
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         behaviors: [
           new charts.SlidingViewport(),
-          new charts.ChartTitle('Saturation',
+          new charts.ChartTitle('Weight',
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.middle,
               titleStyleSpec: charts.TextStyleSpec(
                   fontSize: 20,
-                  color: charts.ColorUtil.fromDartColor(Colors.blue)),
+                  color: charts.ColorUtil.fromDartColor(Colors.purple)),
               // Set a larger inner padding than the default (10) to avoid
               // rendering the text too close to the top measure axis tick label.
               // The top tick label may extend upwards into the top margin region
@@ -87,7 +72,7 @@ class SaturationChartData extends StatelessWidget {
   }
 
   /// Create one series with data fetched through hParameterNotifier from Firebase.
-  static List<charts.Series<TimeSeriesSaturation, DateTime>> _createSampleData(
+  static List<charts.Series<TimeSeriesWeight, DateTime>> _createSampleData(
       HParameterNotifier hParameterNotifier,
       String temperatureDayWeekTypeOfView) {
     var now = new DateTime.now();
@@ -140,52 +125,52 @@ class SaturationChartData extends StatelessWidget {
     //loop through all list items where:
     //- in proper "data frame" range
     //- parameter is not empty
-    final data = <TimeSeriesSaturation>[
+    final data = <TimeSeriesWeight>[
       //loop to get all the items from the hParameterList
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
-        //check if it's last day, week or month
+        //check if it's last day, week or month and the parameter is not null
         if (timePeriod
-            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].saturation != null)
-          new TimeSeriesSaturation(
+            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].weight != null)
+          new TimeSeriesWeight(
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
-              double.parse(hParameterNotifier.hParameterList[i].saturation)),
+              double.parse(hParameterNotifier.hParameterList[i].weight)),
     ];
 
     return [
-      new charts.Series<TimeSeriesSaturation, DateTime>(
-        id: 'Saturation',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSaturation saturation, _) => saturation.time,
-        measureFn: (TimeSeriesSaturation saturation, _) =>
-            saturation.saturation,
+      new charts.Series<TimeSeriesWeight, DateTime>(
+        id: 'Weight',
+        colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
+        domainFn: (TimeSeriesWeight weight, _) => weight.time,
+        measureFn: (TimeSeriesWeight weight, _) =>
+            weight.weight,
         data: data,
       )
     ];
   }
 }
 
-List<charts.Series<TimeSeriesSaturation, DateTime>>
+List<charts.Series<TimeSeriesWeight, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesSaturation(new DateTime.now(), 90),
+    new TimeSeriesWeight(new DateTime.now(), 60),
   ];
 
   return [
-    new charts.Series<TimeSeriesSaturation, DateTime>(
-      id: 'Saturation',
+    new charts.Series<TimeSeriesWeight, DateTime>(
+      id: 'Weight',
       colorFn: (_, __) => charts.MaterialPalette.transparent,
-      domainFn: (TimeSeriesSaturation saturation, _) => saturation.time,
-      measureFn: (TimeSeriesSaturation saturation, _) =>
-          saturation.saturation,
+      domainFn: (TimeSeriesWeight weight, _) => weight.time,
+      measureFn: (TimeSeriesWeight weight, _) =>
+          weight.weight,
       data: data,
     )
   ];
 }
 
 /// Sample time series data type.
-class TimeSeriesSaturation {
+class TimeSeriesWeight {
   final DateTime time;
-  final double saturation;
+  final double weight;
 
-  TimeSeriesSaturation(this.time, this.saturation);
+  TimeSeriesWeight(this.time, this.weight);
 }

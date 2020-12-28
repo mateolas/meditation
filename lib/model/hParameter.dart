@@ -6,7 +6,7 @@ class Hparameter {
   String temperature;
   String temperatureFahrenheit;
   String weight;
-  String weightLBS;
+  String weightPounds;
   String saturation;
   String pulse;
  
@@ -25,7 +25,7 @@ class Hparameter {
     temperature = data['temperature'];
     temperatureFahrenheit = data['temperatureFahrenheit'];
     weight = data['weight'];
-    weightLBS = data['weightLBS'];
+    weightPounds = data['weightLBS'];
     saturation = data['saturation'];
     pulse = data['pulse'];
   }
@@ -37,7 +37,7 @@ class Hparameter {
       'temperature': temperature,
       'temperatureFahrenheit': temperatureFahrenheit,
       'weight': weight,
-      'weightLBS': weightLBS,
+      'weightLBS': weightPounds,
       'saturation': saturation,
       'pulse': pulse,
     };

@@ -8,13 +8,15 @@ import 'package:provider/provider.dart';
 
 import 'package:health_parameters_tracker/model/celsiusTemperatureChartData.dart';
 import 'package:health_parameters_tracker/model/fahrenheitTemperatureChartData.dart';
-import 'package:health_parameters_tracker/model/weightChartData.dart';
+import 'package:health_parameters_tracker/model/kilogramsWeightChartData.dart';
+import 'package:health_parameters_tracker/model/poundsWeightChartData.dart';
 import 'package:health_parameters_tracker/model/saturationChartData.dart';
 import 'package:health_parameters_tracker/model/pulseChartData.dart';
 import 'package:health_parameters_tracker/widgets/temperatureSetOfButtons.dart';
 import 'package:health_parameters_tracker/widgets/FahrenheittemperatureSetOfButtons.dart';
 import 'package:health_parameters_tracker/widgets/saturationSetOfButtons.dart';
 import 'package:health_parameters_tracker/widgets/weightSetOfButtons.dart';
+import 'package:health_parameters_tracker/widgets/poundsWeightSetOfButtons.dart';
 import 'package:health_parameters_tracker/widgets/pulseSetOfButtons.dart';
 
 import 'package:flutter/rendering.dart';
@@ -106,8 +108,13 @@ class _MainGeneralChartState extends State<MainGeneralChart>
 
       case 'WEIGHT':
         {
-          return WeightChartData.withSampleData(
-              hParameterNotifier, selectedTimeTempView);
+          if (unitsNotifier.getIsKilogram == true) {
+            return KilogramsWeightChartData.withSampleData(
+                hParameterNotifier, selectedTimeTempView);
+          } else {
+            return PoundsWeightChartData.withSampleData(
+                hParameterNotifier, selectedTimeTempView);
+          }
         }
         break;
 
@@ -152,7 +159,11 @@ class _MainGeneralChartState extends State<MainGeneralChart>
 
       case 'WEIGHT':
         {
-          return WeightSetOfButtons();
+          if (unitsNotifier.getIsKilogram == true) {
+            return WeightSetOfButtons();
+          } else {
+            return PoundsWeightSetOfButtons();
+          }
         }
         break;
 

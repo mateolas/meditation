@@ -6,22 +6,22 @@ import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart';
 
 
-class WeightChartData extends StatelessWidget {
+class PoundsWeightChartData extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
   //from intl package formatter
   final formatter = new DateFormat.yMMMMd();
 
-  WeightChartData(this.seriesList, {this.animate});
+  PoundsWeightChartData(this.seriesList, {this.animate});
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.
-  factory WeightChartData.withSampleData(
+  factory PoundsWeightChartData.withSampleData(
       HParameterNotifier hParameterNotifier,
       String dayWeekTypeOfView) {
     //if list of hParameters is empty
     //draw an empty Chart
     if (hParameterNotifier.hParameterList.isEmpty) {
-      return new WeightChartData(
+      return new PoundsWeightChartData(
         _createSampleDataIfEmpty(),
         // Disable animations for image tests.
         animate: true,
@@ -30,7 +30,7 @@ class WeightChartData extends StatelessWidget {
     //if list of hParameters is not empty
     //draw chart based on data fetched from firebase (throught notifier)
     else {
-      return new WeightChartData(
+      return new PoundsWeightChartData(
         _createSampleData(hParameterNotifier, dayWeekTypeOfView),
         // Disable animations for image tests.
         animate: true,
@@ -41,7 +41,7 @@ class WeightChartData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final kilogramFormatter =
-        new charts.BasicNumericTickFormatterSpec((num value) => '$value kg ');
+        new charts.BasicNumericTickFormatterSpec((num value) => '$value lbs ');
     return Scaffold(
       body: new charts.TimeSeriesChart(
         seriesList,
@@ -130,10 +130,10 @@ class WeightChartData extends StatelessWidget {
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
         //check if it's last day, week or month and the parameter is not null
         if (timePeriod
-            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].weight != null)
+            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate())&& hParameterNotifier.hParameterList[i].weightPounds != null)
           new TimeSeriesWeight(
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
-              double.parse(hParameterNotifier.hParameterList[i].weight)),
+              double.parse(hParameterNotifier.hParameterList[i].weightPounds)),
     ];
 
     return [
@@ -142,7 +142,7 @@ class WeightChartData extends StatelessWidget {
         colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
         domainFn: (TimeSeriesWeight weight, _) => weight.time,
         measureFn: (TimeSeriesWeight weight, _) =>
-            weight.weight,
+            weight.weightPounds,
         data: data,
       )
     ];
@@ -152,16 +152,16 @@ class WeightChartData extends StatelessWidget {
 List<charts.Series<TimeSeriesWeight, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesWeight(new DateTime.now(), 0),
+    new TimeSeriesWeight(new DateTime.now(), 120),
   ];
 
   return [
     new charts.Series<TimeSeriesWeight, DateTime>(
       id: 'Weight',
       colorFn: (_, __) => charts.MaterialPalette.transparent,
-      domainFn: (TimeSeriesWeight weight, _) => weight.time,
-      measureFn: (TimeSeriesWeight weight, _) =>
-          weight.weight,
+      domainFn: (TimeSeriesWeight weightPounds, _) => weightPounds.time,
+      measureFn: (TimeSeriesWeight weightPounds, _) =>
+          weightPounds.weightPounds,
       data: data,
     )
   ];
@@ -170,7 +170,7 @@ List<charts.Series<TimeSeriesWeight, DateTime>>
 /// Sample time series data type.
 class TimeSeriesWeight {
   final DateTime time;
-  final double weight;
+  final double weightPounds;
 
-  TimeSeriesWeight(this.time, this.weight);
+  TimeSeriesWeight(this.time, this.weightPounds);
 }
