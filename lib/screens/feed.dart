@@ -1,6 +1,7 @@
 import 'package:health_parameters_tracker/api/hParameter_api.dart';
 import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
+import 'package:health_parameters_tracker/notifier/units_notifier.dart';
 import 'package:health_parameters_tracker/widgets/generalChart.dart';
 import 'package:health_parameters_tracker/screens/sideMenu.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,6 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
-  
   //Name of screens to present for TabBar
   List bottomTabScreensNames = [
     'All',
@@ -24,7 +24,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     'Saturation',
     'Weight',
   ];
-  
+
   @override
   void initState() {
     //initializing notifier to fetch data from firebase
@@ -35,6 +35,15 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     //setting default temperature time frame view for 'Day'
 
     super.initState();
+  }
+
+  @protected
+  @mustCallSuper
+  void didChangeDependencies() {
+    setState(() {
+       UnitsNotifier unitsNotifier =
+              Provider.of<UnitsNotifier>(context, listen: true);
+    });
   }
 
   @override
@@ -53,57 +62,52 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     print(
         "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
 
-    return 
-       Scaffold(
-        drawer: SideMenu(),
-        
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.white),
-
-          automaticallyImplyLeading: true, // hides default back button
-          flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color(0xff56ab2f),
-                  Color(0xffa8e063),
-                ],
-              ),
+    return Scaffold(
+      drawer: SideMenu(),
+      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        automaticallyImplyLeading: true, // hides default back button
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xff56ab2f),
+                Color(0xffa8e063),
+              ],
             ),
           ),
-          title: Text(
-            'Health parameters tracker',
-            style: TextStyle(color: Colors.white),
-          ),
-          centerTitle: true,
-          actions: <Widget>[
-            // action button - logout
-            FlatButton(
-              onPressed: () => signOutGoogle(authNotifier),
-              child: Icon(
-                Icons.exit_to_app,
-                color: Colors.white,
-                size: 26.0,
-                semanticLabel: 'Text to announce in accessibility modes',
-              ),
+        ),
+        title: Text(
+          'Health parameters tracker',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        actions: <Widget>[
+          // action button - logout
+          FlatButton(
+            onPressed: () => signOutGoogle(authNotifier),
+            child: Icon(
+              Icons.exit_to_app,
+              color: Colors.white,
+              size: 26.0,
+              semanticLabel: 'Text to announce in accessibility modes',
             ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            //card to hold chart + buttons
+            MainGeneralChart(),
+            //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              //card to hold chart + buttons
-              MainGeneralChart(),
-
-              //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
-            ],
-          ),
-        ),
-      
+      ),
     );
   }
 }

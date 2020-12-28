@@ -6,20 +6,20 @@ import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 
-class AddTemperatureParameter extends StatefulWidget {
-  AddTemperatureParameter();
+class AddFahrenheitTemperatureParameter extends StatefulWidget {
+  AddFahrenheitTemperatureParameter();
 
   @override
-  _AddTemperatureParameter createState() => _AddTemperatureParameter();
+  _AddFahrenheitTemperatureParameter createState() => _AddFahrenheitTemperatureParameter();
 }
 
-class _AddTemperatureParameter extends State<AddTemperatureParameter> {
+class _AddFahrenheitTemperatureParameter extends State<AddFahrenheitTemperatureParameter> {
   //Hparameter which will be "uploading"
   Hparameter _currentHparameter;
   //new decimal picker
   NumberPicker decimalNumberPicker;
   //default value of a decimal picker
-  double _currentDoubleValue = 36.6;
+  double _currentDoubleValue = 93;
 
   //calling initState function to initialize _currentHparameter
   @override
@@ -33,8 +33,8 @@ class _AddTemperatureParameter extends State<AddTemperatureParameter> {
   void _initializeNumberPicker() {
     decimalNumberPicker = new NumberPicker.decimal(
       initialValue: _currentDoubleValue,
-      minValue: 32,
-      maxValue: 42,
+      minValue: 93,
+      maxValue: 107,
       decimalPlaces: 1,
       onChanged: (value) => setState(() {
         _currentDoubleValue = value;
@@ -55,16 +55,15 @@ class _AddTemperatureParameter extends State<AddTemperatureParameter> {
   _saveBill() {
     print('saveBill Called');
 
-    //value in Celsius
-    _currentHparameter.temperature = _currentDoubleValue.toString();
     //value in Fahrenheit
-    _currentHparameter.temperatureFahrenheit = ((double.parse(_currentHparameter.temperature)*1.8)+32).toString();
+    _currentHparameter.temperatureFahrenheit = _currentDoubleValue.toString();
+    //calculate to Celsius
+    _currentHparameter.temperature = ((double.parse(_currentHparameter.temperatureFahrenheit)-32)/1.8).toString();
 
 
     uploadBill(_currentHparameter, _onBillUploaded);
 
-    print("name: ${_currentHparameter.temperature}");
-    print("category: ${_currentHparameter.weight}");
+    print("name: ${_currentHparameter.temperatureFahrenheit}");
     print('form saved');
   }
 

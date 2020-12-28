@@ -4,9 +4,12 @@ class Hparameter {
  
 
   String temperature;
+  String temperatureFahrenheit;
   String weight;
+  String weightLBS;
   String saturation;
   String pulse;
+ 
 
   String id;
   Timestamp createdAt;
@@ -20,7 +23,9 @@ class Hparameter {
     id = data['id'];
     createdAt = data['createdAt'];
     temperature = data['temperature'];
+    temperatureFahrenheit = data['temperatureFahrenheit'];
     weight = data['weight'];
+    weightLBS = data['weightLBS'];
     saturation = data['saturation'];
     pulse = data['pulse'];
   }
@@ -30,7 +35,9 @@ class Hparameter {
       'id': id,
       'createdAt': createdAt,
       'temperature': temperature,
+      'temperatureFahrenheit': temperatureFahrenheit,
       'weight': weight,
+      'weightLBS': weightLBS,
       'saturation': saturation,
       'pulse': pulse,
     };

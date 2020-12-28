@@ -76,10 +76,10 @@ class _UnitsScreenState extends State<UnitsScreen> {
     UnitsNotifier unitsNotifier =
         Provider.of<UnitsNotifier>(context, listen: false);
 
-    print('BUILD Celsius boolean: ${unitsNotifier.getIsCelsius}');
-    print('BUILD Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
-    print('BUILD Kilograms boolean: ${unitsNotifier.getIsKilogram}');
-    print('BUILD Pounds boolean: ${unitsNotifier.getIsPound}');
+    // print('BUILD Celsius boolean: ${unitsNotifier.getIsCelsius}');
+    // print('BUILD Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
+    // print('BUILD Kilograms boolean: ${unitsNotifier.getIsKilogram}');
+    // print('BUILD Pounds boolean: ${unitsNotifier.getIsPound}');
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -129,8 +129,8 @@ class _UnitsScreenState extends State<UnitsScreen> {
                       Provider.of<UnitsNotifier>(context, listen: false);
                   //updating the Notifier state
                   unitsNotifier.setTemperatureUnitToCelsius();
-                  print('Celsius boolean: ${unitsNotifier.getIsCelsius}');
-                  print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
+                  //print('Celsius boolean: ${unitsNotifier.getIsCelsius}');
+                  //print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
                 });
               },
             ),
@@ -152,8 +152,8 @@ class _UnitsScreenState extends State<UnitsScreen> {
                       Provider.of<UnitsNotifier>(context, listen: false);
                   //updating the Notifier state
                   unitsNotifier.setTemperatureUnitToFahrenheit();
-                  print('Celsius boolean: ${unitsNotifier.getIsCelsius}');
-                  print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
+                  //print('Celsius boolean: ${unitsNotifier.getIsCelsius}');
+                  //print('Fahrenheit boolean: ${unitsNotifier.getIsFahrenheit}');
                 });
               },
             ),
@@ -183,8 +183,8 @@ class _UnitsScreenState extends State<UnitsScreen> {
                       Provider.of<UnitsNotifier>(context, listen: false);
                   //updating the Notifier state
                   unitsNotifier.setWeightUnitToKilograms();
-                  print('Kilograms boolean: ${unitsNotifier.getIsKilogram}');
-                  print('Pounds boolean: ${unitsNotifier.getIsPound}');
+                  //print('Kilograms boolean: ${unitsNotifier.getIsKilogram}');
+                  //print('Pounds boolean: ${unitsNotifier.getIsPound}');
                 });
               },
             ),
@@ -206,8 +206,8 @@ class _UnitsScreenState extends State<UnitsScreen> {
                       Provider.of<UnitsNotifier>(context, listen: false);
                   //updating the Notifier state
                   unitsNotifier.setWeightUnitToPounds();
-                  print('Kilograms boolean: ${unitsNotifier.getIsKilogram}');
-                  print('Pounds boolean: ${unitsNotifier.getIsPound}');
+                  //print('Kilograms boolean: ${unitsNotifier.getIsKilogram}');
+                  //print('Pounds boolean: ${unitsNotifier.getIsPound}');
                 });
               },
             ),

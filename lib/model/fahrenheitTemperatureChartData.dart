@@ -8,21 +8,21 @@ import 'package:intl/intl.dart';
 import 'package:charts_flutter/flutter.dart';
 
 
-class TemperatureChartData extends StatelessWidget {
+class FahrenheitTemperatureChartData extends StatelessWidget {
   final List<charts.Series> seriesList;
   final bool animate;
   //from intl package formatter
   final formatter = new DateFormat.yMMMMd();
 
-  TemperatureChartData(this.seriesList, {this.animate});
+  FahrenheitTemperatureChartData(this.seriesList, {this.animate});
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.
-  factory TemperatureChartData.withSampleData(HParameterNotifier hParameterNotifier,
+  factory FahrenheitTemperatureChartData.withSampleData(HParameterNotifier hParameterNotifier,
       String temperatureDayWeekTypeOfView) {
     //if list of hParameters is empty
     //draw an empty Chart
     if (hParameterNotifier.hParameterList.isEmpty) {
-      return new TemperatureChartData(
+      return new FahrenheitTemperatureChartData(
         _createSampleDataIfEmpty(),
         // Disable animations for image tests.
         animate: true,
@@ -31,7 +31,7 @@ class TemperatureChartData extends StatelessWidget {
     //if list of hParameters is not empty
     //draw chart based on data fetched from firebase (throught notifier)
     else {
-      return new TemperatureChartData(
+      return new FahrenheitTemperatureChartData(
         _createSampleData(hParameterNotifier, temperatureDayWeekTypeOfView),
         // Disable animations for image tests.
         animate: true,
@@ -42,7 +42,7 @@ class TemperatureChartData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final celsiusFormatter = new charts.BasicNumericTickFormatterSpec(
-        (num value) => '$value \u2103 ');
+        (num value) => '$value \u2109 ');
 
     return Scaffold(
       body: new charts.TimeSeriesChart(
@@ -54,22 +54,21 @@ class TemperatureChartData extends StatelessWidget {
           tickFormatterSpec: celsiusFormatter,
           tickProviderSpec: new charts.StaticNumericTickProviderSpec(
             <charts.TickSpec<num>>[
-              charts.TickSpec<num>(34),
-              charts.TickSpec<num>(35),
-              charts.TickSpec<num>(36),
-              charts.TickSpec<num>(37),
-              charts.TickSpec<num>(38),
-              charts.TickSpec<num>(39),
-              charts.TickSpec<num>(40),
-              charts.TickSpec<num>(41),
-              charts.TickSpec<num>(42),
+              charts.TickSpec<num>(93),
+              charts.TickSpec<num>(95),
+              charts.TickSpec<num>(97),
+              charts.TickSpec<num>(99),
+              charts.TickSpec<num>(101),
+              charts.TickSpec<num>(103),
+              charts.TickSpec<num>(105),
+              charts.TickSpec<num>(107),
             ],
           ),
         ),
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         behaviors: [
           new charts.SlidingViewport(),
-          new charts.ChartTitle('Temperature',
+          new charts.ChartTitle('Temperature ',
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.middle,
               titleStyleSpec: charts.TextStyleSpec(
@@ -145,19 +144,19 @@ class TemperatureChartData extends StatelessWidget {
       for (int i = 0; i < hParameterNotifier.hParameterList.length; i++)
         //check if it's last day, week or month
         if (timePeriod
-            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate()) && hParameterNotifier.hParameterList[i].temperature != null)
+            .isBefore(hParameterNotifier.hParameterList[i].createdAt.toDate()) && hParameterNotifier.hParameterList[i].temperatureFahrenheit != null)
           new TimeSeriesTemperature(
               hParameterNotifier.hParameterList[i].createdAt.toDate(),
-              double.parse(hParameterNotifier.hParameterList[i].temperature)),
+              double.parse(hParameterNotifier.hParameterList[i].temperatureFahrenheit)),
     ];
 
     return [
       new charts.Series<TimeSeriesTemperature, DateTime>(
         id: 'Temperature',
         colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
-        domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
-        measureFn: (TimeSeriesTemperature temperature, _) =>
-            temperature.temperature,
+        domainFn: (TimeSeriesTemperature temperatureFahrenheit, _) => temperatureFahrenheit.time,
+        measureFn: (TimeSeriesTemperature temperatureFahrenheit, _) =>
+            temperatureFahrenheit.temperatureFahrenheit,
         data: data,
       )
     ];
@@ -174,9 +173,9 @@ List<charts.Series<TimeSeriesTemperature, DateTime>>
     new charts.Series<TimeSeriesTemperature, DateTime>(
       id: 'Temperature',
       colorFn: (_, __) => charts.MaterialPalette.transparent,
-      domainFn: (TimeSeriesTemperature temperature, _) => temperature.time,
-      measureFn: (TimeSeriesTemperature temperature, _) =>
-          temperature.temperature,
+      domainFn: (TimeSeriesTemperature temperatureFahrenheit, _) => temperatureFahrenheit.time,
+      measureFn: (TimeSeriesTemperature temperatureFahrenheit, _) =>
+          temperatureFahrenheit.temperatureFahrenheit,
       data: data,
     )
   ];
@@ -185,7 +184,7 @@ List<charts.Series<TimeSeriesTemperature, DateTime>>
 /// Sample time series data type.
 class TimeSeriesTemperature {
   final DateTime time;
-  final double temperature;
+  final double temperatureFahrenheit;
 
-  TimeSeriesTemperature(this.time, this.temperature);
+  TimeSeriesTemperature(this.time, this.temperatureFahrenheit);
 }

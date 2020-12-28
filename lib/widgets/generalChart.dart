@@ -3,20 +3,21 @@ import 'package:health_parameters_tracker/api/hParameter_api.dart';
 import 'package:health_parameters_tracker/model/colors.dart';
 
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
+import 'package:health_parameters_tracker/notifier/units_notifier.dart';
 import 'package:provider/provider.dart';
 
-import 'package:health_parameters_tracker/model/temperatureChartData.dart';
+import 'package:health_parameters_tracker/model/celsiusTemperatureChartData.dart';
+import 'package:health_parameters_tracker/model/fahrenheitTemperatureChartData.dart';
 import 'package:health_parameters_tracker/model/weightChartData.dart';
 import 'package:health_parameters_tracker/model/saturationChartData.dart';
 import 'package:health_parameters_tracker/model/pulseChartData.dart';
 import 'package:health_parameters_tracker/widgets/temperatureSetOfButtons.dart';
+import 'package:health_parameters_tracker/widgets/FahrenheittemperatureSetOfButtons.dart';
 import 'package:health_parameters_tracker/widgets/saturationSetOfButtons.dart';
 import 'package:health_parameters_tracker/widgets/weightSetOfButtons.dart';
 import 'package:health_parameters_tracker/widgets/pulseSetOfButtons.dart';
 
 import 'package:flutter/rendering.dart';
-
-
 
 class MainGeneralChart extends StatefulWidget {
   MainGeneralChart();
@@ -63,6 +64,7 @@ class _MainGeneralChartState extends State<MainGeneralChart>
     super.initState();
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
+
     //fetching data from firebase
     getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
@@ -70,13 +72,21 @@ class _MainGeneralChartState extends State<MainGeneralChart>
     _typeOfChartController = new TabController(vsync: this, length: 4);
   }
 
-  Widget whatTypeOfChartToPresent(HParameterNotifier hParameterNotifier,
-      String typesOfCharts, String selectedTimeTempView) {
+  Widget whatTypeOfChartToPresent(
+      HParameterNotifier hParameterNotifier,
+      UnitsNotifier unitsNotifier,
+      String typesOfCharts,
+      String selectedTimeTempView) {
     switch (typesOfCharts) {
       case 'TEMPERATURE':
         {
-          return TemperatureChartData.withSampleData(
-              hParameterNotifier, selectedTimeTempView);
+          if (unitsNotifier.getIsCelsius == true) {
+            return CelsiusTemperatureChartData.withSampleData(
+                hParameterNotifier, selectedTimeTempView);
+          } else {
+            return FahrenheitTemperatureChartData.withSampleData(
+                hParameterNotifier, selectedTimeTempView);
+          }
         }
         break;
 
@@ -103,18 +113,28 @@ class _MainGeneralChartState extends State<MainGeneralChart>
 
       default:
         {
-          return TemperatureChartData.withSampleData(
-              hParameterNotifier, selectedTimeTempView);
+          if (unitsNotifier.getIsCelsius == true) {
+            return CelsiusTemperatureChartData.withSampleData(
+                hParameterNotifier, selectedTimeTempView);
+          } else {
+            return FahrenheitTemperatureChartData.withSampleData(
+                hParameterNotifier, selectedTimeTempView);
+          }
         }
         break;
     }
   }
 
-  Widget whatTypeOfButtonsToPresent(String typesOfCharts) {
+  Widget whatTypeOfButtonsToPresent(
+      String typesOfCharts, UnitsNotifier unitsNotifier) {
     switch (typesOfCharts) {
       case 'TEMPERATURE':
         {
-          return TemperatureSetOfButtons();
+          if (unitsNotifier.getIsCelsius == true) {
+            return TemperatureSetOfButtons();
+          } else {
+            return FahrenheitTemperatureSetOfButtons();
+          }
         }
         break;
 
@@ -138,7 +158,11 @@ class _MainGeneralChartState extends State<MainGeneralChart>
 
       default:
         {
-          return TemperatureSetOfButtons();
+          if (unitsNotifier.getIsCelsius == true) {
+            return TemperatureSetOfButtons();
+          } else {
+            return FahrenheitTemperatureSetOfButtons();
+          }
         }
         break;
     }
@@ -159,7 +183,9 @@ class _MainGeneralChartState extends State<MainGeneralChart>
   @override
   Widget build(BuildContext context) {
     HParameterNotifier hParameterNotifier =
-        Provider.of<HParameterNotifier>(context, listen: false);
+        Provider.of<HParameterNotifier>(context, listen: true);
+    UnitsNotifier unitsNotifier =
+        Provider.of<UnitsNotifier>(context, listen: true);
     return Column(
       children: [
         Padding(
@@ -168,7 +194,7 @@ class _MainGeneralChartState extends State<MainGeneralChart>
               //size of the chart
               height: MediaQuery.of(context).size.height / 2.4,
               //prints chart
-              child: whatTypeOfChartToPresent(hParameterNotifier,
+              child: whatTypeOfChartToPresent(hParameterNotifier, unitsNotifier,
                   selectedTypeOfCharts, selectedTimeTempView)),
         ),
 
@@ -256,7 +282,7 @@ class _MainGeneralChartState extends State<MainGeneralChart>
         ),
         SizedBox(height: 44),
         //Row for buttons
-        whatTypeOfButtonsToPresent(selectedTypeOfCharts),
+        whatTypeOfButtonsToPresent(selectedTypeOfCharts, unitsNotifier),
         SizedBox(height: 40),
       ],
     );
