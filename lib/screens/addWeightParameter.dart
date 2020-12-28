@@ -29,7 +29,7 @@ class _AddWeightParameter extends State<AddWeightParameter> {
         Provider.of<HParameterNotifier>(context, listen: false);
 
     //if last record is null, last record is an init value
-    if(hParameterNotifier.hParameterList[0].weight == null || hParameterNotifier.hParameterList.isEmpty){
+    if(hParameterNotifier.hParameterList.isEmpty || hParameterNotifier.hParameterList[0].weight == null){
       _initialWeightValue = 62; 
     //if last record isn't null, init value equals to last record
     } else {
