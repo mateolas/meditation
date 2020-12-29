@@ -83,7 +83,7 @@ class _FahrenheitTemperatureDetails extends State<FahrenheitTemperatureDetails> 
                   "${DateFormat.MMMd().add_jm().format(listWithNoEmptyRecordsDateTimeValues[index])}"),
             ),
             DataCell(
-              Text("${listWithNoEmptyRecordsTemperatureValues[index]} \u2103"),
+              Text("${double.parse(listWithNoEmptyRecordsTemperatureValues[index]).toStringAsFixed(1)} \u2103"),
             ),
           ],
         ),

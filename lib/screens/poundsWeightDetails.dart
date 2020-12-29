@@ -82,7 +82,7 @@ class _PoundsWeightDetails extends State<PoundsWeightDetails> {
                   "${DateFormat.MMMd().add_jm().format(listWithNoEmptyRecordsDateTimeValues[index])}"),
             ),
             DataCell(
-              Text("${listWithNoEmptyRecordsWeightValues[index]} kg"),
+              Text("${double.parse(listWithNoEmptyRecordsWeightValues[index]).toStringAsFixed(1)} lbs"),
             ),
           ],
         ),

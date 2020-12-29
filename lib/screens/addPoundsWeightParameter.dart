@@ -72,7 +72,7 @@ class _AddPoundsWeightParameter extends State<AddPoundsWeightParameter> {
     _currentHparameter.weightPounds = _initialWeightValue.toString();
 
     //weight in kilograms
-    _currentHparameter.weight = (double.parse(_currentHparameter.weightPounds)/0.4536).toString();
+    _currentHparameter.weight = (double.parse(_currentHparameter.weightPounds)*0.4536).toString();
 
     uploadBill(_currentHparameter, _onBillUploaded);
 

@@ -82,6 +82,14 @@ class CelsiusTemperatureChartData extends StatelessWidget {
               outerPadding: 20,
               innerPadding: 20),
         ],
+        selectionModels: [
+        SelectionModelConfig(
+          changedListener: (SelectionModel model) {
+            if(model.hasDatumSelection)
+              print(model.selectedSeries[0].measureFn(model.selectedDatum[0].index));
+          }
+        )
+      ],
       ),
     );
   }
@@ -189,3 +197,5 @@ class TimeSeriesTemperature {
 
   TimeSeriesTemperature(this.time, this.temperature);
 }
+
+
