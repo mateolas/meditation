@@ -152,7 +152,7 @@ class KilogramsWeightChartData extends StatelessWidget {
 List<charts.Series<TimeSeriesWeight, DateTime>>
     _createSampleDataIfEmpty() {
   final data = [
-    new TimeSeriesWeight(new DateTime.now(), 60),
+    new TimeSeriesWeight(new DateTime.now(), 200),
   ];
 
   return [

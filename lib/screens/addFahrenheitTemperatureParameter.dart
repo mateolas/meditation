@@ -95,7 +95,7 @@ class _AddFahrenheitTemperatureParameter extends State<AddFahrenheitTemperatureP
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 49),
           child: Text(
-            "$_currentDoubleValue" + " \u2103",
+            "$_currentDoubleValue" + " \u2109",
             style: TextStyle(color: accentCustomColor),
           ),
         ),
