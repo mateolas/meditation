@@ -67,7 +67,7 @@ class PressureChartData extends StatelessWidget {
         dateTimeFactory: const charts.LocalDateTimeFactory(),
         behaviors: [
           new charts.SlidingViewport(),
-          new charts.ChartTitle('Pressure',
+          new charts.ChartTitle('Pulse',
               behaviorPosition: charts.BehaviorPosition.top,
               titleOutsideJustification: charts.OutsideJustification.middle,
               titleStyleSpec: charts.TextStyleSpec(

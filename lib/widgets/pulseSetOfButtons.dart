@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:health_parameters_tracker/screens/addPulseParameter.dart';
-//import 'package:health_parameters_tracker/screens/PulseMeasurementMainPage.dart';
+import 'package:health_parameters_tracker/screens/PulseMeasurementMainPage.dart';
 import 'package:health_parameters_tracker/screens/pulseDetails.dart';
 import 'package:flutter/rendering.dart';
 
@@ -63,20 +63,20 @@ class PulseSetOfButtons extends StatelessWidget {
                   color: Colors.white,
                 ),
                 //TODO: Work with pulse measurement
-                // child: OutlineButton(
-                //     disabledBorderColor: Colors.red,
-                //     borderSide: BorderSide(color: Colors.red),
-                //     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                //     shape: const StadiumBorder(),
-                //     child: Text('MEASURE',
-                //         style: TextStyle(fontSize: 14, color: Colors.red)),
-                //     onPressed: () {
-                //       Navigator.push(
-                //         context,
-                //         MaterialPageRoute(
-                //             builder: (context) => PulseMeasurementMainPage()),
-                //       );
-                //     }),
+                child: OutlineButton(
+                    disabledBorderColor: Colors.red,
+                    borderSide: BorderSide(color: Colors.red),
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    shape: const StadiumBorder(),
+                    child: Text('MEASURE',
+                        style: TextStyle(fontSize: 14, color: Colors.red)),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PulseMeasurementMainPage()),
+                      );
+                    }),
               ),
             ),
           ],
