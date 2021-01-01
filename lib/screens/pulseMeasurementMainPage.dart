@@ -2,19 +2,16 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:wakelock/wakelock.dart';
 import 'package:charts_flutter/flutter.dart';
-
-import 'package:camerakit/CameraKitController.dart';
-import 'package:camerakit/CameraKitView.dart';
+import 'package:flutter/src/painting/text_style.dart' as textStyle;
 
 import 'dart:async';
 
 import 'package:health_parameters_tracker/widgets/pulseChart.dart';
 
 import 'package:flutter/rendering.dart';
-
-import 'package:flutter/services.dart';
 
 class PulseMeasurementMainPage extends StatefulWidget {
   @override
@@ -68,84 +65,80 @@ class HomePageView extends State<PulseMeasurementMainPage>
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
           children: <Widget>[
             Expanded(
-                flex: 1,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: EdgeInsets.all(12),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(18),
-                          ),
-                          child: Stack(
-                            fit: StackFit.expand,
-                            alignment: Alignment.center,
-                            children: <Widget>[
-                              _controller != null && _toggled
-                                  ? AspectRatio(
-                                      aspectRatio:
-                                          _controller.value.aspectRatio,
-                                      child: CameraPreview(_controller),
-
-                                    )
-                                  : Container(
-                                      padding: EdgeInsets.all(12),
-                                      alignment: Alignment.center,
-                                      color: Colors.grey,
-                                    ),
-                              Container(
-                                alignment: Alignment.center,
-                                padding: EdgeInsets.all(4),
-                                child: Text(
-                                  _toggled
-                                      ? "Cover both the camera and the flash with your finger"
-                                      : "Camera feed will display here",
-                                  // style: TextStyle(
-                                  //     backgroundColor: _toggled
-                                  //         ? Colors.white
-                                  //         : Colors.transparent),
-                                  // textAlign: TextAlign.center,
-                                ),
-                              )
-                            ],
-                          ),
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.all(12),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(18),
+                        ),
+                        child: Stack(
+                          fit: StackFit.expand,
+                          alignment: Alignment.center,
+                          children: <Widget>[
+                            _controller != null && _toggled
+                                ? AspectRatio(
+                                    aspectRatio: 20,
+                                    child: CameraPreview(_controller),
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.all(12),
+                                    alignment: Alignment.center,
+                                    color: Colors.grey[300],
+                                  ),
+                          ],
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Center(
-                          child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "Estimated BPM",
-                            // style: TextStyle(fontSize: 18, color: Colors.grey),
-                          ),
-                          Text(
-                            (_bpm > 30 && _bpm < 150 ? _bpm.toString() : "--"),
-                            // style: TextStyle(
-                            //     fontSize: 32, fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      )),
-                    ),
-                  ],
-                )),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Center(
+                        child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Estimated BPM",
+                          // style: TextStyle(fontSize: 18, color: Colors.grey),
+                        ),
+                        Text(
+                          (_bpm > 30 && _bpm < 150 ? _bpm.toString() : "--"),
+                          // style: TextStyle(
+                          //     fontSize: 32, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    )),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
+              alignment: Alignment.topLeft,
+              child: Text(
+                _toggled
+                    ? """Cover both the camera and 
+                    the flash with your finger"""
+                    : "Camera feed will display here",
+                style: textStyle.TextStyle(color: Colors.grey, 
+),
+                textAlign: TextAlign.left,
+              ),
+            ),
             Expanded(
               flex: 1,
               child: Center(
@@ -175,7 +168,7 @@ class HomePageView extends State<PulseMeasurementMainPage>
                     borderRadius: BorderRadius.all(
                       Radius.circular(18),
                     ),
-                    color: Colors.black),
+                    color: Colors.white),
                 child: Chart(_data),
               ),
             ),
@@ -196,7 +189,7 @@ class HomePageView extends State<PulseMeasurementMainPage>
               DateTime.fromMillisecondsSinceEpoch(now - i * 1000 ~/ _fs), 128));
   }
 
- void _toggle() {
+  void _toggle() {
     _clearData();
     _initController().then((onValue) {
       Wakelock.enable();
@@ -231,12 +224,12 @@ class HomePageView extends State<PulseMeasurementMainPage>
       _controller = CameraController(_cameras.first, ResolutionPreset.low);
       await _controller.initialize();
       //turn on the camera's flashlight here
-        final cameras = await availableCameras();
-            cameras.first;
+      final cameras = await availableCameras();
+      cameras.first;
 
-       Future.delayed(Duration(milliseconds: 100)).then((onValue) {
-         _controller.flash(true);
-       });
+      Future.delayed(Duration(milliseconds: 100)).then((onValue) {
+        _controller.flash(true);
+      });
       _controller.startImageStream((CameraImage image) {
         _image = image;
       });
