@@ -2,14 +2,14 @@ import 'dart:async';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+
 import 'package:wakelock/wakelock.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/src/painting/text_style.dart' as textStyle;
 
-import 'dart:async';
-
 import 'package:health_parameters_tracker/widgets/pulseChart.dart';
+
+import 'package:health_parameters_tracker/model/colors.dart';
 
 import 'package:flutter/rendering.dart';
 
@@ -68,6 +68,27 @@ class HomePageView extends State<PulseMeasurementMainPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
+        automaticallyImplyLeading: true, // hides default back button
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                accentCustomColor,
+                primaryCustomColor,
+              ],
+            ),
+          ),
+        ),
+        title: Text(
+          'Pulse measurement (beta)',
+          style: textStyle.TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+      ),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Column(
@@ -75,10 +96,18 @@ class HomePageView extends State<PulseMeasurementMainPage>
             Expanded(
               flex: 1,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Expanded(
                     flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width * 0.2),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
                     child: Padding(
                       padding: EdgeInsets.all(12),
                       child: ClipRRect(
@@ -91,7 +120,7 @@ class HomePageView extends State<PulseMeasurementMainPage>
                           children: <Widget>[
                             _controller != null && _toggled
                                 ? AspectRatio(
-                                    aspectRatio: 20,
+                                    aspectRatio: _controller.value.aspectRatio,
                                     child: CameraPreview(_controller),
                                   )
                                 : Container(
@@ -106,59 +135,80 @@ class HomePageView extends State<PulseMeasurementMainPage>
                   ),
                   Expanded(
                     flex: 1,
-                    child: Center(
-                        child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "Estimated BPM",
-                          // style: TextStyle(fontSize: 18, color: Colors.grey),
-                        ),
-                        Text(
-                          (_bpm > 30 && _bpm < 150 ? _bpm.toString() : "--"),
-                          // style: TextStyle(
-                          //     fontSize: 32, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    )),
+                    child: Padding(
+                      padding: EdgeInsets.all(0),
+                      child: Container(
+                          width: MediaQuery.of(context).size.width * 0.2),
+                    ),
                   ),
                 ],
               ),
             ),
             Container(
-              padding: EdgeInsets.fromLTRB(16, 0, 0, 0),
-              alignment: Alignment.topLeft,
+              alignment: Alignment.center,
               child: Text(
                 _toggled
-                    ? """Cover both the camera and 
-                    the flash with your finger"""
+                    ? "Cover both the camera and the flash with your finger"
                     : "Camera feed will display here",
-                style: textStyle.TextStyle(color: Colors.grey, 
-),
+                style: textStyle.TextStyle(
+                  color: Colors.grey[500],
+                ),
                 textAlign: TextAlign.left,
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Transform.scale(
-                  scale: _iconScale,
-                  child: IconButton(
-                    icon:
-                        Icon(_toggled ? Icons.favorite : Icons.favorite_border),
-                    color: Colors.red,
-                    iconSize: 128,
-                    onPressed: () {
-                      if (_toggled) {
-                        _untoggle();
-                      } else {
-                        _toggle();
-                      }
-                    },
+            SizedBox(height: 40),
+            Column(
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    _toggled
+                        ? "Press heart icon to STOP"
+                        : "Press heart icon to START",
+                    style: textStyle.TextStyle(
+                      color: Colors.red,
+                    ),
                   ),
                 ),
-              ),
+                Center(
+                  child: Transform.scale(
+                    scale: _iconScale,
+                    child: IconButton(
+                      icon: Icon(
+                          _toggled ? Icons.favorite : Icons.favorite_border),
+                      color: Colors.red,
+                      iconSize: 90,
+                      onPressed: () {
+                        if (_toggled) {
+                          _untoggle();
+                        } else {
+                          _toggle();
+                        }
+                      },
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Estimated BPM",
+                        style: textStyle.TextStyle(
+                            fontSize: 18, color: Colors.red),
+                      ),
+                      Text(
+                        (_bpm > 30 && _bpm < 150 ? _bpm.toString() : "--"),
+                        style: textStyle.TextStyle(
+                            color: Colors.red,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
             Expanded(
               flex: 1,
