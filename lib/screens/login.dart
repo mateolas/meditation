@@ -83,13 +83,14 @@ class _LoginState extends State<Login> {
   Widget _buildLogoPicture() {
     return Column(
       children: [
-        Text("Health parameters tracker",
-            style: TextStyle(
-              fontSize: 26,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            )),
-        SizedBox(height: 52.0)
+        Image.asset('lib/assets/images/hpt_sign_logo_circle.png', scale: 4.0),
+        // Text("Health parameters tracker",
+        //     style: TextStyle(
+        //       fontSize: 28,
+        //       color: Colors.white,
+        //       fontWeight: FontWeight.bold,
+        //     )), 
+        SizedBox(height: 0.0)
       ],
     );
   }
@@ -443,7 +444,7 @@ class _LoginState extends State<Login> {
                 key: _formKey,
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: EdgeInsets.fromLTRB(32, 60, 32, 0),
+                    padding: EdgeInsets.fromLTRB(32, 20, 32, 0),
                     child: Column(
                       children: <Widget>[
                         _buildLogoPicture(),
