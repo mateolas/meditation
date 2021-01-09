@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_parameters_tracker/model/colors.dart';
 
 class AboutScreen extends StatelessWidget {
   @override
@@ -23,15 +24,23 @@ class AboutScreen extends StatelessWidget {
           style: TextStyle(color: Colors.white),
         ),
       ),
-      body: Container(
-        alignment: Alignment.center,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text('Welcome Screen'),
-          ],
-        ),
+      body: Column(
+        children: [
+          SizedBox(height: 24),
+          Image.asset('lib/assets/images/hpt_sign_logo_circle_green.png',
+              scale: 1.3),
+          SizedBox(height: 6),
+          Container(
+            alignment: Alignment.center,
+            child: Text('Health parameters tracker',
+                style: TextStyle(color: accentCustomColor, fontSize: 22)),
+          ),
+          SizedBox(height: 32),
+          Container(
+            padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+              alignment: Alignment.topLeft,
+              child: Text('Hi !', style: TextStyle(fontSize: 18))),
+        ],
       ),
     );
   }
