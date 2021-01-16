@@ -193,18 +193,32 @@ class HomePageView extends State<PulseMeasurementMainPage>
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        "Estimated BPM",
-                        style: textStyle.TextStyle(
-                            fontSize: 18, color: Colors.red),
+                      SizedBox(height: 12,),
+                      Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          _toggled
+                              ? "Cover camera with finger and wait few seconds for stabilization of a graph"
+                              : " ",
+                          style: textStyle.TextStyle(
+                            color: Colors.grey[500],
+                          ),
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                        ),
                       ),
-                      Text(
-                        (_bpm > 30 && _bpm < 150 ? _bpm.toString() : "--"),
-                        style: textStyle.TextStyle(
-                            color: Colors.red,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      ),
+                      // Text(
+                      //   "Estimated BPM",
+                      //   style: textStyle.TextStyle(
+                      //       fontSize: 18, color: Colors.red),
+                      // ),
+                      // Text(
+                      //   (_bpm > 30 && _bpm < 150 ? _bpm.toString() : "--"),
+                      //   style: textStyle.TextStyle(
+                      //       color: Colors.red,
+                      //       fontSize: 18,
+                      //       fontWeight: FontWeight.bold),
+                      // ),
                     ],
                   ),
                 ),
@@ -289,7 +303,7 @@ class HomePageView extends State<PulseMeasurementMainPage>
   }
 
   void _initTimer() {
-    _timer = Timer.periodic(Duration(milliseconds: 1000 ~/ _fs), (timer) {
+    _timer = Timer.periodic(Duration(milliseconds: 500 ~/ _fs), (timer) {
       if (_toggled) {
         if (_image != null) _scanImage(_image);
       } else {
