@@ -83,14 +83,22 @@ class _LoginState extends State<Login> {
   Widget _buildLogoPicture() {
     return Column(
       children: [
-        Image.asset('lib/assets/images/hpt_sign_logo_circle.png', scale: 4.0),
+        SizedBox(height: 48.0),
+        Image.asset('lib/assets/images/pulse_logo.png', scale: 1.2),
         // Text("Health parameters tracker",
         //     style: TextStyle(
         //       fontSize: 28,
         //       color: Colors.white,
         //       fontWeight: FontWeight.bold,
-        //     )), 
-        SizedBox(height: 0.0)
+        //     )),
+        SizedBox(height: 6.0),
+        Text('Health Parameters Tracker',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            )),
+        SizedBox(height: 32.0),
       ],
     );
   }
@@ -423,12 +431,13 @@ class _LoginState extends State<Login> {
               width: double.infinity,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topLeft,
+                  begin: Alignment.topCenter,
                   end: Alignment.bottomRight,
                   colors: [
                     //Endless River
                     Color(0xff56ab2f),
                     Color(0xffa8e063),
+                    Color(0xff56ab2f),
                   ],
                   //stops: [0.1, 0.4],
                 ),
@@ -453,7 +462,7 @@ class _LoginState extends State<Login> {
                           _authMode == AuthMode.Login ? 'Log In' : 'Sign Up',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 22,
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
