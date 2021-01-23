@@ -1,4 +1,4 @@
-package com.example.archive_your_bill
+package com.skylinestudio.health_parameters_tracker
 
 import io.flutter.embedding.android.FlutterActivity
 
