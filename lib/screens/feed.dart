@@ -15,13 +15,6 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   //Name of screens to present for TabBar
-  List bottomTabScreensNames = [
-    'All',
-    'Temperature',
-    'Pulse',
-    'Saturation',
-    'Weight',
-  ];
 
   @override
   void initState() {
@@ -39,8 +32,8 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
   @mustCallSuper
   void didChangeDependencies() {
     setState(() {
-       UnitsNotifier unitsNotifier =
-              Provider.of<UnitsNotifier>(context, listen: true);
+      UnitsNotifier unitsNotifier =
+          Provider.of<UnitsNotifier>(context, listen: true);
     });
   }
 
@@ -61,24 +54,16 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
 
     return Scaffold(
+      //background color behing the appbar
+      extendBodyBehindAppBar: true,
       drawer: SideMenu(),
       resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
+        elevation: 0,
         iconTheme: IconThemeData(color: Colors.white),
         automaticallyImplyLeading: true, // hides default back button
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                Color(0xff56ab2f),
-                Color(0xffa8e063),
-              ],
-            ),
-          ),
-        ),
+        backgroundColor: Colors.transparent,
         title: Text(
           'Meditation',
           style: TextStyle(color: Colors.white),
@@ -99,9 +84,23 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
       ),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //card to hold chart + buttons
-          
+            Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(0xffe65c00),
+                    Color(0xffFFE000),
+                  ],
+                ),
+              ),
+            ),
             //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
           ],
         ),
