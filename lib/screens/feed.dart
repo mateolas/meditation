@@ -2,13 +2,11 @@ import 'package:health_parameters_tracker/api/hParameter_api.dart';
 import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:health_parameters_tracker/notifier/units_notifier.dart';
-import 'package:health_parameters_tracker/widgets/generalChart.dart';
+
 import 'package:health_parameters_tracker/screens/sideMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/rendering.dart';
-
-//https://medium.com/@agungsurya/take-a-screenshot-of-a-certain-widget-in-flutter-ad263edc4e55
 
 class Feed extends StatefulWidget {
   @override
@@ -82,7 +80,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           ),
         ),
         title: Text(
-          'Health parameters tracker',
+          'Meditation',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -103,7 +101,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         child: Column(
           children: [
             //card to hold chart + buttons
-            MainGeneralChart(),
+          
             //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
           ],
         ),

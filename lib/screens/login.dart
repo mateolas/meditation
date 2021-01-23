@@ -29,8 +29,8 @@ class _LoginState extends State<Login> {
       begin: Alignment.topLeft,
       end: Alignment.topRight,
       colors: [
-        Colors.green[200],
-        Colors.green[200],
+        Colors.orange[200],
+        Colors.orange[200],
       ],
     ),
     borderRadius: BorderRadius.circular(10.0),
@@ -84,15 +84,9 @@ class _LoginState extends State<Login> {
     return Column(
       children: [
         SizedBox(height: 48.0),
-        Image.asset('lib/assets/images/pulse_logo.png', scale: 1.2),
-        // Text("Health parameters tracker",
-        //     style: TextStyle(
-        //       fontSize: 28,
-        //       color: Colors.white,
-        //       fontWeight: FontWeight.bold,
-        //     )),
+        //Image.asset('lib/assets/images/pulse_logo.png', scale: 1.2),
         SizedBox(height: 6.0),
-        Text('Health Parameters Tracker',
+        Text('Meditation',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -188,7 +182,7 @@ class _LoginState extends State<Login> {
                 '  Signup with Google',
                 style: TextStyle(
                   fontSize: 20,
-                  color: Color(0xffa8e063),
+                  color: Colors.orange[400],
                   letterSpacing: 1.5,
                   fontWeight: FontWeight.bold,
                 ),
@@ -198,41 +192,6 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
-
-    // return OutlineButton(
-    //   splashColor: Colors.white,
-    //   color: Colors.white,
-    //   onPressed: () {
-    //     signInWithGoogle(authNotifier);
-    //   },
-    //   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-    //   highlightElevation: 0,
-    //   borderSide: BorderSide(color: Colors.white),
-    //   child: Padding(
-    //     padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-    //     child: Row(
-    //       mainAxisSize: MainAxisSize.max,
-    //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //       children: <Widget>[
-    //         Image(
-    //           width: 14,
-    //           height: 14,
-    //           image: AssetImage('lib/assets/images/google_logo.png',),
-    //         ),
-    //         Padding(
-    //           padding: const EdgeInsets.all(0),
-    //           child: Text(
-    //             'Sign in with Google',
-    //             style: TextStyle(
-    //               fontSize: 20,
-    //               color: Colors.green,
-    //             ),
-    //           ),
-    //         )
-    //       ],
-    //     ),
-    //   ),
-    // );
   }
 
   Widget _buildLoginButton() {
@@ -253,7 +212,7 @@ class _LoginState extends State<Login> {
             _authMode == AuthMode.Login ? 'LOGIN' : 'SIGNUP',
             style: TextStyle(
               fontSize: 20,
-              color: Color(0xffa8e063),
+              color: Colors.orange[400],
               letterSpacing: 1.5,
               fontWeight: FontWeight.bold,
             ),
@@ -435,9 +394,12 @@ class _LoginState extends State<Login> {
                   end: Alignment.bottomRight,
                   colors: [
                     //Endless River
-                    Color(0xff56ab2f),
-                    Color(0xffa8e063),
-                    Color(0xff56ab2f),
+                    //Color(0xff16A085),
+                    //Color(0xffffffff),
+                    
+                    Color(0xffe65c00),
+                    Color(0xffFFE000),
+                    //Color(0xffffff),
                   ],
                   //stops: [0.1, 0.4],
                 ),

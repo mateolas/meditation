@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Archive your app',
+      title: 'Meditation',
       theme: ThemeData(
         primarySwatch: primaryCustomColor,
         accentColor: accentCustomColor,
