@@ -572,6 +572,12 @@
       "languageVersion": "1.11"
     },
     {
+      "name": "sleek_circular_slider",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/sleek_circular_slider-1.2.0+web",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "source_span",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.7.0",
       "packageUri": "lib/",
@@ -686,7 +692,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-01-23T15:41:54.535234Z",
+  "generated": "2021-01-23T16:51:05.578181Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-21.0.dev.flutter-20bf2fcf56"
 }

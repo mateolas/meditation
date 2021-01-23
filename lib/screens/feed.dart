@@ -2,6 +2,7 @@ import 'package:health_parameters_tracker/api/hParameter_api.dart';
 import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:health_parameters_tracker/notifier/units_notifier.dart';
+import 'package:health_parameters_tracker/widgets/meditationTimeSlider.dart';
 
 import 'package:health_parameters_tracker/screens/sideMenu.dart';
 import 'package:flutter/material.dart';
@@ -87,20 +88,35 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             //card to hold chart + buttons
-            Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color(0xffe65c00),
-                    Color(0xffFFE000),
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xffe65c00),
+                        Color(0xffFFE000),
+                      ],
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    MeditationTimeSlider(),
+                    Container(
+                      color: Colors.blue,
+                      child: Text('Test'),
+                    ),
                   ],
                 ),
-              ),
+              ],
             ),
+
             //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
           ],
         ),
