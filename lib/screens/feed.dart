@@ -108,10 +108,10 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                 Column(
                   children: [
                     MeditationTimeSlider(),
-                    Container(
-                      color: Colors.blue,
-                      child: Text('Test'),
-                    ),
+                    // Container(
+                    //   color: Colors.blue,
+                    //   child: Text('Test'),
+                    // ),
                   ],
                 ),
               ],
