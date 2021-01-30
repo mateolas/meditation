@@ -1,4 +1,5 @@
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
+import 'package:health_parameters_tracker/notifier/meditationSession_notifier.dart';
 import 'package:provider/provider.dart';
 
 import './screens/feed.dart';
@@ -20,6 +21,9 @@ void main() => runApp(MultiProvider(
         ),
         ChangeNotifierProvider(
           create: (context) => UnitsNotifier(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => MeditationSessionNotifier(),
         ),
       ],
       child: MyApp(),

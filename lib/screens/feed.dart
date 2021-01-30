@@ -2,7 +2,8 @@ import 'package:health_parameters_tracker/api/hParameter_api.dart';
 import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:health_parameters_tracker/notifier/units_notifier.dart';
-import 'package:health_parameters_tracker/widgets/meditationTimeSlider.dart';
+import 'package:health_parameters_tracker/notifier/meditationSession_notifier.dart';
+import 'package:health_parameters_tracker/widgets/sessionLength.dart';
 import 'package:countdown_flutter/countdown_flutter.dart';
 import 'package:health_parameters_tracker/screens/sideMenu.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     //initializing notifier to fetch data from firebase
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
+
     //fetching data from firebase
     getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
@@ -49,79 +51,15 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  final sliderCountTime = SleekCircularSlider(
-      min: 0,
-      max: 180,
-      initialValue: 0,
-      onChangeStart: (double startValue) {
-        startValue = 0;
-      },
-      innerWidget: (double value) {
-        print('Value from slider: $value');
+  @override
+  Widget build(BuildContext context) {
+    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    HParameterNotifier hParemterNotifier =
+        Provider.of<HParameterNotifier>(context);
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context);
 
-        var arr = value.toString().split('.');
-
-        int roundedValue = int.parse(arr[0]);
-        print('Concatenaded value: $roundedValue');
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Countdown(
-              duration: Duration(minutes: roundedValue),
-              onFinish: () {
-                print('finished!');
-              },
-              builder: (BuildContext ctx, Duration remaining) {
-                String twoDigits(int n) => n.toString().padLeft(2, "0");
-                //changing int into Duration
-
-                String twoDigitMinutes =
-                    twoDigits(remaining.inMinutes.remainder(200));
-                String twoDigitSeconds =
-                    twoDigits(remaining.inSeconds.remainder(60));
-
-                return Text(
-                  '${twoDigitMinutes}:${twoDigitSeconds}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                  ),
-                );
-              },
-            ),
-          ],
-        ); // use your custom widget inside the slider (gets a slider value from the callback)
-      },
-      appearance: CircularSliderAppearance(
-          startAngle: 180,
-          angleRange: 355,
-          customWidths: CustomSliderWidths(progressBarWidth: 16),
-          size: 280,
-          infoProperties: InfoProperties(
-              mainLabelStyle: TextStyle(color: Colors.white, fontSize: 40),
-              modifier: (double value) {
-                var roundedValue = value.toInt();
-                //one line function
-                String twoDigits(int n) => n.toString().padLeft(2, "0");
-                //changing int into Duration
-                final d1 = Duration(minutes: roundedValue);
-
-                String twoDigitMinutes = twoDigits(d1.inMinutes.remainder(200));
-                return "$twoDigitMinutes min";
-              }),
-          customColors: CustomSliderColors(
-            trackColor: Colors.orange,
-            progressBarColors: [
-              Color(0xffFFE000),
-              Color(0xffe65c00),
-            ],
-          )),
-      onChange: (double value) {
-        print(value);
-      });
-
-  final sliderSetTime = SleekCircularSlider(
+    final sliderSetTime = SleekCircularSlider(
       min: 0,
       max: 180,
       initialValue: 45,
@@ -153,20 +91,98 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
             ],
           )),
       onChange: (double value) {
+        var arr = value.toString().split('.');
+        int roundedValue = int.parse(arr[0]);
+
+        meditationSessionNotifier.setLengthOfCurrentSession(roundedValue);
+        print("I'm in end ...");
+
         print(value);
-      });
+      },
+    );
 
-  @override
-  Widget build(BuildContext context) {
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-    HParameterNotifier hParemterNotifier =
-        Provider.of<HParameterNotifier>(context);
+    final sliderCountTime = SleekCircularSlider(
+        min: 0,
+        max: 180,
+        initialValue: 0,
+        onChangeStart: (double startValue) {
+          startValue = 0;
+        },
+        innerWidget: (double value) {
+          print('Value from slider: $value');
 
-    print("Is button pressed $isStartMeditationButtonPressed");
+          var arr = value.toString().split('.');
+
+          int roundedValue = int.parse(arr[0]);
+          print('Concatenaded value: $roundedValue');
+
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Countdown(
+                duration: Duration(minutes: roundedValue),
+                onFinish: () {
+                  print('finished!');
+                },
+                builder: (BuildContext ctx, Duration remaining) {
+                  String twoDigits(int n) => n.toString().padLeft(2, "0");
+                  //changing int into Duration
+
+                  String twoDigitMinutes =
+                      twoDigits(remaining.inMinutes.remainder(200));
+                  String twoDigitSeconds =
+                      twoDigits(remaining.inSeconds.remainder(60));
+
+                  return Text(
+                    '${twoDigitMinutes}:${twoDigitSeconds}',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                    ),
+                  );
+                },
+              ),
+            ],
+          ); // use your custom widget inside the slider (gets a slider value from the callback)
+        },
+        appearance: CircularSliderAppearance(
+            startAngle: 180,
+            angleRange: 355,
+            customWidths: CustomSliderWidths(progressBarWidth: 16),
+            size: 280,
+            infoProperties: InfoProperties(
+                mainLabelStyle: TextStyle(color: Colors.white, fontSize: 40),
+                modifier: (double value) {
+                  var roundedValue = value.toInt();
+                  //one line function
+                  String twoDigits(int n) => n.toString().padLeft(2, "0");
+                  //changing int into Duration
+                  final d1 = Duration(minutes: roundedValue);
+
+                  String twoDigitMinutes =
+                      twoDigits(d1.inMinutes.remainder(200));
+                  return "$twoDigitMinutes min";
+                }),
+            customColors: CustomSliderColors(
+              trackColor: Colors.orange,
+              progressBarColors: [
+                Color(0xffFFE000),
+                Color(0xffe65c00),
+              ],
+            )),
+        onChangeEnd: (double value) {},
+        onChange: (double value) {
+          print(value);
+        });
+
     print("1 Building Feed");
-    //print('2 Authnotifier ${authNotifier.user.displayName}');
+
     print(
-        "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
+        "Length of session: ${meditationSessionNotifier.getLengthOfCurrentSession}");
+
+    //print('2 Authnotifier ${authNotifier.user.displayName}');
+    //print(
+    //    "3 BUILD RESULT LIST LENGTH: ${hParemterNotifier.hParameterList.length}");
 
     return Scaffold(
       //background color behing the appbar
@@ -224,6 +240,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                     isStartMeditationButtonPressed == true
                         ? sliderCountTime
                         : sliderSetTime,
+                    SizedBox(height: 30),
 
                     RaisedButton(
                       onPressed: () {
