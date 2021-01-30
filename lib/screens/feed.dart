@@ -68,7 +68,7 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
       },
       appearance: CircularSliderAppearance(
           startAngle: 150,
-          angleRange: 355,
+          angleRange: 357,
           customWidths: CustomSliderWidths(progressBarWidth: 16),
           size: 280,
           infoProperties: InfoProperties(
@@ -79,7 +79,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                 String twoDigits(int n) => n.toString().padLeft(2, "0");
                 //changing int into Duration
                 final d1 = Duration(minutes: roundedValue);
-
                 String twoDigitMinutes = twoDigits(d1.inMinutes.remainder(200));
                 return "$twoDigitMinutes min";
               }),
@@ -93,7 +92,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
       onChange: (double value) {
         var arr = value.toString().split('.');
         int roundedValue = int.parse(arr[0]);
-
         meditationSessionNotifier.setLengthOfCurrentSession(roundedValue);
         print("I'm in end ...");
 
@@ -106,13 +104,11 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         max: 180,
         initialValue: 0,
         onChangeStart: (double startValue) {
-          startValue = 0;
+          startValue = 1;
         },
         innerWidget: (double value) {
           print('Value from slider: $value');
-
           var arr = value.toString().split('.');
-
           int roundedValue = int.parse(arr[0]);
           print('Concatenaded value: $roundedValue');
 
@@ -146,9 +142,10 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           ); // use your custom widget inside the slider (gets a slider value from the callback)
         },
         appearance: CircularSliderAppearance(
-            startAngle: 180,
-            angleRange: 355,
-            customWidths: CustomSliderWidths(progressBarWidth: 16),
+            startAngle: 360,
+            angleRange: 361,
+            customWidths: CustomSliderWidths(
+                progressBarWidth: 0, handlerSize: 0, trackWidth: 8),
             size: 280,
             infoProperties: InfoProperties(
                 mainLabelStyle: TextStyle(color: Colors.white, fontSize: 40),
@@ -166,11 +163,10 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
             customColors: CustomSliderColors(
               trackColor: Colors.orange,
               progressBarColors: [
-                Color(0xffFFE000),
-                Color(0xffe65c00),
+                Colors.transparent,
+                Colors.transparent,
               ],
             )),
-        onChangeEnd: (double value) {},
         onChange: (double value) {
           print(value);
         });
@@ -240,16 +236,37 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                     isStartMeditationButtonPressed == true
                         ? sliderCountTime
                         : sliderSetTime,
-                    SizedBox(height: 30),
+                    SizedBox(height: 68),
 
-                    RaisedButton(
-                      onPressed: () {
-                        setState(() {
-                          isStartMeditationButtonPressed = true;
-                        });
-                      },
-                      child: Text('Start', style: TextStyle(fontSize: 20)),
+                    ButtonTheme(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                      ),
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+                        //width: double.infinity/2,
+                        child: RaisedButton(
+                          elevation: 10.0,
+                          color: Colors.orange[700],
+                          padding: EdgeInsets.all(16.0),
+                          onPressed: () {
+                            setState(() {
+                              isStartMeditationButtonPressed = true;
+                            });
+                          },
+                          child: Text(
+                            ' Start session ',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              letterSpacing: 1.5,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+
                     // Container(
                     //   color: Colors.blue,
                     //   child: Text('Test'),
