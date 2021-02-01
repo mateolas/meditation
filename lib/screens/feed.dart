@@ -51,6 +51,55 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Session complete'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Great job ! Your session is complete'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            Center(
+              child: ButtonTheme(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                ),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
+                  //width: double.infinity/2,
+                  child: RaisedButton(
+                      elevation: 10.0,
+                      color: Colors.orange[700],
+                      padding: EdgeInsets.all(12.0),
+                      onPressed: () {
+                        setState(() {
+                          isStartMeditationButtonPressed = false;
+                          Navigator.of(context).pop();
+                        });
+                      },
+                      child: Text('Done',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            letterSpacing: 1.5,
+                            fontWeight: FontWeight.bold,
+                          ))),
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
@@ -94,7 +143,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
         int roundedValue = int.parse(arr[0]);
         meditationSessionNotifier.setLengthOfCurrentSession(roundedValue);
         print("I'm in end ...");
-
         print(value);
       },
     );
@@ -111,13 +159,13 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
           var arr = value.toString().split('.');
           int roundedValue = int.parse(arr[0]);
           print('Concatenaded value: $roundedValue');
-
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Countdown(
                 duration: Duration(minutes: roundedValue),
                 onFinish: () {
+                  _showMyDialog();
                   print('finished!');
                 },
                 builder: (BuildContext ctx, Duration remaining) {
@@ -155,7 +203,6 @@ class _FeedState extends State<Feed> with SingleTickerProviderStateMixin {
                   String twoDigits(int n) => n.toString().padLeft(2, "0");
                   //changing int into Duration
                   final d1 = Duration(minutes: roundedValue);
-
                   String twoDigitMinutes =
                       twoDigits(d1.inMinutes.remainder(200));
                   return "$twoDigitMinutes min";
