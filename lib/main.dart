@@ -2,7 +2,7 @@ import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:health_parameters_tracker/notifier/meditationSession_notifier.dart';
 import 'package:provider/provider.dart';
 
-import './screens/feed.dart';
+import './screens/homeScreen.dart';
 import './screens/login.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       ),
       home: Consumer<AuthNotifier>(
         builder: (context, notifier, child) {
-          return notifier.user != null ? Feed() : Login();
+          return notifier.user != null ? HomeScreen() : Login();
         },
       ),
     );
