@@ -4,7 +4,7 @@ import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-import 'package:health_parameters_tracker/screens/feed.dart';
+import 'package:health_parameters_tracker/screens/homeScreen.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 
