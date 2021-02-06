@@ -24,11 +24,19 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   double meditateTime;
   //Controller of a page swipping. Manages swipe detection and provides animation.
   final pageController = PageController(initialPage: 0);
+  //if button "Vibrations" is pressed
+  bool isVibrationButtonPressed;
+  //if button "Sound" is pressed
+  bool isPlaySoundButtonPressed;
 
   @override
   void initState() {
     //on initalization of the app button "Start session" is not pressed
     isStartMeditationButtonPressed = false;
+    //on initalization of the app button "Vibration" is not pressed
+    isVibrationButtonPressed = false;
+    //on initalization of the app button "Vibration" is not pressed
+    isPlaySoundButtonPressed = false;
     //initializing notifier to fetch data from firebase
     //HParameterNotifier hParameterNotifier =
     //    Provider.of<HParameterNotifier>(context, listen: false);
@@ -239,6 +247,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
         });
 
     print("1 Building Feed");
+    print("isVibrationButtonPressed: $isVibrationButtonPressed");
 
     print(
         "Length of session: ${meditationSessionNotifier.getLengthOfCurrentSession}");
@@ -271,8 +280,80 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                     isStartMeditationButtonPressed == true
                         ? sliderCountTime
                         : sliderSetTime,
-                    SizedBox(height: 68),
+                    SizedBox(height: 28),
+                    // Text(
+                    //   "End session sygnalization",
+                    //   style: TextStyle(color: Colors.white, fontSize: 16),
+                    // ),
+                    // SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Spacer(flex: 5),
+                        Tooltip(
+                          message: "End session sygnalization",
+                          child: Icon(
+                            Icons.info_outline,
+                            color: Colors.orange[50],
+                            size: 22,
+                          ),
+                        ),
+                        Spacer(flex: 4),
+                        Row(
+                          children: [
+                            IconButton(
+                              tooltip: isVibrationButtonPressed == true
+                                  ? 'Vibration ON '
+                                  : 'Vibration OFF',
+                              icon: isVibrationButtonPressed == true
+                                  ? Icon(
+                                      Icons.vibration,
+                                      color: Colors.white,
+                                      size: 36,
+                                    )
+                                  : Icon(
+                                      Icons.vibration,
+                                      color: Colors.grey,
+                                      size: 36,
+                                    ),
+                              onPressed: () {
+                                setState(() {
+                                  isVibrationButtonPressed =
+                                      !isVibrationButtonPressed;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        Spacer(flex: 2),
+                        //https://stackoverflow.com/questions/56377942/flutter-play-sound-on-button-press
+                        IconButton(
+                          tooltip: isPlaySoundButtonPressed == true
+                              ? 'Sound ON '
+                              : 'Sound OFF',
+                          icon: isPlaySoundButtonPressed == true
+                              ? Icon(
+                                  Icons.music_note,
+                                  color: Colors.white,
+                                  size: 36,
+                                )
+                              : Icon(
+                                  Icons.music_note,
+                                  color: Colors.grey,
+                                  size: 36,
+                                ),
+                          onPressed: () {
+                            setState(() {
+                              isPlaySoundButtonPressed =
+                                  !isPlaySoundButtonPressed;
+                            });
+                          },
+                        ),
 
+                        Spacer(flex: 12),
+                      ],
+                    ),
+                    SizedBox(height: 50),
                     ButtonTheme(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30.0),
@@ -282,7 +363,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                         //width: double.infinity/2,
                         child: RaisedButton(
                           elevation: 10.0,
-                          color: Colors.orange[700],
+                          color: Colors.orange,
                           padding: EdgeInsets.all(16.0),
                           onPressed: () {
                             setState(() {
