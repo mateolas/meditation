@@ -114,6 +114,15 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
     );
   }
 
+  BoxDecoration myBoxDecoration() {
+    return BoxDecoration(
+      border: Border.all(width: 1, color: Colors.orange[100]),
+      color: Colors.transparent,
+      //shape: BoxShape.circle,
+      borderRadius: BorderRadius.all(Radius.circular(24.0)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     //Notifier to have possibility of loging in/out from the app
@@ -289,7 +298,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Spacer(flex: 5),
+                        Spacer(flex: 4),
                         Tooltip(
                           message: "End session sygnalization",
                           child: Icon(
@@ -299,58 +308,64 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                           ),
                         ),
                         Spacer(flex: 4),
-                        Row(
-                          children: [
-                            IconButton(
-                              tooltip: isVibrationButtonPressed == true
-                                  ? 'Vibration ON '
-                                  : 'Vibration OFF',
-                              icon: isVibrationButtonPressed == true
-                                  ? Icon(
-                                      Icons.vibration,
-                                      color: Colors.white,
-                                      size: 36,
-                                    )
-                                  : Icon(
-                                      Icons.vibration,
-                                      color: Colors.grey,
-                                      size: 36,
-                                    ),
-                              onPressed: () {
-                                setState(() {
-                                  isVibrationButtonPressed =
-                                      !isVibrationButtonPressed;
-                                });
-                              },
-                            ),
-                          ],
+                        Container(
+                          decoration: myBoxDecoration(),
+                          child: Row(
+                            children: [
+                              SizedBox(width: 20),
+                              IconButton(
+                                tooltip: isVibrationButtonPressed == true
+                                    ? 'Vibration ON '
+                                    : 'Vibration OFF',
+                                icon: isVibrationButtonPressed == true
+                                    ? Icon(
+                                        Icons.vibration,
+                                        color: Colors.white,
+                                        size: 36,
+                                      )
+                                    : Icon(
+                                        Icons.vibration,
+                                        color: Colors.orange[200],
+                                        size: 36,
+                                      ),
+                                onPressed: () {
+                                  setState(() {
+                                    isVibrationButtonPressed =
+                                        !isVibrationButtonPressed;
+                                  });
+                                },
+                              ),
+                              SizedBox(width: 16),
+                              IconButton(
+                                tooltip: isPlaySoundButtonPressed == true
+                                    ? 'Sound ON '
+                                    : 'Sound OFF',
+                                icon: isPlaySoundButtonPressed == true
+                                    ? Icon(
+                                        Icons.music_note,
+                                        color: Colors.white,
+                                        size: 36,
+                                      )
+                                    : Icon(
+                                        Icons.music_note,
+                                        color: Colors.orange[200],
+                                        size: 36,
+                                      ),
+                                onPressed: () {
+                                  setState(() {
+                                    isPlaySoundButtonPressed =
+                                        !isPlaySoundButtonPressed;
+                                  });
+                                },
+                              ),
+                              SizedBox(width: 20),
+                            ],
+                          ),
                         ),
-                        Spacer(flex: 2),
+                        Spacer(flex: 10),
                         //https://stackoverflow.com/questions/56377942/flutter-play-sound-on-button-press
-                        IconButton(
-                          tooltip: isPlaySoundButtonPressed == true
-                              ? 'Sound ON '
-                              : 'Sound OFF',
-                          icon: isPlaySoundButtonPressed == true
-                              ? Icon(
-                                  Icons.music_note,
-                                  color: Colors.white,
-                                  size: 36,
-                                )
-                              : Icon(
-                                  Icons.music_note,
-                                  color: Colors.grey,
-                                  size: 36,
-                                ),
-                          onPressed: () {
-                            setState(() {
-                              isPlaySoundButtonPressed =
-                                  !isPlaySoundButtonPressed;
-                            });
-                          },
-                        ),
 
-                        Spacer(flex: 12),
+                      
                       ],
                     ),
                     SizedBox(height: 50),
