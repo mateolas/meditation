@@ -3,13 +3,17 @@ import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
 import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
 import 'package:health_parameters_tracker/notifier/units_notifier.dart';
 import 'package:health_parameters_tracker/notifier/meditationSession_notifier.dart';
-
+import 'package:vibration/vibration.dart';
 import 'package:countdown_flutter/countdown_flutter.dart';
 import 'package:health_parameters_tracker/screens/sideMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/rendering.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'dart:async';
+import 'dart:io';
 
 class MeditationSessionScreen extends StatefulWidget {
   @override
@@ -28,6 +32,10 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   bool isVibrationButtonPressed;
   //if button "Sound" is pressed
   bool isPlaySoundButtonPressed;
+  //variables to play sound
+  AudioCache audioCache = AudioCache();
+  AudioPlayer advancedPlayer = AudioPlayer();
+  String localFilePath;
 
   @override
   void initState() {
@@ -40,7 +48,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
     //initializing notifier to fetch data from firebase
     //HParameterNotifier hParameterNotifier =
     //    Provider.of<HParameterNotifier>(context, listen: false);
-
+      //advancedPlayer.startHeadlessService();
     //fetching data from firebase
     //getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
@@ -202,6 +210,20 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
               Countdown(
                 duration: Duration(minutes: roundedValue),
                 onFinish: () {
+                  //Vibrate telephone if vibration button is turn on
+                  if (isVibrationButtonPressed == true) {
+                    Vibration.vibrate(duration: 1000);
+                  }
+                  
+
+                  
+                  if (isPlaySoundButtonPressed == true) {
+                    
+                   advancedPlayer.play('medium_bell.mp3');
+               
+        
+                  }
+
                   //Function to show confirmation dialog and sent data to Firebase
                   _showMyDialog();
                 },
@@ -256,7 +278,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
         });
 
     print("1 Building Feed");
-    print("isVibrationButtonPressed: $isVibrationButtonPressed");
+    print("isPlaySoundButtonPressed: $isPlaySoundButtonPressed");
 
     print(
         "Length of session: ${meditationSessionNotifier.getLengthOfCurrentSession}");
@@ -289,7 +311,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                     isStartMeditationButtonPressed == true
                         ? sliderCountTime
                         : sliderSetTime,
-                    SizedBox(height: 28),
+                    SizedBox(height: 38),
                     // Text(
                     //   "End session sygnalization",
                     //   style: TextStyle(color: Colors.white, fontSize: 16),
@@ -298,16 +320,16 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Spacer(flex: 4),
+                        Spacer(flex: 8),
                         Tooltip(
                           message: "End session sygnalization",
                           child: Icon(
                             Icons.info_outline,
-                            color: Colors.orange[50],
+                            color: Colors.orange[100],
                             size: 22,
                           ),
                         ),
-                        Spacer(flex: 4),
+                        Spacer(flex: 2),
                         Container(
                           decoration: myBoxDecoration(),
                           child: Row(
@@ -321,12 +343,12 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                                     ? Icon(
                                         Icons.vibration,
                                         color: Colors.white,
-                                        size: 36,
+                                        size: 34,
                                       )
                                     : Icon(
                                         Icons.vibration,
                                         color: Colors.orange[200],
-                                        size: 36,
+                                        size: 34,
                                       ),
                                 onPressed: () {
                                   setState(() {
@@ -344,15 +366,16 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                                     ? Icon(
                                         Icons.music_note,
                                         color: Colors.white,
-                                        size: 36,
+                                        size: 34,
                                       )
                                     : Icon(
                                         Icons.music_note,
                                         color: Colors.orange[200],
-                                        size: 36,
+                                        size: 34,
                                       ),
                                 onPressed: () {
                                   setState(() {
+                                     audioCache.play('medium_bell.mp3');
                                     isPlaySoundButtonPressed =
                                         !isPlaySoundButtonPressed;
                                   });
@@ -362,10 +385,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                             ],
                           ),
                         ),
-                        Spacer(flex: 10),
+                        Spacer(flex: 14),
                         //https://stackoverflow.com/questions/56377942/flutter-play-sound-on-button-press
-
-                      
                       ],
                     ),
                     SizedBox(height: 50),

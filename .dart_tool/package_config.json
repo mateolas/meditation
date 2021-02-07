@@ -26,6 +26,12 @@
       "languageVersion": "2.2"
     },
     {
+      "name": "audioplayers",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/audioplayers-0.17.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.6"
+    },
+    {
       "name": "basic_utils",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/basic_utils-2.6.3",
       "packageUri": "lib/",
@@ -662,6 +668,18 @@
       "languageVersion": "2.9"
     },
     {
+      "name": "vibration",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/vibration-1.7.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.0"
+    },
+    {
+      "name": "vibration_web",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/vibration_web-1.6.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.7"
+    },
+    {
       "name": "vin_decoder",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/vin_decoder-0.1.3",
       "packageUri": "lib/",
@@ -698,7 +716,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-02-01T21:16:11.957284Z",
+  "generated": "2021-02-07T08:28:36.000256Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-21.0.dev.flutter-20bf2fcf56"
 }
