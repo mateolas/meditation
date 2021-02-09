@@ -48,6 +48,7 @@ dependencies:
   flutter_auth_buttons: ^0.10.0
   vibration: ^1.7.3
   audioplayers:
+  async: ^2.4.2
 
 
 
@@ -81,9 +82,7 @@ flutter:
     - lib/assets/images/pulse_logo.png
     - lib/assets/images/hpt_sign_logo_white.png
     - lib/assets/images/hpt_sign_logo_circle_green.png
-    - lib/assets/medium_bell.mp3
-    - lib/assets/large_bell.mp3
-    - lib/assets/very_large_bell.mp3
+    - assets/large_bell_short.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

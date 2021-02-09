@@ -14,6 +14,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
 import 'dart:io';
+import 'package:async/async.dart';
 
 class MeditationSessionScreen extends StatefulWidget {
   @override
@@ -48,7 +49,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
     //initializing notifier to fetch data from firebase
     //HParameterNotifier hParameterNotifier =
     //    Provider.of<HParameterNotifier>(context, listen: false);
-      //advancedPlayer.startHeadlessService();
+    //advancedPlayer.startHeadlessService();
     //fetching data from firebase
     //getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
@@ -120,6 +121,12 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
         );
       },
     );
+  }
+
+  Future<void> _playSound() async {
+    var bytes =
+        await (await audioCache.load('large_bell_short.mp3')).readAsBytes();
+    audioCache.playBytes(bytes);
   }
 
   BoxDecoration myBoxDecoration() {
@@ -214,16 +221,9 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                   if (isVibrationButtonPressed == true) {
                     Vibration.vibrate(duration: 1000);
                   }
-                  
 
-                  
-                  if (isPlaySoundButtonPressed == true) {
-                    
-                   advancedPlayer.play('medium_bell.mp3');
-               
-        
-                  }
-
+                  if (isPlaySoundButtonPressed == true) {}
+                  _playSound();
                   //Function to show confirmation dialog and sent data to Firebase
                   _showMyDialog();
                 },
@@ -375,7 +375,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                                       ),
                                 onPressed: () {
                                   setState(() {
-                                     audioCache.play('medium_bell.mp3');
+                                    _playSound();
                                     isPlaySoundButtonPressed =
                                         !isPlaySoundButtonPressed;
                                   });
