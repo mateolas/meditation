@@ -1,4 +1,4 @@
-package com.skylinestudio.health_parameters_tracker
+package com.skylinestudio.take_a_breath
 
 import io.flutter.embedding.android.FlutterActivity
 

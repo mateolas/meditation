@@ -1,13 +1,13 @@
-import 'package:health_parameters_tracker/api/hParameter_api.dart';
-import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
-import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
-import 'package:health_parameters_tracker/notifier/units_notifier.dart';
-import 'package:health_parameters_tracker/notifier/meditationSession_notifier.dart';
+import 'package:take_a_breath/api/hParameter_api.dart';
+import 'package:take_a_breath/notifier/auth_notifier.dart';
+import 'package:take_a_breath/notifier/bill_notifier.dart';
+import 'package:take_a_breath/notifier/units_notifier.dart';
+import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 
 import 'package:countdown_flutter/countdown_flutter.dart';
-import 'package:health_parameters_tracker/screens/sideMenu.dart';
-import 'package:health_parameters_tracker/screens/meditationSessionScreen.dart';
-import 'package:health_parameters_tracker/screens/meditationStatistics.dart';
+import 'package:take_a_breath/screens/sideMenu.dart';
+import 'package:take_a_breath/screens/meditationSessionScreen.dart';
+import 'package:take_a_breath/screens/meditationStatistics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/rendering.dart';

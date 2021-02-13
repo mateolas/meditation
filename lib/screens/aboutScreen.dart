@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_parameters_tracker/model/colors.dart';
+import 'package:take_a_breath/model/colors.dart';
 
 class AboutScreen extends StatelessWidget {
   @override

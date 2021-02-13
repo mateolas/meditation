@@ -1,6 +1,6 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
-import 'package:health_parameters_tracker/model/colors.dart';
+import 'package:take_a_breath/model/colors.dart';
 
 class Chart extends StatelessWidget {
   final List<SensorValue> _data;

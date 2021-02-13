@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:health_parameters_tracker/screens/aboutScreen.dart';
-import 'package:health_parameters_tracker/screens/feedbackScreen.dart';
-import 'package:health_parameters_tracker/screens/settingsScreen.dart';
-import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
-import 'package:health_parameters_tracker/api/hParameter_api.dart';
+import 'package:take_a_breath/screens/aboutScreen.dart';
+import 'package:take_a_breath/screens/feedbackScreen.dart';
+import 'package:take_a_breath/screens/settingsScreen.dart';
+import 'package:take_a_breath/notifier/auth_notifier.dart';
+import 'package:take_a_breath/api/hParameter_api.dart';
 import 'package:provider/provider.dart';
 
 class SideMenu extends StatelessWidget {

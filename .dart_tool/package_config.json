@@ -50,6 +50,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "change_app_package_name",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/change_app_package_name-0.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "characters",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/characters-1.1.0-nullsafety",
       "packageUri": "lib/",
@@ -710,13 +716,13 @@
       "languageVersion": "2.4"
     },
     {
-      "name": "health_parameters_tracker",
+      "name": "take_a_breath",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-02-13T09:50:38.994945Z",
+  "generated": "2021-02-13T18:22:04.316828Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-21.0.dev.flutter-20bf2fcf56"
 }

@@ -1,11 +1,11 @@
-import 'package:health_parameters_tracker/api/hParameter_api.dart';
-import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
-import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
-import 'package:health_parameters_tracker/notifier/units_notifier.dart';
-import 'package:health_parameters_tracker/notifier/meditationSession_notifier.dart';
+import 'package:take_a_breath/api/hParameter_api.dart';
+import 'package:take_a_breath/notifier/auth_notifier.dart';
+import 'package:take_a_breath/notifier/bill_notifier.dart';
+import 'package:take_a_breath/notifier/units_notifier.dart';
+import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 import 'package:vibration/vibration.dart';
 import 'package:countdown_flutter/countdown_flutter.dart';
-import 'package:health_parameters_tracker/screens/sideMenu.dart';
+import 'package:take_a_breath/screens/sideMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/rendering.dart';
@@ -33,6 +33,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   bool isVibrationButtonPressed;
   //if button "Sound" is pressed
   bool isPlaySoundButtonPressed;
+  //bool to hide button while counting and show after finising
+  bool isStartSessionButtonVisible;
   //variables to play sound
   AudioCache audioCache = AudioCache();
   AudioPlayer advancedPlayer = AudioPlayer();
@@ -45,6 +47,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
     isVibrationButtonPressed = false;
     //on initalization of the app button "Vibration" is not pressed
     isPlaySoundButtonPressed = false;
+    //on initalization of the app button "Start sessopm" is visible
+    isStartSessionButtonVisible = true;
     //initializing notifier to fetch data from firebase
     //HParameterNotifier hParameterNotifier =
     //    Provider.of<HParameterNotifier>(context, listen: false);
@@ -104,6 +108,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                         setState(() {
                           isStartMeditationButtonPressed = false;
                           Navigator.of(context).pop();
+                          isStartSessionButtonVisible = true;
                         });
                       },
                       child: Text('Done',
@@ -124,8 +129,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
 
   //function to play sound on the end of the session
   Future<void> _playSound(String soundName) async {
-    var bytes =
-        await (await audioCache.load(soundName)).readAsBytes();
+    var bytes = await (await audioCache.load(soundName)).readAsBytes();
     audioCache.playBytes(bytes);
   }
 
@@ -310,28 +314,18 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                 ),
                 Column(
                   children: [
+                    SizedBox(height: 48),
+                    //if start meditation pressed is being pressed, show the countdown timer
                     isStartMeditationButtonPressed == true
                         ? sliderCountTime
                         : sliderSetTime,
                     SizedBox(height: 38),
-                    // Text(
-                    //   "End session sygnalization",
-                    //   style: TextStyle(color: Colors.white, fontSize: 16),
-                    // ),
-                    // SizedBox(height: 8),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Spacer(flex: 8),
-                        Tooltip(
-                          message: "End session sygnalization",
-                          child: Icon(
-                            Icons.info_outline,
-                            color: Colors.orange[100],
-                            size: 22,
-                          ),
-                        ),
-                        Spacer(flex: 2),
+                        Spacer(flex: 18),
+
                         Container(
                           decoration: myBoxDecoration(),
                           child: Row(
@@ -377,7 +371,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                                       ),
                                 onPressed: () {
                                   setState(() {
-                                    _playSound(meditationSessionNotifier.getSoundName);
+                                    _playSound(
+                                        meditationSessionNotifier.getSoundName);
                                     isPlaySoundButtonPressed =
                                         !isPlaySoundButtonPressed;
                                   });
@@ -387,50 +382,62 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                             ],
                           ),
                         ),
+                        Spacer(flex: 2),
+                        Tooltip(
+                          message: "End session sygnalization",
+                          child: Icon(
+                            Icons.info_outline,
+                            color: Colors.orange[100],
+                            size: 22,
+                          ),
+                        ),
                         Spacer(flex: 14),
                         //https://stackoverflow.com/questions/56377942/flutter-play-sound-on-button-press
                       ],
                     ),
-                    SizedBox(height: 50),
-                    ButtonTheme(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                      ),
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(0, 12, 0, 12),
-                        //width: double.infinity/2,
-                        child: RaisedButton(
-                          elevation: 10.0,
-                          color: Colors.orange,
-                          padding: EdgeInsets.all(16.0),
-                          onPressed: () {
-                            setState(() {
-                              isStartMeditationButtonPressed = true;
-                            });
-                          },
-                          child: Text(
-                            ' Start session ',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              letterSpacing: 1.5,
-                              fontWeight: FontWeight.bold,
+                    SizedBox(height: 60),
+                    //Sized box which "shows" when "Start session" dissapears
+                    //thanks to it main slider not "drops down"
+                    Visibility(
+                        visible: !isStartSessionButtonVisible,
+                        child: SizedBox(height: 120)),
+                    //Button dissapears after clicking it
+                    //Appears once again when clockdown counter ends counting
+                    Visibility(
+                      visible: isStartSessionButtonVisible,
+                      child: ButtonTheme(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(0, 60, 0, 12),
+                          child: RaisedButton(
+                            elevation: 10.0,
+                            color: Colors.orange,
+                            padding: EdgeInsets.all(16.0),
+                            onPressed: () {
+                              setState(() {
+                                isStartMeditationButtonPressed = true;
+                                isStartSessionButtonVisible = false;
+                              });
+                            },
+                            child: Text(
+                              ' Start session ',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                letterSpacing: 1.5,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-
-                    // Container(
-                    //   color: Colors.blue,
-                    //   child: Text('Test'),
-                    // ),
                   ],
                 ),
               ],
             ),
-
-            //for(var item in hParemterNotifier.hParameterList ) Text(item.temperature)
           ],
         ),
       ),

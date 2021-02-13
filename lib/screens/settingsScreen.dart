@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_parameters_tracker/screens/settingsSoundsScreen.dart';
+import 'package:take_a_breath/screens/settingsSoundsScreen.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override

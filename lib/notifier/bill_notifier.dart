@@ -1,7 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
-import 'package:health_parameters_tracker/model/hParameter.dart';
+import 'package:take_a_breath/model/hParameter.dart';
 
 class HParameterNotifier with ChangeNotifier {
   List<Hparameter> _hParameterList = [];

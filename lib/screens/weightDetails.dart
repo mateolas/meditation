@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:health_parameters_tracker/api/hParameter_api.dart';
-import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
+import 'package:take_a_breath/api/hParameter_api.dart';
+import 'package:take_a_breath/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:intl/intl.dart';

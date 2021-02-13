@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_parameters_tracker/notifier/meditationSession_notifier.dart';
+import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';

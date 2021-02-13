@@ -1,7 +1,7 @@
-import 'package:health_parameters_tracker/model/hParameter.dart';
-import 'package:health_parameters_tracker/model/user.dart';
-import 'package:health_parameters_tracker/notifier/auth_notifier.dart';
-import 'package:health_parameters_tracker/notifier/bill_notifier.dart';
+import 'package:take_a_breath/model/hParameter.dart';
+import 'package:take_a_breath/model/user.dart';
+import 'package:take_a_breath/notifier/auth_notifier.dart';
+import 'package:take_a_breath/notifier/bill_notifier.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
