@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:health_parameters_tracker/screens/unitsScreen.dart';
+import 'package:health_parameters_tracker/screens/settingsSoundsScreen.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -30,7 +30,7 @@ class SettingsScreen extends StatelessWidget {
         children: [
           Container(
             child: ListTile(
-              title: new Text('Units'),
+              title: new Text('End session notification sounds'),
               onTap: () {
                 Navigator.push(
                   context,

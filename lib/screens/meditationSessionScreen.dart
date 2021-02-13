@@ -36,7 +36,6 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   //variables to play sound
   AudioCache audioCache = AudioCache();
   AudioPlayer advancedPlayer = AudioPlayer();
-  String localFilePath;
 
   @override
   void initState() {
@@ -123,9 +122,10 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
     );
   }
 
-  Future<void> _playSound() async {
+  //function to play sound on the end of the session
+  Future<void> _playSound(String soundName) async {
     var bytes =
-        await (await audioCache.load('large_bell_short.mp3')).readAsBytes();
+        await (await audioCache.load(soundName)).readAsBytes();
     audioCache.playBytes(bytes);
   }
 
@@ -223,7 +223,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                   }
 
                   if (isPlaySoundButtonPressed == true) {
-                    _playSound();
+                    _playSound(meditationSessionNotifier.getSoundName);
                   }
 
                   //Function to show confirmation dialog and sent data to Firebase
@@ -377,7 +377,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                                       ),
                                 onPressed: () {
                                   setState(() {
-                                    _playSound();
+                                    _playSound(meditationSessionNotifier.getSoundName);
                                     isPlaySoundButtonPressed =
                                         !isPlaySoundButtonPressed;
                                   });
