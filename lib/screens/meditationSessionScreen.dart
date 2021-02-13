@@ -222,8 +222,10 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                     Vibration.vibrate(duration: 1000);
                   }
 
-                  if (isPlaySoundButtonPressed == true) {}
-                  _playSound();
+                  if (isPlaySoundButtonPressed == true) {
+                    _playSound();
+                  }
+
                   //Function to show confirmation dialog and sent data to Firebase
                   _showMyDialog();
                 },
