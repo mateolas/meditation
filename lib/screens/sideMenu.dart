@@ -3,7 +3,7 @@ import 'package:take_a_breath/screens/aboutScreen.dart';
 import 'package:take_a_breath/screens/feedbackScreen.dart';
 import 'package:take_a_breath/screens/settingsScreen.dart';
 import 'package:take_a_breath/notifier/auth_notifier.dart';
-import 'package:take_a_breath/api/hParameter_api.dart';
+import 'package:take_a_breath/api/meditationSession_api.dart';
 import 'package:provider/provider.dart';
 
 class SideMenu extends StatelessWidget {
