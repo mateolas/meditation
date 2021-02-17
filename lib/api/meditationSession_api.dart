@@ -10,12 +10,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 //######### AUTHORIZATION #########
 //
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final GoogleSignIn googleSignIn = GoogleSignIn();
 
-
- final FirebaseAuth _auth = FirebaseAuth.instance;
-  final GoogleSignIn googleSignIn = GoogleSignIn();
-
-  Future<String> signInWithGoogle(AuthNotifier authNotifier) async {
+Future<String> signInWithGoogle(AuthNotifier authNotifier) async {
   final GoogleSignInAccount googleSignInAccount = await googleSignIn.signIn();
   final GoogleSignInAuthentication googleSignInAuthentication =
       await googleSignInAccount.authentication;
@@ -34,10 +32,10 @@ import 'package:google_sign_in/google_sign_in.dart';
   final FirebaseUser currentUser = await _auth.currentUser();
   assert(user.uid == currentUser.uid);
 
-     if (user != null) {
-  authNotifier.setUser(user);
-  print("'signInWithGoogle succeeded: $user'");
-     }
+  if (user != null) {
+    authNotifier.setUser(user);
+    print("'signInWithGoogle succeeded: $user'");
+  }
 
   return 'signInWithGoogle succeeded: $user';
 }
@@ -45,7 +43,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 void signOutGoogle(AuthNotifier authNotifier) async {
   await googleSignIn.signOut();
 
-    await FirebaseAuth.instance
+  await FirebaseAuth.instance
       .signOut()
       .catchError((error) => print(error.code));
 
@@ -121,10 +119,10 @@ Future<String> getCurrentUID() async {
 //
 
 getMeditationSession(MeditationSessionNotifier meditationSessionNotifier) async {
+  //getting current firebaseUser
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
-  //DocumentReference documentRef = await Firestore.instance.collection('userData').document(firebaseUser.uid).collection('bills').add(food.toMap());
-
+  //getting documents under userData/firebasUserID/meditationSession, ordered by descending
   QuerySnapshot snapshot = await Firestore.instance
       .collection('userData')
       .document(firebaseUser.uid)
@@ -132,18 +130,24 @@ getMeditationSession(MeditationSessionNotifier meditationSessionNotifier) async 
       .orderBy("createdAt", descending: true)
       .getDocuments();
 
+  //local list to save all documents from firebase
   List<MeditationSession> _meditationSessionList = [];
 
+  //inserting documents to list
   snapshot.documents.forEach((document) {
+    //converting from firebase format to meditationSession
     MeditationSession meditationSession = MeditationSession.fromMap(document.data);
+    //adding element to the list
     _meditationSessionList.add(meditationSession);
   });
 
+  //setting the list and and notifing the notifier 
   meditationSessionNotifier.meditationSessionList = _meditationSessionList;
 }
 
-uploadMeditationSession(MeditationSession meditationSession, Function meditationSessionUploaded) async {
-  CollectionReference meditationSessionRef = Firestore.instance.collection('userData');
+uploadMeditationSession(MeditationSession meditationSession) async {
+  CollectionReference meditationSessionRef =
+      Firestore.instance.collection('userData');
 
   meditationSession.createdAt = Timestamp.now();
 
@@ -160,8 +164,6 @@ uploadMeditationSession(MeditationSession meditationSession, Function meditation
   print('uploaded hParameters successfully: ${meditationSession.toString()}');
 
   await documentRef.setData(meditationSession.toMap(), merge: true);
-
-  meditationSessionUploaded(meditationSession);
 }
 
 deleteBill(MeditationSession bill, Function foodDeleted) async {

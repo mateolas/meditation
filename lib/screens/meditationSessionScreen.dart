@@ -1,7 +1,7 @@
 import 'package:take_a_breath/api/meditationSession_api.dart';
 import 'package:take_a_breath/notifier/auth_notifier.dart';
 import 'package:take_a_breath/notifier/bill_notifier.dart';
-import 'package:take_a_breath/notifier/units_notifier.dart';
+import 'package:take_a_breath/model/meditationSession.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 import 'package:vibration/vibration.dart';
 import 'package:countdown_flutter/countdown_flutter.dart';
@@ -38,6 +38,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   //variables to play sound
   AudioCache audioCache = AudioCache();
   AudioPlayer advancedPlayer = AudioPlayer();
+  //MeditationSession which will be "uploading"
+  MeditationSession _currentMeditationSession;
 
   @override
   void initState() {
@@ -50,13 +52,17 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
     //on initalization of the app button "Start sessopm" is visible
     isStartSessionButtonVisible = true;
     //initializing notifier to fetch data from firebase
-    //HParameterNotifier hParameterNotifier =
-    //    Provider.of<HParameterNotifier>(context, listen: false);
-    //advancedPlayer.startHeadlessService();
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     //fetching data from firebase
-    //getHParameters(hParameterNotifier);
-    //setting default temperature time frame view for 'Day'
-
+    getMeditationSession(meditationSessionNotifier);
+    //initializng _currentMeditationSession with "empty data"
+    //length of the meditation session is set in "slider set time"
+    //created at - by api
+    //id - by api
+    //at the end _currentMeditationSession is an argument to upload to firebase
+    //upload to firebase function is used showDialog function
+    _currentMeditationSession = MeditationSession();
     super.initState();
   }
 
@@ -78,6 +84,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   //change isStartMeditationButtonPressed to false (to show "Set time" slider)
   //after confirming it, data about session is sent to Firebase
   Future<void> _showMyDialog() async {
+  
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -106,7 +114,9 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                       padding: EdgeInsets.all(12.0),
                       onPressed: () {
                         setState(() {
+                          //setting to false make button visible
                           isStartMeditationButtonPressed = false;
+                          
                           Navigator.of(context).pop();
                           isStartSessionButtonVisible = true;
                         });
@@ -146,9 +156,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   Widget build(BuildContext context) {
     //Notifier to have possibility of loging in/out from the app
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-    //HParameterNotifier hParemterNotifier =
-    //    Provider.of<HParameterNotifier>(context);
-
+   
     //Notifier to get data from the slider within "inner widget" function
     //Saves information about the length of the session
     MeditationSessionNotifier meditationSessionNotifier =
@@ -195,6 +203,9 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
         int roundedValue = int.parse(arr[0]);
         //update the Notifier to get the length of the current session
         meditationSessionNotifier.setLengthOfCurrentSession(roundedValue);
+        //setting the length of the current session
+        //_currentMedtationSession will be uploaded to firebase
+        _currentMeditationSession.length = roundedValue.toString();
         print(value);
       },
     );
@@ -229,7 +240,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                   if (isPlaySoundButtonPressed == true) {
                     _playSound(meditationSessionNotifier.getSoundName);
                   }
-
+                  uploadMeditationSession(_currentMeditationSession);
                   //Function to show confirmation dialog and sent data to Firebase
                   _showMyDialog();
                 },

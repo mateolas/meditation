@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:take_a_breath/api/hParameter_api.dart';
+import 'package:take_a_breath/api/meditationSession_api.dart';
 import 'package:take_a_breath/notifier/bill_notifier.dart';
 import 'package:provider/provider.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -23,7 +23,7 @@ class _WeightDetailsState extends State<WeightDetails> {
     HParameterNotifier hParameterNotifier =
         Provider.of<HParameterNotifier>(context, listen: false);
     //fetching data from firebase
-    getHParameters(hParameterNotifier);
+    //getHParameters(hParameterNotifier);
     //setting default temperature time frame view for 'Day'
 
     super.initState();
@@ -41,8 +41,9 @@ class _WeightDetailsState extends State<WeightDetails> {
     List<DateTime> listWithNoEmptyRecordsDateTimeValues = [];
     //Loop through the hParameter list and add to two new lists non null temperature values
     for (int i = 0; i < hParameterNotifier.hParameterList.length; i++) {
-      if (hParameterNotifier.hParameterList[i].weight != null) {
-        listWithNoEmptyRecordsWeightValues.add(hParameterNotifier.hParameterList[i].weight);
+      //if (hParameterNotifier.hParameterList[i].weight != null) 
+      {
+        //listWithNoEmptyRecordsWeightValues.add(hParameterNotifier.hParameterList[i].weight);
         listWithNoEmptyRecordsDateTimeValues.add(hParameterNotifier.hParameterList[i].createdAt.toDate());
       }
     }
