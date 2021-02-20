@@ -50,6 +50,7 @@ dependencies:
   audioplayers:
   async: ^2.4.2
   change_app_package_name: ^0.1.2
+  convex_bottom_bar: ^2.7.1
 
 
 

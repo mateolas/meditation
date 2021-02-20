@@ -116,6 +116,12 @@
       "languageVersion": "1.17"
     },
     {
+      "name": "convex_bottom_bar",
+      "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/convex_bottom_bar-2.7.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.1"
+    },
+    {
       "name": "countdown_flutter",
       "rootUri": "file:///C:/flutter/.pub-cache/hosted/pub.dartlang.org/countdown_flutter-0.1.2",
       "packageUri": "lib/",
@@ -722,7 +728,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-02-13T18:22:04.316828Z",
+  "generated": "2021-02-20T16:21:19.667015Z",
   "generator": "pub",
   "generatorVersion": "2.9.0-21.0.dev.flutter-20bf2fcf56"
 }

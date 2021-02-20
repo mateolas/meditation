@@ -300,7 +300,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
     print(
         "Length of session: ${meditationSessionNotifier.getLengthOfCurrentSession}");
 
-    return Scaffold(
+    return Scaffold(   
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -325,12 +325,12 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                 ),
                 Column(
                   children: [
-                    SizedBox(height: 48),
+                    //SizedBox(height: 60),
                     //if start meditation pressed is being pressed, show the countdown timer
                     isStartMeditationButtonPressed == true
                         ? sliderCountTime
                         : sliderSetTime,
-                    SizedBox(height: 38),
+                    SizedBox(height: 18),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -406,7 +406,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                         //https://stackoverflow.com/questions/56377942/flutter-play-sound-on-button-press
                       ],
                     ),
-                    SizedBox(height: 60),
+                    //SizedBox(height: 20),
                     //Sized box which "shows" when "Start session" dissapears
                     //thanks to it main slider not "drops down"
                     Visibility(
@@ -424,8 +424,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                           padding: EdgeInsets.fromLTRB(0, 60, 0, 12),
                           child: RaisedButton(
                             elevation: 10.0,
-                            color: Colors.orange,
-                            padding: EdgeInsets.all(16.0),
+                            color: Colors.white,
+                            padding: EdgeInsets.all(12.0),
                             onPressed: () {
                               setState(() {
                                 isStartMeditationButtonPressed = true;
@@ -436,7 +436,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                               ' Start session ',
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white,
+                                color: Colors.orange,
                                 letterSpacing: 1.5,
                                 fontWeight: FontWeight.bold,
                               ),
