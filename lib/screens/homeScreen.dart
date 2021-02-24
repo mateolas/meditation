@@ -31,35 +31,41 @@ class _HomeScreenState extends State<HomeScreen> {
   //what type of screen is selected with a tab controller
   String selectedTypeOfScreen;
 
+  //variable to hold title of the screen
+  String titleOfTheScreen = 'Take a breath';
+
   //Names of screens to present at the bottom of the app
   List listOfScreens = [
-    'HOME',
-    'PROGRESS',
-    'LITERATURE',
-    'NEWS',
+    'Home',
+    'Progress',
+    'Literature',
+    'News',
+    'Profile'
   ];
 
+  //function to present proper page depends on the item
+  //picked from the tab bar menu
   Widget whatScreenToPresent(String typeOfScreen) {
     switch (typeOfScreen) {
-      case 'HOME':
+      case 'Home':
         {
           return MeditationSessionScreen();
         }
         break;
 
-      case 'PROGRESS':
+      case 'Progress':
         {
           return MeditationStatistics();
         }
         break;
 
-      case 'LITERATURE':
+      case 'Literature':
         {
           return MeditationStatistics();
         }
         break;
 
-      case 'NEWS':
+      case 'News':
         {
           return MeditationStatistics();
         }
@@ -75,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    selectedTypeOfScreen = 'HOME';
+    selectedTypeOfScreen = 'Home';
     super.initState();
   }
 
@@ -99,14 +105,24 @@ class _HomeScreenState extends State<HomeScreen> {
               TabItem(icon: Icons.message, title: 'News'),
               TabItem(icon: Icons.people, title: 'Profile'),
             ],
-            backgroundColor: Colors.orange[600],
-            height: MediaQuery.of(context).size.height / 14,
+            backgroundColor: Colors.orange[700],
+            height: MediaQuery.of(context).size.height / 15,
             curve: Curves.easeInOut,
-            top: -10,
+            top: -8,
             initialActiveIndex: 0, //optional, default as 0
+            //function which gives number of the selected item
             onTap: (int i) => {
                   setState(() {
+                    //assign item from the list of the screen names to the selected screen
                     selectedTypeOfScreen = listOfScreens[i];
+                    //if function to define AppBar title
+                    //if home screen set title to 'Take a breath'
+                    //in any other case assign proper name based on the list
+                    if (i == 0) {
+                      titleOfTheScreen = 'Take a breath';
+                    } else {
+                      titleOfTheScreen = listOfScreens[i];
+                    }
                   })
                 }),
         drawer: SideMenu(),
@@ -118,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Colors.transparent,
           elevation: 0,
           title: Text(
-            'Take a breath',
+            titleOfTheScreen,
             style: TextStyle(color: Colors.white),
           ),
           centerTitle: true,
@@ -135,6 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ],
         ),
+        //what type of screen to present based on a chosen tabBar selection
         body: whatScreenToPresent(selectedTypeOfScreen),
       ),
     );
