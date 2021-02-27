@@ -94,11 +94,13 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   // Find the first date of the week which contains the provided date.
   DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+     isIncreaseSignNeedToVisible = false;
     return dateTime.subtract(Duration(days: dateTime.weekday - 1));
   }
 
   //Find last date of the week which contains provided date.
   DateTime findLastDateOfTheWeek(DateTime dateTime) {
+    isIncreaseSignNeedToVisible = false;
     return dateTime
         .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
   }
@@ -106,6 +108,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   /// Find first date of previous week using a date in current week.
   /// [dateTime] A date in current week.
   DateTime findFirstDateOfPreviousWeek(DateTime dateTime, int k) {
+    isIncreaseSignNeedToVisible = true;
     final DateTime sameWeekDayOfLastWeek = dateTime.subtract(Duration(days: k));
     return findFirstDateOfTheWeek(sameWeekDayOfLastWeek);
   }
@@ -113,7 +116,24 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   /// Find last date of previous week using a date in current week.
   /// [dateTime] A date in current week.
   DateTime findLastDateOfPreviousWeek(DateTime dateTime, int k) {
+    isIncreaseSignNeedToVisible = true;
     final DateTime sameWeekDayOfLastWeek = dateTime.subtract(Duration(days: k));
+    return findLastDateOfTheWeek(sameWeekDayOfLastWeek);
+  }
+
+  /// Find first date of previous week using a date in current week.
+  /// [dateTime] A date in current week.
+  DateTime findFirstDateOfNextWeek(DateTime dateTime, int k) {
+    isIncreaseSignNeedToVisible = true;
+    final DateTime sameWeekDayOfLastWeek = dateTime.add(Duration(days: k));
+    return findFirstDateOfTheWeek(sameWeekDayOfLastWeek);
+  }
+
+  /// Find last date of previous week using a date in current week.
+  /// [dateTime] A date in current week.
+  DateTime findLastDateOfNextWeek(DateTime dateTime, int k) {
+    isIncreaseSignNeedToVisible = true;
+    final DateTime sameWeekDayOfLastWeek = dateTime.add(Duration(days: k));
     return findLastDateOfTheWeek(sameWeekDayOfLastWeek);
   }
 
@@ -126,6 +146,20 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
           findFirstDateOfPreviousWeek(time, weekCounter);
       currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
       weekCounter = weekCounter + 7;
+    });
+
+    return currentDate;
+  }
+
+  //function to decrease the presemted date based on chosen time frame
+  DateTime increaseDatePerWeek() {
+    DateTime time = DateTime.now();
+
+    setState(() {
+      currentDateStartOfTheWeek =
+          findFirstDateOfPreviousWeek(time, weekCounter);
+      currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
+      weekCounter = weekCounter - 7;
     });
 
     return currentDate;
@@ -259,14 +293,16 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
               whatDateToPresent(selectedTimeFrame),
               GestureDetector(
                 child: Visibility(
-                  visible: isIncreaseSignNeedToVisible,
+                  visible: true,//isIncreaseSignNeedToVisible,
                   child: Text('   >'),
                 ),
                 onTap: () {
                   if (selectedTimeFrame == 'DAY') {
                     increaseDateperDay(currentDate, selectedTimeFrame);
                   }
-                  if (selectedTimeFrame == 'WEEK') {}
+                  if (selectedTimeFrame == 'WEEK') {
+                    increaseDatePerWeek();
+                  }
                 },
               ),
             ],
