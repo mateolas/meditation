@@ -8,9 +8,11 @@ class MeditationSessionNotifier with ChangeNotifier {
   //setting default sound name when starting the app
   String _soundName = 'medium_bell.mp3';
  
-
+  //to get meditationSessionList
   UnmodifiableListView<MeditationSession> get meditationSessionList => UnmodifiableListView(_meditationSessionList);
+  //to get length of current session
   int get getLengthOfCurrentSession => _lengthOfCurrentSession;
+  //to get setted sound name
   String get getSoundName => _soundName;
 
   set meditationSessionList(List<MeditationSession> meditationSessionList) {
