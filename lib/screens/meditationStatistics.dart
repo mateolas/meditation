@@ -79,6 +79,8 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     //on welcome screen we're starting from the actual day
     //so we need to hide ">" from presented day
     isIncreaseSignNeedToVisible = false;
+
+    weekCounter = 7;
   }
 
   //date to present currently "active" date
@@ -88,10 +90,10 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   //date to present last day of the week (based on provided date)
   DateTime currentDateEndOfTheWeek;
 
+  int weekCounter;
+
   // Find the first date of the week which contains the provided date.
-  DateTime findFirstDateOfTheWeek(
-    DateTime dateTime,
-  ) {
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
     return dateTime.subtract(Duration(days: dateTime.weekday - 1));
   }
 
@@ -101,8 +103,36 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
   }
 
+  /// Find first date of previous week using a date in current week.
+  /// [dateTime] A date in current week.
+  DateTime findFirstDateOfPreviousWeek(DateTime dateTime, int k) {
+    final DateTime sameWeekDayOfLastWeek = dateTime.subtract(Duration(days: k));
+    return findFirstDateOfTheWeek(sameWeekDayOfLastWeek);
+  }
+
+  /// Find last date of previous week using a date in current week.
+  /// [dateTime] A date in current week.
+  DateTime findLastDateOfPreviousWeek(DateTime dateTime, int k) {
+    final DateTime sameWeekDayOfLastWeek = dateTime.subtract(Duration(days: k));
+    return findLastDateOfTheWeek(sameWeekDayOfLastWeek);
+  }
+
   //function to decrease the presemted date based on chosen time frame
-  DateTime decreaseDate(DateTime time, String typeOfTimeFrame) {
+  DateTime decreaseDatePerWeek() {
+    DateTime time = DateTime.now();
+
+    setState(() {
+      currentDateStartOfTheWeek =
+          findFirstDateOfPreviousWeek(time, weekCounter);
+      currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
+      weekCounter = weekCounter + 7;
+    });
+
+    return currentDate;
+  }
+
+  //function to decrease the presemted date based on chosen time frame
+  DateTime decreaseDatePerDay(DateTime time, String typeOfTimeFrame) {
     int timeFrameValue;
     if (typeOfTimeFrame == 'DAY') {
       timeFrameValue = 1;
@@ -116,7 +146,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   }
 
   //function to decrease the presented date based on chosen time frame
-  DateTime increaseDate(DateTime time, String typeOfTimeFrame) {
+  DateTime increaseDateperDay(DateTime time, String typeOfTimeFrame) {
     int timeFrameValue;
     if (typeOfTimeFrame == 'DAY') {
       timeFrameValue = 1;
@@ -217,19 +247,26 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                child: Text('<   '),
-                onTap: () {
-                  decreaseDate(currentDate, selectedTimeFrame);
-                },
-              ),
-             whatDateToPresent(selectedTimeFrame),
+                  child: Text('<   '),
+                  onTap: () {
+                    if (selectedTimeFrame == 'DAY') {
+                      decreaseDatePerDay(currentDate, selectedTimeFrame);
+                    }
+                    if (selectedTimeFrame == 'WEEK') {
+                      decreaseDatePerWeek();
+                    }
+                  }),
+              whatDateToPresent(selectedTimeFrame),
               GestureDetector(
                 child: Visibility(
                   visible: isIncreaseSignNeedToVisible,
                   child: Text('   >'),
                 ),
                 onTap: () {
-                  increaseDate(currentDate, selectedTimeFrame);
+                  if (selectedTimeFrame == 'DAY') {
+                    increaseDateperDay(currentDate, selectedTimeFrame);
+                  }
+                  if (selectedTimeFrame == 'WEEK') {}
                 },
               ),
             ],
