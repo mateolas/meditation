@@ -8,27 +8,29 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
-
 class MeditationStatistics extends StatefulWidget {
-  /// Create one series with sample hard coded data.
-  static List<charts.Series<MeditationSessions, String>> _createSampleData() {
-    final data = [
-      new MeditationSessions('2013', 15),
-      new MeditationSessions('2015', 25),
-      new MeditationSessions('2016', 100),
-      new MeditationSessions('2017', 75),
-    ];
+  // /// Create one series with sample hard coded data.
+  // static List<charts.Series<MeditationSessionsSeries, String>> _createSampleData() {
+  //   final List<MeditationSessionsSeries> data = [
+  //     new MeditationSessionsSeries(DateTime(2019, 1, 7), 15),
+  //     new MeditationSessionsSeries(DateTime(2019, 1, 7), 25),
+  //     new MeditationSessionsSeries(DateTime(2019, 1, 7), 100),
+  //     new MeditationSessionsSeries(DateTime(2019, 1, 7), 75),
+  //   ];
 
-    return [
-      new charts.Series<MeditationSessions, String>(
-        id: 'Meditation Sessions',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (MeditationSessions meditationSessions, _) => meditationSessions.date,
-        measureFn: (MeditationSessions meditationSessions, _) => meditationSessions.lengthOfSession,
-        data: data,
-      )
-    ];
-  }
+  //   return [
+  //     new charts.Series<MeditationSessionsSeries, String>(
+  //       id: 'Meditation Sessions',
+  //       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+  //       domainFn: (MeditationSessionsSeries meditationSessions, _) =>
+  //           meditationSessions.date,
+  //       measureFn: (MeditationSessionsSeries meditationSessions, _) =>
+  //           meditationSessions.lengthOfSession,
+  //       data: data,
+  //     )
+  //   ];
+
+  // }
 
   @override
   _MeditationStatisticsState createState() => _MeditationStatisticsState();
@@ -250,8 +252,8 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     if (typeOfTimeFrame == 'YEAR') {
       timeFrameValue = 1;
       setState(() {
-        currentDate = DateTime(
-            time.year + timeFrameValue, time.month, time.day);
+        currentDate =
+            DateTime(time.year + timeFrameValue, time.month, time.day);
         isIncreaseSignNeedToVisible = true;
       });
     }
@@ -383,11 +385,10 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
             ],
           ),
           Container(
-              height: MediaQuery.of(context).size.height / 3,
-              width: MediaQuery.of(context).size.width,
-              child: MeditationSessionsChart(
-                  MeditationStatistics._createSampleData(),
-                  animate: false)),
+            height: MediaQuery.of(context).size.height / 3,
+            width: MediaQuery.of(context).size.width,
+            child: MeditationSessionsChart.withSampleData(),
+          ),
         ],
       ),
     );
