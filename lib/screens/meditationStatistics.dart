@@ -2,33 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:take_a_breath/model/colors.dart';
 import 'package:provider/provider.dart';
 import 'package:take_a_breath/widgets/meditationSessionsChart.dart';
-import 'package:take_a_breath/widgets/meditationSessionsChart.dart';
 import 'package:take_a_breath/api/meditationSession_api.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
-import 'package:provider/provider.dart';
-
-import 'package:flutter/rendering.dart';
 
 class MeditationStatistics extends StatefulWidget {
   /// Create one series with sample hard coded data.
-  static List<charts.Series<OrdinalSales, String>> _createSampleData() {
+  static List<charts.Series<MeditationSessions, String>> _createSampleData() {
     final data = [
-      new OrdinalSales('2013', 5),
-      new OrdinalSales('2015', 25),
-      new OrdinalSales('2016', 100),
-      new OrdinalSales('2017', 75),
+      new MeditationSessions('2013', 15),
+      new MeditationSessions('2015', 25),
+      new MeditationSessions('2016', 100),
+      new MeditationSessions('2017', 75),
     ];
 
     return [
-      new charts.Series<OrdinalSales, String>(
-        id: 'Sales',
+      new charts.Series<MeditationSessions, String>(
+        id: 'Meditation Sessions',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (OrdinalSales sales, _) => sales.year,
-        measureFn: (OrdinalSales sales, _) => sales.sales,
+        domainFn: (MeditationSessions meditationSessions, _) => meditationSessions.date,
+        measureFn: (MeditationSessions meditationSessions, _) => meditationSessions.lengthOfSession,
         data: data,
       )
     ];
@@ -94,7 +90,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   // Find the first date of the week which contains the provided date.
   DateTime findFirstDateOfTheWeek(DateTime dateTime) {
-     isIncreaseSignNeedToVisible = false;
+    isIncreaseSignNeedToVisible = false;
     return dateTime.subtract(Duration(days: dateTime.weekday - 1));
   }
 
@@ -137,35 +133,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     return findLastDateOfTheWeek(sameWeekDayOfLastWeek);
   }
 
-  //function to decrease the presemted date based on chosen time frame
-  DateTime decreaseDatePerWeek() {
-    DateTime time = DateTime.now();
-
-    setState(() {
-      currentDateStartOfTheWeek =
-          findFirstDateOfPreviousWeek(time, weekCounter);
-      currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
-      weekCounter = weekCounter + 7;
-    });
-
-    return currentDate;
-  }
-
-  //function to decrease the presemted date based on chosen time frame
-  DateTime increaseDatePerWeek() {
-    DateTime time = DateTime.now();
-
-    setState(() {
-      currentDateStartOfTheWeek =
-          findFirstDateOfPreviousWeek(time, weekCounter);
-      currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
-      weekCounter = weekCounter - 7;
-    });
-
-    return currentDate;
-  }
-
-  //function to decrease the presemted date based on chosen time frame
+  //function to decrease the presented date based on chosen time frame
   DateTime decreaseDatePerDay(DateTime time, String typeOfTimeFrame) {
     int timeFrameValue;
     if (typeOfTimeFrame == 'DAY') {
@@ -180,7 +148,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   }
 
   //function to decrease the presented date based on chosen time frame
-  DateTime increaseDateperDay(DateTime time, String typeOfTimeFrame) {
+  DateTime increaseDatePerDay(DateTime time, String typeOfTimeFrame) {
     int timeFrameValue;
     if (typeOfTimeFrame == 'DAY') {
       timeFrameValue = 1;
@@ -206,15 +174,110 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     return currentDate;
   }
 
+  //function to decrease the presented date based on chosen time frame
+  DateTime decreaseDatePerWeek() {
+    DateTime time = DateTime.now();
+
+    setState(() {
+      currentDateStartOfTheWeek =
+          findFirstDateOfPreviousWeek(time, weekCounter);
+      currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
+      weekCounter = weekCounter + 7;
+    });
+
+    return currentDate;
+  }
+
+  //function to decrease the presented date based on chosen time frame
+  DateTime increaseDatePerWeek() {
+    DateTime time = DateTime.now();
+
+    setState(() {
+      currentDateStartOfTheWeek =
+          findFirstDateOfPreviousWeek(time, weekCounter);
+      currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
+      weekCounter = weekCounter - 7;
+    });
+
+    return currentDate;
+  }
+
+  //function to decrease the presented date based on chosen time frame
+  DateTime decreaseDatePerMonth(DateTime time, String typeOfTimeFrame) {
+    int timeFrameValue;
+    if (typeOfTimeFrame == 'MONTH') {
+      timeFrameValue = 1;
+      setState(() {
+        currentDate =
+            DateTime(time.year, time.month - timeFrameValue, time.day);
+        isIncreaseSignNeedToVisible = true;
+      });
+    }
+    return currentDate;
+  }
+
+  //function to decrease the presented date based on chosen time frame
+  DateTime increaseDatePerMonth(DateTime time, String typeOfTimeFrame) {
+    int timeFrameValue;
+    if (typeOfTimeFrame == 'MONTH') {
+      timeFrameValue = 1;
+      setState(() {
+        currentDate =
+            DateTime(time.year, time.month + timeFrameValue, time.day);
+        isIncreaseSignNeedToVisible = true;
+      });
+    }
+    return currentDate;
+  }
+
+  //function to decrease the presented date based on chosen time frame
+  DateTime decreaseDatePerYear(DateTime time, String typeOfTimeFrame) {
+    int timeFrameValue;
+    if (typeOfTimeFrame == 'YEAR') {
+      timeFrameValue = 1;
+      setState(() {
+        currentDate =
+            DateTime(time.year - timeFrameValue, time.month, time.day);
+        isIncreaseSignNeedToVisible = true;
+      });
+    }
+    return currentDate;
+  }
+
+  //function to decrease the presented date based on chosen time frame
+  DateTime increaseDatePerYear(DateTime time, String typeOfTimeFrame) {
+    int timeFrameValue;
+    if (typeOfTimeFrame == 'YEAR') {
+      timeFrameValue = 1;
+      setState(() {
+        currentDate = DateTime(
+            time.year + timeFrameValue, time.month, time.day);
+        isIncreaseSignNeedToVisible = true;
+      });
+    }
+    return currentDate;
+  }
+
   Widget whatDateToPresent(String selectedTimeFrame) {
+    Text whatDateToPresent;
     if (selectedTimeFrame == "DAY") {
-      return Text('${DateFormat.yMMMd().format(currentDate)}');
+      whatDateToPresent = Text('${DateFormat.yMMMd().format(currentDate)}');
     }
 
     if (selectedTimeFrame == "WEEK") {
-      return Text(
+      whatDateToPresent = Text(
           '${DateFormat.yMMMd().format(currentDateStartOfTheWeek)} - ${DateFormat.yMMMd().format(currentDateEndOfTheWeek)}');
     }
+
+    if (selectedTimeFrame == "MONTH") {
+      whatDateToPresent = Text('${DateFormat.MMM().format(currentDate)}');
+    }
+
+    if (selectedTimeFrame == "YEAR") {
+      whatDateToPresent = Text('${DateFormat.y().format(currentDate)}');
+    }
+
+    return whatDateToPresent;
   }
 
   @override
@@ -251,13 +314,12 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
                 labelColor: Colors.black,
                 onTap: (index) {
                   setState(() {
-                    //set the name of temperature time frame
+                    //set the name of time frame
                     //selectedTimeTempView used as an argument in "draw a chart" function
                     selectedTimeFrame = timeFrameViewList[index];
                   });
                 },
                 indicatorColor: Colors.orange,
-
                 controller: _timeFrameViewController,
                 isScrollable: true,
                 labelStyle: TextStyle(
@@ -277,6 +339,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
               ),
             ),
           ),
+          //row to present the day/week/month/year time frame
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -289,19 +352,31 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
                     if (selectedTimeFrame == 'WEEK') {
                       decreaseDatePerWeek();
                     }
+                    if (selectedTimeFrame == 'MONTH') {
+                      decreaseDatePerMonth(currentDate, selectedTimeFrame);
+                    }
+                    if (selectedTimeFrame == 'YEAR') {
+                      decreaseDatePerYear(currentDate, selectedTimeFrame);
+                    }
                   }),
               whatDateToPresent(selectedTimeFrame),
               GestureDetector(
                 child: Visibility(
-                  visible: true,//isIncreaseSignNeedToVisible,
+                  visible: true, //isIncreaseSignNeedToVisible,
                   child: Text('   >'),
                 ),
                 onTap: () {
                   if (selectedTimeFrame == 'DAY') {
-                    increaseDateperDay(currentDate, selectedTimeFrame);
+                    increaseDatePerDay(currentDate, selectedTimeFrame);
                   }
                   if (selectedTimeFrame == 'WEEK') {
                     increaseDatePerWeek();
+                  }
+                  if (selectedTimeFrame == 'MONTH') {
+                    increaseDatePerMonth(currentDate, selectedTimeFrame);
+                  }
+                  if (selectedTimeFrame == 'YEAR') {
+                    increaseDatePerYear(currentDate, selectedTimeFrame);
                   }
                 },
               ),

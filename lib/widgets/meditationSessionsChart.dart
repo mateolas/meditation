@@ -18,9 +18,9 @@ class MeditationSessionsChart extends StatelessWidget {
 }
 
 /// Sample ordinal data type.
-class OrdinalSales {
-  final String year;
-  final int sales;
+class MeditationSessions {
+  final String date;
+  final int lengthOfSession;
 
-  OrdinalSales(this.year, this.sales);
+  MeditationSessions(this.date, this.lengthOfSession);
 }
