@@ -83,6 +83,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     selectedTypeOfScreen = 'Home';
     super.initState();
+
+    
   }
 
   @override

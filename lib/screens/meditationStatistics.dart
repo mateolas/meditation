@@ -9,29 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
 class MeditationStatistics extends StatefulWidget {
-  // /// Create one series with sample hard coded data.
-  // static List<charts.Series<MeditationSessionsSeries, String>> _createSampleData() {
-  //   final List<MeditationSessionsSeries> data = [
-  //     new MeditationSessionsSeries(DateTime(2019, 1, 7), 15),
-  //     new MeditationSessionsSeries(DateTime(2019, 1, 7), 25),
-  //     new MeditationSessionsSeries(DateTime(2019, 1, 7), 100),
-  //     new MeditationSessionsSeries(DateTime(2019, 1, 7), 75),
-  //   ];
-
-  //   return [
-  //     new charts.Series<MeditationSessionsSeries, String>(
-  //       id: 'Meditation Sessions',
-  //       colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-  //       domainFn: (MeditationSessionsSeries meditationSessions, _) =>
-  //           meditationSessions.date,
-  //       measureFn: (MeditationSessionsSeries meditationSessions, _) =>
-  //           meditationSessions.lengthOfSession,
-  //       data: data,
-  //     )
-  //   ];
-
-  // }
-
+  
   @override
   _MeditationStatisticsState createState() => _MeditationStatisticsState();
 }
@@ -387,7 +365,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
           Container(
             height: MediaQuery.of(context).size.height / 3,
             width: MediaQuery.of(context).size.width,
-            child: MeditationSessionsChart.withSampleData(),
+            child: MeditationSessionsChart.withSampleData(meditationSessionNotifier, currentDate),
           ),
         ],
       ),
