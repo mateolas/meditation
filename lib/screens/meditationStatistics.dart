@@ -365,7 +365,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
           Container(
             height: MediaQuery.of(context).size.height / 3,
             width: MediaQuery.of(context).size.width,
-            child: MeditationSessionsChart.withSampleData(meditationSessionNotifier, currentDate),
+            child: MeditationSessionsChart.withSampleData(meditationSessionNotifier, currentDate, currentDateStartOfTheWeek, currentDateEndOfTheWeek),
           ),
         ],
       ),

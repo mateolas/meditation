@@ -10,10 +10,18 @@ class MeditationSessionsChart extends StatelessWidget {
   MeditationSessionsChart(this.seriesList, {this.animate});
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.
+  /// Takes three arguments:
+  /// 1. currentDate - single date: day, month, year
+  /// 2. currentDateStartOfTheWeek - date which holds beginning of particular week
+  /// 3. currentDateEndOfTheWeek - date which holds end of the particular week
   factory MeditationSessionsChart.withSampleData(
-      MeditationSessionNotifier meditationSessionNotifier, DateTime currentDate) {
+      MeditationSessionNotifier meditationSessionNotifier,
+      DateTime currentDate,
+      DateTime currentDateStartOfTheWeek,
+      DateTime currentDateEndOfTheWeek) {
     return new MeditationSessionsChart(
-      _createSampleData(meditationSessionNotifier, currentDate),
+      _createSampleData(meditationSessionNotifier, currentDate,
+          currentDateStartOfTheWeek, currentDateEndOfTheWeek),
       // Disable animations for image tests.
       animate: false,
     );
@@ -23,6 +31,13 @@ class MeditationSessionsChart extends StatelessWidget {
   Widget build(BuildContext context) {
     return new charts.TimeSeriesChart(
       seriesList,
+      //formating of the xAxis
+      domainAxis: new charts.DateTimeAxisSpec(
+        tickProviderSpec: charts.DayTickProviderSpec(increments: [1]),
+        tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+            day: new charts.TimeFormatterSpec(
+                format: 'EEE', transitionFormat: 'EEE', noonFormat: 'EEE')),
+      ),
       animate: animate,
       // Set the default renderer to a bar renderer.
       // This can also be one of the custom renderers of the time series chart.
@@ -38,52 +53,91 @@ class MeditationSessionsChart extends StatelessWidget {
   }
 
   /// Create one series with sample hard coded data.
-  static List<charts.Series<MeditationSessionSeries, DateTime>> _createSampleData(
-      MeditationSessionNotifier meditationSessionNotifier, DateTime currentDate) {
+  static List<charts.Series<MeditationSessionSeries, DateTime>>
+      _createSampleData(
+          MeditationSessionNotifier meditationSessionNotifier,
+          DateTime currentDate,
+          DateTime currentDateStartOfTheWeek,
+          DateTime currentDateEndOfTheWeek) {
     var now = new DateTime.now();
     var now_1d = now.subtract(Duration(days: 1));
     var timePeriod;
     timePeriod = now_1d;
+    var totalTimePerDay = 0;
 
-    final dataTest = <MeditationSessionSeries> [for (int i = 0; i < meditationSessionNotifier.meditationSessionList.length; i++)
+    ///
+    ///Preparing to show data PER DAY///
+    ///
+
+    //First step is to copy to new list items from the current date
+    //To make it, we're creating dataTest list of MedidationSessionSeries
+    //Looping through list of MeditationSessionNotifier list we're copying data
+    //when current date (which is date from time frame selected by customer) is
+    //equal to the item from the list
+
+    final dataTestPerDay = <MeditationSessionSeries>[
+      for (int i = 0;
+          i < meditationSessionNotifier.meditationSessionList.length;
+          i++)
         //check if it's last day, week or month
-        if (currentDate.day
-             == meditationSessionNotifier.meditationSessionList[i].createdAt.toDate().day)
+        if (currentDate.day ==
+            meditationSessionNotifier.meditationSessionList[i].createdAt
+                .toDate()
+                .day)
           new MeditationSessionSeries(
-              meditationSessionNotifier.meditationSessionList[i].createdAt.toDate(),
-              int.parse(meditationSessionNotifier.meditationSessionList[i].length))];
+              meditationSessionNotifier.meditationSessionList[i].createdAt
+                  .toDate(),
+              int.parse(
+                  meditationSessionNotifier.meditationSessionList[i].length))
+    ];
 
-    final data = [
-      new MeditationSessionSeries(new DateTime(2017, 9, 1), 5),
-      new MeditationSessionSeries(new DateTime(2017, 9, 2), 5),
-      new MeditationSessionSeries(new DateTime(2017, 9, 3), 25),
-      new MeditationSessionSeries(new DateTime(2017, 9, 4), 100),
-      new MeditationSessionSeries(new DateTime(2017, 9, 5), 75),
-      new MeditationSessionSeries(new DateTime(2017, 9, 6), 88),
-      new MeditationSessionSeries(new DateTime(2017, 9, 7), 65),
-      new MeditationSessionSeries(new DateTime(2017, 9, 8), 91),
-      new MeditationSessionSeries(new DateTime(2017, 9, 9), 100),
-      new MeditationSessionSeries(new DateTime(2017, 9, 10), 111),
-      new MeditationSessionSeries(new DateTime(2017, 9, 11), 90),
-      new MeditationSessionSeries(new DateTime(2017, 9, 12), 50),
-      new MeditationSessionSeries(new DateTime(2017, 9, 13), 40),
-      new MeditationSessionSeries(new DateTime(2017, 9, 14), 30),
-      new MeditationSessionSeries(new DateTime(2017, 9, 15), 40),
-      new MeditationSessionSeries(new DateTime(2017, 9, 16), 50),
-      new MeditationSessionSeries(new DateTime(2017, 9, 17), 30),
-      new MeditationSessionSeries(new DateTime(2017, 9, 18), 35),
-      new MeditationSessionSeries(new DateTime(2017, 9, 19), 40),
-      new MeditationSessionSeries(new DateTime(2017, 9, 20), 32),
-      new MeditationSessionSeries(new DateTime(2017, 9, 21), 31),
+    //loop the get the total time per day (per current Date)
+    for (int i = 0;
+        i < meditationSessionNotifier.meditationSessionList.length;
+        i++) {
+      //check if it's last day, week or month
+      if (currentDate.day ==
+          meditationSessionNotifier.meditationSessionList[i].createdAt
+              .toDate()
+              .day) {
+        totalTimePerDay = totalTimePerDay +
+            int.parse(
+                meditationSessionNotifier.meditationSessionList[i].length);
+      }
+    }
+    print("Total length time per day $totalTimePerDay");
+
+    
+    ///
+    ///Preparing to show data PER WEEK///
+    ///
+
+    final dataTestPerWeek = <MeditationSessionSeries>[
+      for (int i = 0;
+          i < meditationSessionNotifier.meditationSessionList.length;
+          i++)
+        if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
+                .meditationSessionList[i].createdAt
+                .toDate()) &&
+            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
+                .meditationSessionList[i].createdAt
+                .toDate()))
+          new MeditationSessionSeries(
+              meditationSessionNotifier.meditationSessionList[i].createdAt
+                  .toDate(),
+              int.parse(
+                  meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (MeditationSessionSeries meditationSessionSeries, _) => meditationSessionSeries.date,
-        measureFn: (MeditationSessionSeries meditationSessionSeries, _) => meditationSessionSeries.meditationSessionLength,
-        data: dataTest,
+        domainFn: (MeditationSessionSeries meditationSessionSeries, _) =>
+            meditationSessionSeries.date,
+        measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>
+            meditationSessionSeries.meditationSessionLength,
+        data: dataTestPerWeek,
       )
     ];
   }
