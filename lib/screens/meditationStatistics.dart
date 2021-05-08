@@ -264,7 +264,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   Widget build(BuildContext context) {
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
-
+    
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -365,7 +365,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
           Container(
             height: MediaQuery.of(context).size.height / 3,
             width: MediaQuery.of(context).size.width,
-            child: MeditationSessionsChart.withSampleData(meditationSessionNotifier, currentDate, currentDateStartOfTheWeek, currentDateEndOfTheWeek),
+            child: MeditationSessionsChart.withSampleData(meditationSessionNotifier, currentDate, currentDateStartOfTheWeek, currentDateEndOfTheWeek, selectedTimeFrame),
           ),
         ],
       ),

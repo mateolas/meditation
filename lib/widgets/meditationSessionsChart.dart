@@ -18,10 +18,15 @@ class MeditationSessionsChart extends StatelessWidget {
       MeditationSessionNotifier meditationSessionNotifier,
       DateTime currentDate,
       DateTime currentDateStartOfTheWeek,
-      DateTime currentDateEndOfTheWeek) {
+      DateTime currentDateEndOfTheWeek,
+      String selectedTimeFrame) {
     return new MeditationSessionsChart(
-      _createSampleData(meditationSessionNotifier, currentDate,
-          currentDateStartOfTheWeek, currentDateEndOfTheWeek),
+      _createSampleData(
+          meditationSessionNotifier,
+          currentDate,
+          currentDateStartOfTheWeek,
+          currentDateEndOfTheWeek,
+          selectedTimeFrame),
       // Disable animations for image tests.
       animate: false,
     );
@@ -58,7 +63,8 @@ class MeditationSessionsChart extends StatelessWidget {
           MeditationSessionNotifier meditationSessionNotifier,
           DateTime currentDate,
           DateTime currentDateStartOfTheWeek,
-          DateTime currentDateEndOfTheWeek) {
+          DateTime currentDateEndOfTheWeek,
+          String selectedTimeFrame) {
     var now = new DateTime.now();
     var now_1d = now.subtract(Duration(days: 1));
     var timePeriod;
@@ -75,7 +81,7 @@ class MeditationSessionsChart extends StatelessWidget {
     //when current date (which is date from time frame selected by customer) is
     //equal to the item from the list
 
-    final dataTestPerDay = <MeditationSessionSeries>[
+    final dataPerDay = <MeditationSessionSeries>[
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
           i++)
@@ -107,12 +113,14 @@ class MeditationSessionsChart extends StatelessWidget {
     }
     print("Total length time per day $totalTimePerDay");
 
-    
+    ///Value to hold list of meditation sessions
+    var data = <MeditationSessionSeries>[];
+
     ///
     ///Preparing to show data PER WEEK///
     ///
 
-    final dataTestPerWeek = <MeditationSessionSeries>[
+    final dataPerWeek = <MeditationSessionSeries>[
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
           i++)
@@ -129,6 +137,10 @@ class MeditationSessionsChart extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
+    //Data value (complete list of meditation sessions) depends on what time frame has been chosen
+    if (selectedTimeFrame == 'DAY') {data = dataPerDay; }
+    if (selectedTimeFrame == 'WEEK') {data = dataPerWeek; }
+
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
         id: 'Sales',
@@ -137,7 +149,8 @@ class MeditationSessionsChart extends StatelessWidget {
             meditationSessionSeries.date,
         measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>
             meditationSessionSeries.meditationSessionLength,
-        data: dataTestPerWeek,
+        //holds the list which we created based on a time frame selection (day/week/month/year)
+        data: data,
       )
     ];
   }
