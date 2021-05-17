@@ -84,8 +84,6 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   //change isStartMeditationButtonPressed to false (to show "Set time" slider)
   //after confirming it, data about session is sent to Firebase
   Future<void> _showMyDialog() async {
-  
-
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -116,7 +114,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                         setState(() {
                           //setting to false make button visible
                           isStartMeditationButtonPressed = false;
-                          
+
                           Navigator.of(context).pop();
                           isStartSessionButtonVisible = true;
                         });
@@ -156,7 +154,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   Widget build(BuildContext context) {
     //Notifier to have possibility of loging in/out from the app
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-   
+
     //Notifier to get data from the slider within "inner widget" function
     //Saves information about the length of the session
     MeditationSessionNotifier meditationSessionNotifier =
@@ -300,7 +298,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
     print(
         "Length of session: ${meditationSessionNotifier.getLengthOfCurrentSession}");
 
-    return Scaffold(   
+    return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -395,7 +393,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                         ),
                         Spacer(flex: 2),
                         Tooltip(
-                          message: "End session sygnalization",
+                          message: "End session sygnalization: vibration/sound",
                           child: Icon(
                             Icons.info_outline,
                             color: Colors.orange[100],
