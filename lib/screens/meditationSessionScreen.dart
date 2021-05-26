@@ -83,6 +83,7 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
   //function to show dialog which confirms that session was completed
   //change isStartMeditationButtonPressed to false (to show "Set time" slider)
   //after confirming it, data about session is sent to Firebase
+
   Future<void> _showMyDialog() async {
     return showDialog<void>(
       context: context,
