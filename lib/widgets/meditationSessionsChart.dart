@@ -32,17 +32,20 @@ class MeditationSessionsChart extends StatelessWidget {
     );
   }
 
+  //Interesting link about static tick provider
+  //https://google.github.io/charts/flutter/example/axes/statically_provided_ticks.html
+
   @override
   Widget build(BuildContext context) {
     return new charts.TimeSeriesChart(
       seriesList,
       //formating of the xAxis
       domainAxis: new charts.DateTimeAxisSpec(
-        tickProviderSpec: charts.DayTickProviderSpec(increments: [1]),
-        tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-            day: new charts.TimeFormatterSpec(
-                format: 'EEE', transitionFormat: 'EEE', noonFormat: 'EEE')),
-      ),
+          //  tickProviderSpec: charts.DayTickProviderSpec(increments: [1]),
+          // tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+          //     day: new charts.TimeFormatterSpec(
+          //        format: 'EEE', transitionFormat: 'EEE', noonFormat: 'EEE')),
+          ),
       animate: animate,
       // Set the default renderer to a bar renderer.
       // This can also be one of the custom renderers of the time series chart.
@@ -137,9 +140,49 @@ class MeditationSessionsChart extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
+    ///
+    ///Preparing to show data PER MONTH///
+    ///
+
+    //Get the number of days of particular month
+
+    DateTime lastDayOfMonth =
+        new DateTime(currentDate.year, currentDate.month + 1, 0);
+    print("Current date: ${currentDate}");
+    print("N days: ${lastDayOfMonth.day}");
+
+    final dataPerMonth = <MeditationSessionSeries>[
+      for (int i = 0;
+          i < meditationSessionNotifier.meditationSessionList.length;
+          i++)
+        if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
+                .meditationSessionList[i].createdAt
+                .toDate()) &&
+            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
+                .meditationSessionList[i].createdAt
+                .toDate()))
+          new MeditationSessionSeries(
+              meditationSessionNotifier.meditationSessionList[i].createdAt
+                  .toDate(),
+              int.parse(
+                  meditationSessionNotifier.meditationSessionList[i].length))
+    ];
+
+    dataPerMonth
+        .add(MeditationSessionSeries((DateTime(2021, 5, 1, 12, 00)), 1));
+    dataPerMonth
+        .add(MeditationSessionSeries((DateTime(2021, 5, 31, 12, 00)), 1));
+
     //Data value (complete list of meditation sessions) depends on what time frame has been chosen
-    if (selectedTimeFrame == 'DAY') {data = dataPerDay; }
-    if (selectedTimeFrame == 'WEEK') {data = dataPerWeek; }
+    if (selectedTimeFrame == 'DAY') {
+      data = dataPerDay;
+    }
+    if (selectedTimeFrame == 'WEEK') {
+      data = dataPerWeek;
+    }
+    if (selectedTimeFrame == 'MONTH') {
+      data = dataPerMonth;
+    }
 
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
