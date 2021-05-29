@@ -3,24 +3,24 @@ import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 
-class MeditationSessionsChart extends StatelessWidget {
+class MeditationSessionsChartWeek extends StatelessWidget {
   final List<charts.Series<MeditationSessionSeries, DateTime>> seriesList;
   final bool animate;
 
-  MeditationSessionsChart(this.seriesList, {this.animate});
+  MeditationSessionsChartWeek(this.seriesList, {this.animate});
 
   /// Creates a [TimeSeriesChart] with sample data and no transition.
   /// Takes three arguments:
   /// 1. currentDate - single date: day, month, year
   /// 2. currentDateStartOfTheWeek - date which holds beginning of particular week
   /// 3. currentDateEndOfTheWeek - date which holds end of the particular week
-  factory MeditationSessionsChart.withSampleData(
+  factory MeditationSessionsChartWeek.withSampleData(
       MeditationSessionNotifier meditationSessionNotifier,
       DateTime currentDate,
       DateTime currentDateStartOfTheWeek,
       DateTime currentDateEndOfTheWeek,
       String selectedTimeFrame) {
-    return new MeditationSessionsChart(
+    return new MeditationSessionsChartWeek(
       _createSampleData(
           meditationSessionNotifier,
           currentDate,

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:take_a_breath/model/colors.dart';
 import 'package:provider/provider.dart';
-import 'package:take_a_breath/widgets/meditationSessionsChart.dart';
+import 'package:take_a_breath/widgets/meditationSessionsChartDay.dart';
+import 'package:take_a_breath/widgets/meditationSessionsChartWeek.dart';
+import 'package:take_a_breath/widgets/meditationSessionsChartMonth.dart';
+import 'package:take_a_breath/widgets/meditationSessionsChartYear.dart';
 import 'package:take_a_breath/api/meditationSession_api.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
@@ -9,7 +12,6 @@ import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 
 class MeditationStatistics extends StatefulWidget {
-  
   @override
   _MeditationStatisticsState createState() => _MeditationStatisticsState();
 }
@@ -129,14 +131,14 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime increaseDatePerDay(DateTime time, String typeOfTimeFrame) {
-    int timeFrameValue;
+    int timeFrameValue = 1;
     if (typeOfTimeFrame == 'DAY') {
       timeFrameValue = 1;
       //value to compare currentDate
       DateTime currentDay = DateTime.now();
       if (DateTime(currentDate.year, currentDate.month, currentDate.day)
-          .isAtSameMomentAs(DateTime(
-              currentDay.year, currentDay.month, currentDay.day - 1))) {
+          .isAtSameMomentAs(
+              DateTime(currentDay.year, currentDay.month, currentDay.day))) {
         setState(() {
           isIncreaseSignNeedToVisible = false;
         });
@@ -260,11 +262,55 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     return whatDateToPresent;
   }
 
+  Widget whatChartToPresent(String selectedTimeFrame) {
+    var whatChartToPresent;
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
+
+    if (selectedTimeFrame == "DAY") {
+      whatChartToPresent = MeditationSessionsChartDay.withSampleData(
+          meditationSessionNotifier,
+          currentDate,
+          currentDateStartOfTheWeek,
+          currentDateEndOfTheWeek,
+          selectedTimeFrame);
+    }
+
+    if (selectedTimeFrame == "WEEK") {
+      whatChartToPresent = MeditationSessionsChartWeek.withSampleData(
+          meditationSessionNotifier,
+          currentDate,
+          currentDateStartOfTheWeek,
+          currentDateEndOfTheWeek,
+          selectedTimeFrame);
+    }
+
+    if (selectedTimeFrame == "MONTH") {
+      whatChartToPresent = MeditationSessionsChartMonth.withSampleData(
+          meditationSessionNotifier,
+          currentDate,
+          currentDateStartOfTheWeek,
+          currentDateEndOfTheWeek,
+          selectedTimeFrame);
+    }
+
+    if (selectedTimeFrame == "YEAR") {
+      whatChartToPresent = MeditationSessionsChartYear.withSampleData(
+          meditationSessionNotifier,
+          currentDate,
+          currentDateStartOfTheWeek,
+          currentDateEndOfTheWeek,
+          selectedTimeFrame);
+    }
+
+    return whatChartToPresent;
+  }
+
   @override
   Widget build(BuildContext context) {
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
-    
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -365,7 +411,10 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
           Container(
             height: MediaQuery.of(context).size.height / 3,
             width: MediaQuery.of(context).size.width,
-            child: MeditationSessionsChart.withSampleData(meditationSessionNotifier, currentDate, currentDateStartOfTheWeek, currentDateEndOfTheWeek, selectedTimeFrame),
+            child: whatChartToPresent(selectedTimeFrame),
+            // if (selectedTimeFrame == 'DAY') {
+            //      MeditationSessionsChartDay.withSampleData(meditationSessionNotifier, currentDate, currentDateStartOfTheWeek, currentDateEndOfTheWeek, selectedTimeFrame);
+            //  }
           ),
         ],
       ),
