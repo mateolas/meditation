@@ -48,32 +48,53 @@ class MeditationSessionsChartDay extends StatelessWidget {
 
     // Create the ticks to be used the domain axis.
     final staticTicks = <charts.TickSpec<DateTime>>[
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 0)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 2)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 4)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 6)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 8)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 10)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 12)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 14)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 16)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 18)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 20)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day, 22)),
-      new charts.TickSpec(DateTime.utc(
-          selectedDay.year, selectedDay.month, selectedDay.day + 1, 00)),
+      new charts.TickSpec(
+          DateTime.utc(selectedDay.year, selectedDay.month, selectedDay.day, 0),
+          label: '0'),
+      new charts.TickSpec(
+          DateTime.utc(selectedDay.year, selectedDay.month, selectedDay.day, 2),
+          label: '02'),
+      new charts.TickSpec(
+          DateTime.utc(selectedDay.year, selectedDay.month, selectedDay.day, 4),
+          label: '04'),
+      new charts.TickSpec(
+          DateTime.utc(selectedDay.year, selectedDay.month, selectedDay.day, 6),
+          label: '06'),
+      new charts.TickSpec(
+          DateTime.utc(selectedDay.year, selectedDay.month, selectedDay.day, 8),
+          label: '08'),
+      new charts.TickSpec(
+          DateTime.utc(
+              selectedDay.year, selectedDay.month, selectedDay.day, 10),
+          label: '10'),
+      new charts.TickSpec(
+          DateTime.utc(
+              selectedDay.year, selectedDay.month, selectedDay.day, 12),
+          label: '12'),
+      new charts.TickSpec(
+          DateTime.utc(
+              selectedDay.year, selectedDay.month, selectedDay.day, 14),
+          label: '14'),
+      new charts.TickSpec(
+          DateTime.utc(
+              selectedDay.year, selectedDay.month, selectedDay.day, 16),
+          label: '16'),
+      new charts.TickSpec(
+          DateTime.utc(
+              selectedDay.year, selectedDay.month, selectedDay.day, 18),
+          label: '18'),
+      new charts.TickSpec(
+          DateTime.utc(
+              selectedDay.year, selectedDay.month, selectedDay.day, 20),
+          label: '20'),
+      new charts.TickSpec(
+          DateTime.utc(
+              selectedDay.year, selectedDay.month, selectedDay.day, 22),
+          label: '22'),
+      new charts.TickSpec(
+          DateTime.utc(
+              selectedDay.year, selectedDay.month, selectedDay.day + 1, 00),
+          label: '24'),
     ];
 
     return new charts.TimeSeriesChart(
