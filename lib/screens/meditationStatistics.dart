@@ -51,12 +51,18 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
     //screen starting from presenting "today"
     currentDate = DateTime.now();
-
-    //to set for provider current day
+    //setting to provider current day
     meditationSessionNotifier.setSelectedDay(currentDate);
 
     currentDateStartOfTheWeek = findFirstDateOfTheWeek(currentDate);
+    //setting to provider current day
+    meditationSessionNotifier
+        .setSelectedWeekStartDay(currentDateStartOfTheWeek);
+
     currentDateEndOfTheWeek = findLastDateOfTheWeek(currentDate);
+    //setting to provider current day
+    meditationSessionNotifier.setSelectedWeekEndDay(currentDateEndOfTheWeek);
+
     //on welcome screen we're starting from the actual day
     //so we need to hide ">" from presented day
     isIncreaseSignNeedToVisible = false;
@@ -173,12 +179,23 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime decreaseDatePerWeek() {
+    //instance of MeditationSessionNotifier to set current week start/end day to provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     DateTime time = DateTime.now();
 
     setState(() {
       currentDateStartOfTheWeek =
           findFirstDateOfPreviousWeek(time, weekCounter);
+
+      //set selected week start day to provider
+      meditationSessionNotifier
+          .setSelectedWeekStartDay(currentDateStartOfTheWeek);
+
       currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
+      //set selected week start end to provider
+      meditationSessionNotifier.setSelectedWeekEndDay(currentDateEndOfTheWeek);
+
       weekCounter = weekCounter + 7;
     });
 
@@ -187,12 +204,22 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime increaseDatePerWeek() {
+    //instance of MeditationSessionNotifier to set current week start/end day to provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     DateTime time = DateTime.now();
 
     setState(() {
       currentDateStartOfTheWeek =
           findFirstDateOfPreviousWeek(time, weekCounter);
+      //set selected week start day to provider
+      meditationSessionNotifier
+          .setSelectedWeekStartDay(currentDateStartOfTheWeek);
+
       currentDateEndOfTheWeek = findLastDateOfPreviousWeek(time, weekCounter);
+      //set selected week start end to provider
+      meditationSessionNotifier.setSelectedWeekEndDay(currentDateEndOfTheWeek);
+
       weekCounter = weekCounter - 7;
     });
 

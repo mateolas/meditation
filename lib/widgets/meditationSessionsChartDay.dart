@@ -72,6 +72,8 @@ class MeditationSessionsChartDay extends StatelessWidget {
           selectedDay.year, selectedDay.month, selectedDay.day, 20)),
       new charts.TickSpec(DateTime.utc(
           selectedDay.year, selectedDay.month, selectedDay.day, 22)),
+      new charts.TickSpec(DateTime.utc(
+          selectedDay.year, selectedDay.month, selectedDay.day + 1, 00)),
     ];
 
     return new charts.TimeSeriesChart(

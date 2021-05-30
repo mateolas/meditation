@@ -7,7 +7,12 @@ class MeditationSessionNotifier with ChangeNotifier {
   int _lengthOfCurrentSession;
   //setting default sound name when starting the app
   String _soundName = 'medium_bell.mp3';
+  //to store selected day in charts
   DateTime _selectedDay;
+  //to store selected week start day in charts
+  DateTime _selectedWeekStartDay;
+  //to store selected week end day in charts
+  DateTime _selectedWeekEndDay;
 
   //to get meditationSessionList
   UnmodifiableListView<MeditationSession> get meditationSessionList =>
@@ -18,6 +23,10 @@ class MeditationSessionNotifier with ChangeNotifier {
   String get getSoundName => _soundName;
   //to get which day is currently set in chart view
   DateTime get getSelectedDay => _selectedDay;
+  //to get from which date starts a new week in chart view
+  DateTime get getSelectedWeekStartDay => _selectedWeekStartDay;
+  //to get from which date starts a new week in chart view
+  DateTime get getSelectedWeekEndDay => _selectedWeekEndDay;
 
   set meditationSessionList(List<MeditationSession> meditationSessionList) {
     _meditationSessionList = meditationSessionList;
@@ -41,5 +50,13 @@ class MeditationSessionNotifier with ChangeNotifier {
 
   setSelectedDay(DateTime selectedDay) {
     _selectedDay = selectedDay;
+  }
+
+  setSelectedWeekStartDay(DateTime selectedWeekStartDay) {
+    _selectedWeekStartDay = selectedWeekStartDay;
+  }
+
+  setSelectedWeekEndDay(DateTime selectedWeekEndDay) {
+    _selectedWeekEndDay = selectedWeekEndDay;
   }
 }
