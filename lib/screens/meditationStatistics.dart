@@ -215,22 +215,24 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     //instance of MeditationSessionNotifier to set current week start/end day to provider
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
-    DateTime time = DateTime.now();
 
-    setState(() {
-      currentDateStartOfTheWeek = DateTime(currentDateStartOfTheWeek.year,
-          currentDateStartOfTheWeek.month, currentDateStartOfTheWeek.day + 7);
-      //set selected week start day to provider
-      meditationSessionNotifier
-          .setSelectedWeekStartDay(currentDateStartOfTheWeek);
+    if (currentDateStartOfTheWeek.day == initCurrentDateStartOfTheWeek.day) {
+    } else
+      setState(() {
+        currentDateStartOfTheWeek = DateTime(currentDateStartOfTheWeek.year,
+            currentDateStartOfTheWeek.month, currentDateStartOfTheWeek.day + 7);
+        //set selected week start day to provider
+        meditationSessionNotifier
+            .setSelectedWeekStartDay(currentDateStartOfTheWeek);
 
-      currentDateEndOfTheWeek = DateTime(currentDateEndOfTheWeek.year,
-          currentDateEndOfTheWeek.month, currentDateEndOfTheWeek.day + 7);
-      //set selected week start end to provider
-      meditationSessionNotifier.setSelectedWeekEndDay(currentDateEndOfTheWeek);
+        currentDateEndOfTheWeek = DateTime(currentDateEndOfTheWeek.year,
+            currentDateEndOfTheWeek.month, currentDateEndOfTheWeek.day + 7);
+        //set selected week start end to provider
+        meditationSessionNotifier
+            .setSelectedWeekEndDay(currentDateEndOfTheWeek);
 
-      weekCounter = weekCounter + 7;
-    });
+        weekCounter = weekCounter + 7;
+      });
 
     return currentDate;
   }
@@ -421,7 +423,13 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                  child: Text('<   '),
+                  child: Text(
+                    '<   ',
+                    style: TextStyle(
+                        color: Colors.orange,
+                        //fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
                   onTap: () {
                     if (selectedTimeFrame == 'DAY') {
                       decreaseDatePerDay(currentDate, selectedTimeFrame);
@@ -440,7 +448,10 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
               GestureDetector(
                 child: Visibility(
                   visible: true, //isIncreaseSignNeedToVisible,
-                  child: Text('   >'),
+                  child: Text(
+                    '   >',
+                    style: TextStyle(color: Colors.orange, fontSize: 18),
+                  ),
                 ),
                 onTap: () {
                   if (selectedTimeFrame == 'DAY') {
