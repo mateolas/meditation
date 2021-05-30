@@ -37,53 +37,77 @@ class MeditationSessionsChartDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Create the ticks to be used the domain axis.
     final staticTicks = <charts.TickSpec<DateTime>>[
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 00, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 01, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 02, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 03, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 04, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 05, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 06, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 07, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 08, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 09, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 10, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 11, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 12, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 13, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 14, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 15, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 16, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 17, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 18, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 19, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 20, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 21, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 22, 00)),
-      new charts.TickSpec(DateTime.utc(2021, 05, 29, 23, 00)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 0, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 2, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 4, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 6, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 8, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 10, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 12, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 14, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 16, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 18, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 20, 0)),
+      new charts.TickSpec(DateTime.utc(2021, 5, 30, 22, 0)),
     ];
 
     return new charts.TimeSeriesChart(
       seriesList,
-
       animate: animate,
-      // Set the default renderer to a bar renderer.
-      // This can also be one of the custom renderers of the time series chart.
       defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-      // It is recommended that default interactions be turned off if using bar
-      // renderer, because the line point highlighter is the default for time
-      // series chart.
-      defaultInteractions: false,
-      // If default interactions were removed, optionally add select nearest
-      // and the domain highlighter that are typical for bar charts.
-
-      // Optionally pass in a [DateTimeFactory] used by the chart. The factory
-      // should create the same type of [DateTime] as the data provided. If none
-      // specified, the default creates local date time.
-      dateTimeFactory: const charts.LocalDateTimeFactory(),
+      domainAxis: new charts.DateTimeAxisSpec(
+          tickProviderSpec:
+              new charts.StaticDateTimeTickProviderSpec(staticTicks)),
     );
   }
+  // final staticTicks = <charts.TickSpec<DateTime>>[
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 00, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 01, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 02, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 03, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 04, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 05, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 06, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 07, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 08, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 09, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 10, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 11, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 12, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 13, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 14, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 15, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 16, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 17, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 18, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 19, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 20, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 21, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 22, 00)),
+  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 23, 00)),
+  // ];
+
+  // return new charts.TimeSeriesChart(
+  //   seriesList,
+
+  //   animate: animate,
+  //   // Set the default renderer to a bar renderer.
+  //   // This can also be one of the custom renderers of the time series chart.
+  //   defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+  //   // It is recommended that default interactions be turned off if using bar
+  //   // renderer, because the line point highlighter is the default for time
+  //   // series chart.
+  //   defaultInteractions: false,
+  //   // If default interactions were removed, optionally add select nearest
+  //   // and the domain highlighter that are typical for bar charts.
+
+  //   // Optionally pass in a [DateTimeFactory] used by the chart. The factory
+  //   // should create the same type of [DateTime] as the data provided. If none
+  //   // specified, the default creates local date time.
+  //   dateTimeFactory: const charts.LocalDateTimeFactory(),
+  // );
 
   /// Create one series with sample hard coded data.
   static List<charts.Series<MeditationSessionSeries, DateTime>>
@@ -144,69 +168,9 @@ class MeditationSessionsChartDay extends StatelessWidget {
     ///Value to hold list of meditation sessions
     var data = <MeditationSessionSeries>[];
 
-    ///
-    ///Preparing to show data PER WEEK///
-    ///
-
-    final dataPerWeek = <MeditationSessionSeries>[
-      for (int i = 0;
-          i < meditationSessionNotifier.meditationSessionList.length;
-          i++)
-        if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()) &&
-            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()))
-          new MeditationSessionSeries(
-              meditationSessionNotifier.meditationSessionList[i].createdAt
-                  .toDate(),
-              int.parse(
-                  meditationSessionNotifier.meditationSessionList[i].length))
-    ];
-
-    ///
-    ///Preparing to show data PER MONTH///
-    ///
-
-    //Get the number of days of particular month
-
-    DateTime lastDayOfMonth =
-        new DateTime(currentDate.year, currentDate.month + 1, 0);
-    print("Current date: ${currentDate}");
-    print("N days: ${lastDayOfMonth.day}");
-
-    final dataPerMonth = <MeditationSessionSeries>[
-      for (int i = 0;
-          i < meditationSessionNotifier.meditationSessionList.length;
-          i++)
-        if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()) &&
-            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()))
-          new MeditationSessionSeries(
-              meditationSessionNotifier.meditationSessionList[i].createdAt
-                  .toDate(),
-              int.parse(
-                  meditationSessionNotifier.meditationSessionList[i].length))
-    ];
-
-    //dataPerMonth
-    //    .add(MeditationSessionSeries((DateTime(2021, 5, 1, 12, 00)), 1));
-    //dataPerMonth
-    //    .add(MeditationSessionSeries((DateTime(2021, 5, 31, 12, 00)), 1));
-
     //Data value (complete list of meditation sessions) depends on what time frame has been chosen
     if (selectedTimeFrame == 'DAY') {
       data = dataPerDay;
-    }
-    if (selectedTimeFrame == 'WEEK') {
-      data = dataPerWeek;
-    }
-    if (selectedTimeFrame == 'MONTH') {
-      data = dataPerMonth;
     }
 
     return [

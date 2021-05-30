@@ -174,14 +174,9 @@ class MeditationSessionsChartWeek extends StatelessWidget {
         .add(MeditationSessionSeries((DateTime(2021, 5, 31, 12, 00)), 1));
 
     //Data value (complete list of meditation sessions) depends on what time frame has been chosen
-    if (selectedTimeFrame == 'DAY') {
-      data = dataPerDay;
-    }
+
     if (selectedTimeFrame == 'WEEK') {
       data = dataPerWeek;
-    }
-    if (selectedTimeFrame == 'MONTH') {
-      data = dataPerMonth;
     }
 
     return [
