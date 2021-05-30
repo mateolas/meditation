@@ -52,6 +52,9 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     //screen starting from presenting "today"
     currentDate = DateTime.now();
 
+    //to set for provider current day
+    meditationSessionNotifier.setSelectedDay(currentDate);
+
     currentDateStartOfTheWeek = findFirstDateOfTheWeek(currentDate);
     currentDateEndOfTheWeek = findLastDateOfTheWeek(currentDate);
     //on welcome screen we're starting from the actual day
@@ -117,12 +120,17 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime decreaseDatePerDay(DateTime time, String typeOfTimeFrame) {
+    //instance of MeditationSessionNotifier to set current date to current day provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     int timeFrameValue;
     if (typeOfTimeFrame == 'DAY') {
       timeFrameValue = 1;
       setState(() {
         currentDate =
             DateTime(time.year, time.month, time.day - timeFrameValue);
+        //set current day to provider
+        meditationSessionNotifier.setSelectedDay(currentDate);
         isIncreaseSignNeedToVisible = true;
       });
     }
@@ -131,6 +139,9 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime increaseDatePerDay(DateTime time, String typeOfTimeFrame) {
+    //instance of MeditationSessionNotifier to set current date to current day provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     int timeFrameValue = 1;
     if (typeOfTimeFrame == 'DAY') {
       timeFrameValue = 1;
@@ -141,6 +152,8 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
               DateTime(currentDay.year, currentDay.month, currentDay.day))) {
         setState(() {
           isIncreaseSignNeedToVisible = false;
+          //set current day to provider
+          meditationSessionNotifier.setSelectedDay(currentDate);
         });
       }
       if (DateTime(currentDate.year, currentDate.month, currentDate.day)
@@ -149,6 +162,8 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         setState(() {
           currentDate =
               DateTime(time.year, time.month, time.day + timeFrameValue);
+          //set current day to provider
+          meditationSessionNotifier.setSelectedDay(currentDate);
         });
       }
     }

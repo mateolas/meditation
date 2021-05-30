@@ -2,6 +2,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
+import 'package:provider/provider.dart';
 
 class MeditationSessionsChartDay extends StatelessWidget {
   final List<charts.Series<MeditationSessionSeries, DateTime>> seriesList;
@@ -14,6 +15,7 @@ class MeditationSessionsChartDay extends StatelessWidget {
   /// 1. currentDate - single date: day, month, year
   /// 2. currentDateStartOfTheWeek - date which holds beginning of particular week
   /// 3. currentDateEndOfTheWeek - date which holds end of the particular week
+  /// 4. selectedTimeFrame - what time frame has been selected: Day/Week/Month/Year
   factory MeditationSessionsChartDay.withSampleData(
       MeditationSessionNotifier meditationSessionNotifier,
       DateTime currentDate,
@@ -37,6 +39,11 @@ class MeditationSessionsChartDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
+
+    print(
+        "Selected day from provider: ${meditationSessionNotifier.getSelectedDay}");
     // Create the ticks to be used the domain axis.
     final staticTicks = <charts.TickSpec<DateTime>>[
       new charts.TickSpec(DateTime.utc(2021, 5, 30, 0, 0)),
@@ -58,56 +65,13 @@ class MeditationSessionsChartDay extends StatelessWidget {
       animate: animate,
       defaultRenderer: new charts.BarRendererConfig<DateTime>(),
       domainAxis: new charts.DateTimeAxisSpec(
+          tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+              hour: new charts.TimeFormatterSpec(
+                  format: 'H', transitionFormat: 'H')),
           tickProviderSpec:
               new charts.StaticDateTimeTickProviderSpec(staticTicks)),
     );
   }
-  // final staticTicks = <charts.TickSpec<DateTime>>[
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 00, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 01, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 02, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 03, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 04, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 05, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 06, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 07, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 08, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 09, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 10, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 11, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 12, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 13, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 14, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 15, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 16, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 17, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 18, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 19, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 20, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 21, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 22, 00)),
-  //   new charts.TickSpec(DateTime.utc(2021, 05, 29, 23, 00)),
-  // ];
-
-  // return new charts.TimeSeriesChart(
-  //   seriesList,
-
-  //   animate: animate,
-  //   // Set the default renderer to a bar renderer.
-  //   // This can also be one of the custom renderers of the time series chart.
-  //   defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-  //   // It is recommended that default interactions be turned off if using bar
-  //   // renderer, because the line point highlighter is the default for time
-  //   // series chart.
-  //   defaultInteractions: false,
-  //   // If default interactions were removed, optionally add select nearest
-  //   // and the domain highlighter that are typical for bar charts.
-
-  //   // Optionally pass in a [DateTimeFactory] used by the chart. The factory
-  //   // should create the same type of [DateTime] as the data provided. If none
-  //   // specified, the default creates local date time.
-  //   dateTimeFactory: const charts.LocalDateTimeFactory(),
-  // );
 
   /// Create one series with sample hard coded data.
   static List<charts.Series<MeditationSessionSeries, DateTime>>

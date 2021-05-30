@@ -7,13 +7,17 @@ class MeditationSessionNotifier with ChangeNotifier {
   int _lengthOfCurrentSession;
   //setting default sound name when starting the app
   String _soundName = 'medium_bell.mp3';
- 
+  DateTime _selectedDay;
+
   //to get meditationSessionList
-  UnmodifiableListView<MeditationSession> get meditationSessionList => UnmodifiableListView(_meditationSessionList);
+  UnmodifiableListView<MeditationSession> get meditationSessionList =>
+      UnmodifiableListView(_meditationSessionList);
   //to get length of current session
   int get getLengthOfCurrentSession => _lengthOfCurrentSession;
   //to get setted sound name
   String get getSoundName => _soundName;
+  //to get which day is currently set in chart view
+  DateTime get getSelectedDay => _selectedDay;
 
   set meditationSessionList(List<MeditationSession> meditationSessionList) {
     _meditationSessionList = meditationSessionList;
@@ -33,5 +37,9 @@ class MeditationSessionNotifier with ChangeNotifier {
   void setSoundName(String soundName) {
     _soundName = soundName;
     notifyListeners();
+  }
+
+  setSelectedDay(DateTime selectedDay) {
+    _selectedDay = selectedDay;
   }
 }
