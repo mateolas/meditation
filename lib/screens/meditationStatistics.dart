@@ -239,6 +239,9 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime decreaseDatePerMonth(DateTime time, String typeOfTimeFrame) {
+    //instance of MeditationSessionNotifier to set current month to provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     int timeFrameValue;
     if (typeOfTimeFrame == 'MONTH') {
       timeFrameValue = 1;
@@ -246,6 +249,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         currentDate =
             DateTime(time.year, time.month - timeFrameValue, time.day);
         isIncreaseSignNeedToVisible = true;
+        meditationSessionNotifier.setSelectedMOnth(currentDate);
       });
     }
     return currentDate;
@@ -253,6 +257,9 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime increaseDatePerMonth(DateTime time, String typeOfTimeFrame) {
+    //instance of MeditationSessionNotifier to set current month to provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     int timeFrameValue;
     if (typeOfTimeFrame == 'MONTH') {
       timeFrameValue = 1;
@@ -260,6 +267,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         currentDate =
             DateTime(time.year, time.month + timeFrameValue, time.day);
         isIncreaseSignNeedToVisible = true;
+        meditationSessionNotifier.setSelectedMOnth(currentDate);
       });
     }
     return currentDate;
@@ -294,6 +302,10 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   }
 
   Widget whatDateToPresent(String selectedTimeFrame) {
+    //instance of MeditationSessionNotifier to get selected month
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
+
     Text whatDateToPresent;
     if (selectedTimeFrame == "DAY") {
       whatDateToPresent = Text('${DateFormat.yMMMd().format(currentDate)}');
@@ -306,6 +318,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
     if (selectedTimeFrame == "MONTH") {
       whatDateToPresent = Text('${DateFormat.MMM().format(currentDate)}');
+      meditationSessionNotifier.setSelectedMOnth(currentDate);
     }
 
     if (selectedTimeFrame == "YEAR") {
@@ -363,7 +376,6 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   Widget build(BuildContext context) {
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
-
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,

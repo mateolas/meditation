@@ -2,6 +2,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
+import 'package:provider/provider.dart';
 
 class MeditationSessionsChartMonth extends StatelessWidget {
   final List<charts.Series<MeditationSessionSeries, DateTime>> seriesList;
@@ -37,6 +38,16 @@ class MeditationSessionsChartMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //instance of MeditationSessionNotifier to get selected month
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
+
+    DateTime selectedMonth;
+    selectedMonth = meditationSessionNotifier.getSelectedMonth;
+
+    print(
+        "Selected month provider: ${meditationSessionNotifier.getSelectedMonth}");
+
     return new charts.TimeSeriesChart(
       seriesList,
       //formating of the xAxis
@@ -74,78 +85,14 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     timePeriod = now_1d;
     var totalTimePerDay = 0;
 
-    ///
-    ///Preparing to show data PER DAY///
-    ///
-
-    //First step is to copy to new list items from the current date
-    //To make it, we're creating dataTest list of MedidationSessionSeries
-    //Looping through list of MeditationSessionNotifier list we're copying data
-    //when current date (which is date from time frame selected by customer) is
-    //equal to the item from the list
-
-    final dataPerDay = <MeditationSessionSeries>[
-      for (int i = 0;
-          i < meditationSessionNotifier.meditationSessionList.length;
-          i++)
-        //check if it's last day, week or month
-        if (currentDate.day ==
-            meditationSessionNotifier.meditationSessionList[i].createdAt
-                .toDate()
-                .day)
-          new MeditationSessionSeries(
-              meditationSessionNotifier.meditationSessionList[i].createdAt
-                  .toDate(),
-              int.parse(
-                  meditationSessionNotifier.meditationSessionList[i].length))
-    ];
-
-    //loop the get the total time per day (per current Date)
-    for (int i = 0;
-        i < meditationSessionNotifier.meditationSessionList.length;
-        i++) {
-      //check if it's last day, week or month
-      if (currentDate.day ==
-          meditationSessionNotifier.meditationSessionList[i].createdAt
-              .toDate()
-              .day) {
-        totalTimePerDay = totalTimePerDay +
-            int.parse(
-                meditationSessionNotifier.meditationSessionList[i].length);
-      }
-    }
-    print("Total length time per day $totalTimePerDay");
-
     ///Value to hold list of meditation sessions
     var data = <MeditationSessionSeries>[];
-
-    ///
-    ///Preparing to show data PER WEEK///
-    ///
-
-    final dataPerWeek = <MeditationSessionSeries>[
-      for (int i = 0;
-          i < meditationSessionNotifier.meditationSessionList.length;
-          i++)
-        if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()) &&
-            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()))
-          new MeditationSessionSeries(
-              meditationSessionNotifier.meditationSessionList[i].createdAt
-                  .toDate(),
-              int.parse(
-                  meditationSessionNotifier.meditationSessionList[i].length))
-    ];
 
     ///
     ///Preparing to show data PER MONTH///
     ///
 
     //Get the number of days of particular month
-
     DateTime lastDayOfMonth =
         new DateTime(currentDate.year, currentDate.month + 1, 0);
     print("Current date: ${currentDate}");
