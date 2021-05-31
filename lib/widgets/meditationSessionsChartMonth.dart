@@ -41,33 +41,40 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     //instance of MeditationSessionNotifier to get selected month
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
-
+    int i = 0;
+    //which month has been selected
     DateTime selectedMonth;
     selectedMonth = meditationSessionNotifier.getSelectedMonth;
+
+    //setting to the last day of the selected month
+    DateTime lastDayOfSelectedMonth =
+        new DateTime(selectedMonth.year, selectedMonth.month + 1, 0);
+
+    //number of days in selected month
+    int nrOfDaysInSelectedMonth = lastDayOfSelectedMonth.day;
+
+    //generating x axis description based of days of a month of selected month
+    final staticTicks = <charts.TickSpec<DateTime>>[
+      for (i = 1; i < nrOfDaysInSelectedMonth + 1; i++)
+        new charts.TickSpec(
+            DateTime.utc(
+                selectedMonth.year, selectedMonth.month, selectedMonth.day + i),
+            label: '$i'),
+    ];
 
     print(
         "Selected month provider: ${meditationSessionNotifier.getSelectedMonth}");
 
     return new charts.TimeSeriesChart(
       seriesList,
-      //formating of the xAxis
-      domainAxis: new charts.DateTimeAxisSpec(
-          //  tickProviderSpec: charts.DayTickProviderSpec(increments: [1]),
-          // tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-          //     day: new charts.TimeFormatterSpec(
-          //        format: 'EEE', transitionFormat: 'EEE', noonFormat: 'EEE')),
-          ),
       animate: animate,
-      // Set the default renderer to a bar renderer.
-      // This can also be one of the custom renderers of the time series chart.
       defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-      // It is recommended that default interactions be turned off if using bar
-      // renderer, because the line point highlighter is the default for time
-      // series chart.
-      defaultInteractions: false,
-      // If default interactions were removed, optionally add select nearest
-      // and the domain highlighter that are typical for bar charts.
-      behaviors: [new charts.SelectNearest(), new charts.DomainHighlighter()],
+      domainAxis: new charts.DateTimeAxisSpec(
+          tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+              day: new charts.TimeFormatterSpec(
+                  format: 'D', transitionFormat: 'D')),
+          tickProviderSpec:
+              new charts.StaticDateTimeTickProviderSpec(staticTicks)),
     );
   }
 
@@ -114,11 +121,6 @@ class MeditationSessionsChartMonth extends StatelessWidget {
               int.parse(
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
-
-    dataPerMonth
-        .add(MeditationSessionSeries((DateTime(2021, 5, 1, 12, 00)), 1));
-    dataPerMonth
-        .add(MeditationSessionSeries((DateTime(2021, 5, 31, 12, 00)), 1));
 
     //Data value (complete list of meditation sessions) depends on what time frame has been chosen
 
