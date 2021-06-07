@@ -99,20 +99,25 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     ///Preparing to show data PER MONTH///
     ///
 
-    //Get the number of days of particular month
+    //Set the first day of particular month
+    DateTime firstDayOfMonth =
+        new DateTime(currentDate.year, currentDate.month, 1);
+    //Set the last day of particular month
     DateTime lastDayOfMonth =
         new DateTime(currentDate.year, currentDate.month + 1, 0);
     print("Current date: ${currentDate}");
-    print("N days: ${lastDayOfMonth.day}");
+    print("First date of a month: ${firstDayOfMonth}");
+    print("Last date of a month: ${lastDayOfMonth}");
 
+    //getting data of the particular month
     final dataPerMonth = <MeditationSessionSeries>[
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
           i++)
-        if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
+        if (firstDayOfMonth.isBefore(meditationSessionNotifier
                 .meditationSessionList[i].createdAt
                 .toDate()) &&
-            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
+            lastDayOfMonth.isAfter(meditationSessionNotifier
                 .meditationSessionList[i].createdAt
                 .toDate()))
           new MeditationSessionSeries(
