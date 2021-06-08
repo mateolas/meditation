@@ -38,43 +38,27 @@ class MeditationSessionsChartMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //instance of MeditationSessionNotifier to get selected month
-    MeditationSessionNotifier meditationSessionNotifier =
-        Provider.of<MeditationSessionNotifier>(context, listen: false);
-    int i = 0;
-    //which month has been selected
-    DateTime selectedMonth;
-    selectedMonth = meditationSessionNotifier.getSelectedMonth;
-
-    //setting to the last day of the selected month
-    DateTime lastDayOfSelectedMonth =
-        new DateTime(selectedMonth.year, selectedMonth.month + 1, 0);
-
-    //number of days in selected month
-    int nrOfDaysInSelectedMonth = lastDayOfSelectedMonth.day;
-
-    //generating x axis description based of days of a month of selected month
-    final staticTicks = <charts.TickSpec<DateTime>>[
-      for (i = 1; i < nrOfDaysInSelectedMonth + 1; i++)
-        new charts.TickSpec(
-            DateTime.utc(
-                selectedMonth.year, selectedMonth.month, selectedMonth.day + i),
-            label: '$i'),
-    ];
-
-    print(
-        "Selected month provider: ${meditationSessionNotifier.getSelectedMonth}");
-
     return new charts.TimeSeriesChart(
       seriesList,
-      animate: animate,
-      defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+      //formating of the xAxis
       domainAxis: new charts.DateTimeAxisSpec(
-          tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-              day: new charts.TimeFormatterSpec(
-                  format: 'D', transitionFormat: 'D')),
-          tickProviderSpec:
-              new charts.StaticDateTimeTickProviderSpec(staticTicks)),
+        tickProviderSpec: charts.DayTickProviderSpec(increments: [2]),
+        tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+            day: new charts.TimeFormatterSpec(
+                format: 'dd', transitionFormat: 'dd', noonFormat: 'dd')),
+      ),
+
+      animate: animate,
+      // Set the default renderer to a bar renderer.
+      // This can also be one of the custom renderers of the time series chart.
+      defaultRenderer: new charts.BarRendererConfig<DateTime>(),
+      // It is recommended that default interactions be turned off if using bar
+      // renderer, because the line point highlighter is the default for time
+      // series chart.
+      defaultInteractions: false,
+      // If default interactions were removed, optionally add select nearest
+      // and the domain highlighter that are typical for bar charts.
+      behaviors: [new charts.SelectNearest(), new charts.DomainHighlighter()],
     );
   }
 
@@ -86,12 +70,6 @@ class MeditationSessionsChartMonth extends StatelessWidget {
           DateTime currentDateStartOfTheWeek,
           DateTime currentDateEndOfTheWeek,
           String selectedTimeFrame) {
-    var now = new DateTime.now();
-    var now_1d = now.subtract(Duration(days: 1));
-    var timePeriod;
-    timePeriod = now_1d;
-    var totalTimePerDay = 0;
-
     ///Value to hold list of meditation sessions
     var data = <MeditationSessionSeries>[];
 
@@ -99,15 +77,18 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     ///Preparing to show data PER MONTH///
     ///
 
-    //Set the first day of particular month
+    //Set the first day of current month
     DateTime firstDayOfMonth =
         new DateTime(currentDate.year, currentDate.month, 1);
-    //Set the last day of particular month
+    //Set the last day of current
     DateTime lastDayOfMonth =
         new DateTime(currentDate.year, currentDate.month + 1, 0);
+    //Set the first day of next month to current
+    DateTime firstDayOfNextMonth =
+        new DateTime(currentDate.year, currentDate.month + 1, 1);
     print("Current date: ${currentDate}");
     print("First date of a month: ${firstDayOfMonth}");
-    print("Last date of a month: ${lastDayOfMonth}");
+    print("Last date of a month: ${firstDayOfNextMonth}");
 
     //getting data of the particular month
     final dataPerMonth = <MeditationSessionSeries>[
@@ -117,7 +98,7 @@ class MeditationSessionsChartMonth extends StatelessWidget {
         if (firstDayOfMonth.isBefore(meditationSessionNotifier
                 .meditationSessionList[i].createdAt
                 .toDate()) &&
-            lastDayOfMonth.isAfter(meditationSessionNotifier
+            firstDayOfNextMonth.isAfter(meditationSessionNotifier
                 .meditationSessionList[i].createdAt
                 .toDate()))
           new MeditationSessionSeries(
@@ -127,10 +108,30 @@ class MeditationSessionsChartMonth extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
+    //create Empty List
+    var summarizedDataPerMonth = <MeditationSessionSeries>[
+      for (int i = 0; i < lastDayOfMonth.day; i++)
+        new MeditationSessionSeries(
+            DateTime.utc(firstDayOfMonth.year, firstDayOfMonth.month,
+                firstDayOfMonth.day + i),
+            0)
+    ];
+
+    // // for (int i = 0; i < dataPerMonth.length; i++)
+    // //   if (dataPerMonth[i].date.day == dataPerMonth[i + 1].date.day) {
+    // //     summarizedDataPerMonth[i].meditationSessionLength =
+    // //         summarizedDataPerMonth[i].meditationSessionLength +
+    // //             dataPerMonth[i].meditationSessionLength;
+    // //   }
+
+    //for (int i = 0; i < summarizedDataPerMonth.length; i++) {
+    // print("dataPerMonthTemplate ${i}: ${summarizedDataPerMonth[i].date}");
+
     //Data value (complete list of meditation sessions) depends on what time frame has been chosen
 
     if (selectedTimeFrame == 'MONTH') {
-      data = dataPerMonth;
+      //data = dataPerMonth;
+      data = summarizedDataPerMonth;
     }
 
     return [
@@ -151,7 +152,7 @@ class MeditationSessionsChartMonth extends StatelessWidget {
 /// Sample time series data type.
 class MeditationSessionSeries {
   final DateTime date;
-  final int meditationSessionLength;
+  int meditationSessionLength;
 
   MeditationSessionSeries(this.date, this.meditationSessionLength);
 }
