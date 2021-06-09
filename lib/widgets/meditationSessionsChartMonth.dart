@@ -33,9 +33,6 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     );
   }
 
-  //Interesting link about static tick provider
-  //https://google.github.io/charts/flutter/example/axes/statically_provided_ticks.html
-
   @override
   Widget build(BuildContext context) {
     return new charts.TimeSeriesChart(
@@ -47,7 +44,6 @@ class MeditationSessionsChartMonth extends StatelessWidget {
             day: new charts.TimeFormatterSpec(
                 format: 'dd', transitionFormat: 'dd', noonFormat: 'dd')),
       ),
-
       animate: animate,
       // Set the default renderer to a bar renderer.
       // This can also be one of the custom renderers of the time series chart.
@@ -77,30 +73,36 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     ///Preparing to show data PER MONTH///
     ///
 
-    //Set the first day of current month
+    //Set the date to the first day of current month
     DateTime firstDayOfMonth =
         new DateTime(currentDate.year, currentDate.month, 1);
-    //Set the last day of current
+    //Set the date to the last day of current month
     DateTime lastDayOfMonth =
         new DateTime(currentDate.year, currentDate.month + 1, 0);
-    //Set the first day of next month to current
+    //Set the date to first day of next month to current
     DateTime firstDayOfNextMonth =
         new DateTime(currentDate.year, currentDate.month + 1, 1);
-    print("Current date: ${currentDate}");
-    print("First date of a month: ${firstDayOfMonth}");
-    print("Last date of a month: ${firstDayOfNextMonth}");
 
-    //getting data of the particular month
+    // For debugging //
+    // print("Current date: ${currentDate}");
+    // print("First date of a month: ${firstDayOfMonth}");
+    // print("Last date of a month: ${firstDayOfNextMonth}");
+    // // // // // // //
+
+    //filtering and getting data of current month from provider
     final dataPerMonth = <MeditationSessionSeries>[
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
           i++)
+        //filtering range: before first day of the month and after first day of next month
+        //(last day of current month)
         if (firstDayOfMonth.isBefore(meditationSessionNotifier
                 .meditationSessionList[i].createdAt
                 .toDate()) &&
             firstDayOfNextMonth.isAfter(meditationSessionNotifier
                 .meditationSessionList[i].createdAt
                 .toDate()))
+          //add filtered new MeditationSessionSeries object (date, length)
           new MeditationSessionSeries(
               meditationSessionNotifier.meditationSessionList[i].createdAt
                   .toDate(),
@@ -108,7 +110,7 @@ class MeditationSessionsChartMonth extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
-    //create Empty List
+    //creating empty list to store summarized values
     var summarizedDataPerMonth = <MeditationSessionSeries>[
       for (int i = 0; i < lastDayOfMonth.day; i++)
         new MeditationSessionSeries(
@@ -117,17 +119,26 @@ class MeditationSessionsChartMonth extends StatelessWidget {
             0)
     ];
 
-    // // for (int i = 0; i < dataPerMonth.length; i++)
-    // //   if (dataPerMonth[i].date.day == dataPerMonth[i + 1].date.day) {
-    // //     summarizedDataPerMonth[i].meditationSessionLength =
-    // //         summarizedDataPerMonth[i].meditationSessionLength +
-    // //             dataPerMonth[i].meditationSessionLength;
-    // //   }
+    //two loops: i - loop, to iterate through "filtered" days of the current month
+    //k - loop, to iterate through all days of the empty/template list (the same month as current one)
+    for (int i = 0; i < dataPerMonth.length; i++)
+      for (int k = 0; k < summarizedDataPerMonth.length; k++)
+        //when "filtered" day matches template day, add length to template day
+        if (summarizedDataPerMonth[k].date.day == dataPerMonth[i].date.day) {
+          print("inLoop ${i}: ${dataPerMonth[i].date.day}");
+          summarizedDataPerMonth[k].meditationSessionLength =
+              summarizedDataPerMonth[k].meditationSessionLength +
+                  dataPerMonth[i].meditationSessionLength;
+        }
 
-    //for (int i = 0; i < summarizedDataPerMonth.length; i++) {
-    // print("dataPerMonthTemplate ${i}: ${summarizedDataPerMonth[i].date}");
-
-    //Data value (complete list of meditation sessions) depends on what time frame has been chosen
+    // for debugging //
+    // for (int i = 0; i < dataPerMonth.length; i++)
+    //   print(
+    //       "dataPerMonth ${i}: ${dataPerMonth[i].date} ${dataPerMonth[i].meditationSessionLength}");
+    // for (int i = 0; i < summarizedDataPerMonth.length; i++)
+    //   print(
+    //       "summarizedDataPerMonth ${i}: ${summarizedDataPerMonth[i].date} ${summarizedDataPerMonth[i].meditationSessionLength}");
+    // // // // // // //
 
     if (selectedTimeFrame == 'MONTH') {
       //data = dataPerMonth;
