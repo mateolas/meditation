@@ -2,6 +2,7 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
+import 'package:provider/provider.dart';
 
 class MeditationSessionsChartYear extends StatelessWidget {
   final List<charts.Series<MeditationSessionSeries, DateTime>> seriesList;
@@ -32,31 +33,48 @@ class MeditationSessionsChartYear extends StatelessWidget {
     );
   }
 
-  //Interesting link about static tick provider
-  //https://google.github.io/charts/flutter/example/axes/statically_provided_ticks.html
-
   @override
   Widget build(BuildContext context) {
+    //instance of MeditationSessionNotifier to get selected year
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
+
+    //get selected Year (using month which provides proper DateTime date)
+    DateTime selectedYear;
+    selectedYear = meditationSessionNotifier.getSelectedMonth;
+
+    /// FOR DEBUG
+    //print(
+    //    "Start week provider: ${meditationSessionNotifier.getSelectedWeekStartDay}");
+    //print(
+    //    "End week provider: ${meditationSessionNotifier.getSelectedWeekEndDay}");
+    ///
+
+    final staticTicks = <charts.TickSpec<DateTime>>[
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 1), label: 'JAN'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 2), label: 'FEB'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 3), label: 'MAR'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 4), label: 'APR'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 5), label: 'MAY'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 6), label: 'JUN'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 7), label: 'JUL'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 8), label: 'AUG'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 9), label: 'SEP'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 10), label: 'OCT'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 11), label: 'NOV'),
+      new charts.TickSpec(DateTime.utc(selectedYear.year, 12), label: 'DEC'),
+    ];
+
     return new charts.TimeSeriesChart(
       seriesList,
-      //formating of the xAxis
-      domainAxis: new charts.DateTimeAxisSpec(
-          //  tickProviderSpec: charts.DayTickProviderSpec(increments: [1]),
-          // tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-          //     day: new charts.TimeFormatterSpec(
-          //        format: 'EEE', transitionFormat: 'EEE', noonFormat: 'EEE')),
-          ),
       animate: animate,
-      // Set the default renderer to a bar renderer.
-      // This can also be one of the custom renderers of the time series chart.
       defaultRenderer: new charts.BarRendererConfig<DateTime>(),
-      // It is recommended that default interactions be turned off if using bar
-      // renderer, because the line point highlighter is the default for time
-      // series chart.
-      defaultInteractions: false,
-      // If default interactions were removed, optionally add select nearest
-      // and the domain highlighter that are typical for bar charts.
-      behaviors: [new charts.SelectNearest(), new charts.DomainHighlighter()],
+      domainAxis: new charts.DateTimeAxisSpec(
+          tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
+              day: new charts.TimeFormatterSpec(
+                  format: 'D', transitionFormat: 'D')),
+          tickProviderSpec:
+              new charts.StaticDateTimeTickProviderSpec(staticTicks)),
     );
   }
 
@@ -75,114 +93,230 @@ class MeditationSessionsChartYear extends StatelessWidget {
     var totalTimePerDay = 0;
 
     ///
-    ///Preparing to show data PER DAY///
+    ///Preparing to show data PER YEAR///
     ///
 
-    //First step is to copy to new list items from the current date
-    //To make it, we're creating dataTest list of MedidationSessionSeries
+    //First step is to copy to new list proper items from the current date
+    //To make it, we're creating list of MedidationSessionSeries
     //Looping through list of MeditationSessionNotifier list we're copying data
-    //when current date (which is date from time frame selected by customer) is
-    //equal to the item from the list
+    //when current date (which is date from time frame selected by user) is
+    //equal to the selected year / month
 
-    final dataPerDay = <MeditationSessionSeries>[
+    int totalLengthOfJAN = 0;
+    int totalLengthOfFEB = 0;
+    int totalLengthOfMAR = 0;
+    int totalLengthOfAPR = 0;
+    int totalLengthOfMAY = 0;
+    int totalLengthOfJUN = 0;
+    int totalLengthOfJUL = 0;
+    int totalLengthOfAUG = 0;
+    int totalLengthOfSEP = 0;
+    int totalLengthOfOCT = 0;
+    int totalLengthOfNOV = 0;
+    int totalLengthOfDEC = 0;
+
+    final dataFromJAN = <MeditationSessionSeries>[];
+    final dataFromFEB = <MeditationSessionSeries>[];
+    final dataFromMAR = <MeditationSessionSeries>[];
+    final dataFromAPR = <MeditationSessionSeries>[];
+    final dataFromMAY = <MeditationSessionSeries>[];
+    final dataFromJUN = <MeditationSessionSeries>[];
+    final dataFromJUL = <MeditationSessionSeries>[];
+    final dataFromAUG = <MeditationSessionSeries>[];
+    final dataFromSEP = <MeditationSessionSeries>[];
+    final dataFromOCT = <MeditationSessionSeries>[];
+    final dataFromNOV = <MeditationSessionSeries>[];
+    final dataFromDEC = <MeditationSessionSeries>[];
+    final sessionLengthsPerMonth = <int>[
+      totalLengthOfJAN,
+      totalLengthOfFEB,
+      totalLengthOfMAR,
+      totalLengthOfAPR,
+      totalLengthOfMAY,
+      totalLengthOfJUN,
+      totalLengthOfJUL,
+      totalLengthOfAUG,
+      totalLengthOfSEP,
+      totalLengthOfOCT,
+      totalLengthOfNOV,
+      totalLengthOfDEC,
+    ];
+    final List<List> dataFromAllMonths = [
+      dataFromJAN,
+      dataFromFEB,
+      dataFromMAR,
+      dataFromAPR,
+      dataFromMAY,
+      dataFromJUN,
+      dataFromJUL,
+      dataFromAUG,
+      dataFromSEP,
+      dataFromOCT,
+      dataFromNOV,
+      dataFromDEC
+    ];
+
+    //loop to fill data of particular months
+    for (int k = 0; k < 12; k++)
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
           i++)
         //check if it's last day, week or month
-        if (currentDate.day ==
-            meditationSessionNotifier.meditationSessionList[i].createdAt
-                .toDate()
-                .day)
-          new MeditationSessionSeries(
+        if (DateTime(currentDate.year, k + 1, 1).isBefore(
+                meditationSessionNotifier.meditationSessionList[i].createdAt
+                    .toDate()) &&
+            DateTime(currentDate.year, k + 2, 1).isAfter(
+                meditationSessionNotifier.meditationSessionList[i].createdAt
+                    .toDate()))
+          dataFromAllMonths[k].add(new MeditationSessionSeries(
               meditationSessionNotifier.meditationSessionList[i].createdAt
                   .toDate(),
               int.parse(
-                  meditationSessionNotifier.meditationSessionList[i].length))
-    ];
+                  meditationSessionNotifier.meditationSessionList[i].length)));
 
-    //loop the get the total time per day (per current Date)
-    for (int i = 0;
-        i < meditationSessionNotifier.meditationSessionList.length;
-        i++) {
-      //check if it's last day, week or month
-      if (currentDate.day ==
-          meditationSessionNotifier.meditationSessionList[i].createdAt
-              .toDate()
-              .day) {
-        totalTimePerDay = totalTimePerDay +
-            int.parse(
-                meditationSessionNotifier.meditationSessionList[i].length);
+    // //Total time in JAN
+    // if (dataFromJAN.length != null) {
+    //   for (int i = 0; i < dataFromJAN.length; i++)
+    //     if (dataFromJAN[i].meditationSessionLength != null) {
+    //       totalLengthOfJAN =
+    //           totalLengthOfJAN + dataFromJAN[i].meditationSessionLength;
+    //     }
+    // }
+    // //Total time in FEB
+    // if (dataFromFEB.length != null) {
+    //   for (int i = 0; i < dataFromFEB.length; i++)
+    //     if (dataFromFEB[i].meditationSessionLength != null) {
+    //       totalLengthOfFEB =
+    //           totalLengthOfFEB + dataFromFEB[i].meditationSessionLength;
+    //     }
+    // }
+
+    // //Total time in MAR
+    // if (dataFromMAR.length != null) {
+    //   for (int i = 0; i < dataFromMAR.length; i++)
+    //     if (dataFromMAR[i].meditationSessionLength != null) {
+    //       totalLengthOfMAR =
+    //           totalLengthOfMAR + dataFromMAR[i].meditationSessionLength;
+    //     }
+    // }
+
+    // //Total time in APR
+    // if (dataFromAPR.length > 0) {
+    //   for (int i = 0; i < dataFromAPR.length; i++)
+    //     if (dataFromFEB[i].meditationSessionLength != null) {
+    //       totalLengthOfAPR =
+    //           totalLengthOfAPR + dataFromAPR[i].meditationSessionLength;
+    //     } else {
+    //       totalLengthOfAPR = 0;
+    //     }
+    // }
+
+    // //Total time in MAY
+    // if (dataFromMAY.length > 0) {
+    //   for (int i = 0; i < dataFromMAY.length; i++)
+    //     totalLengthOfMAY =
+    //         totalLengthOfMAY + dataFromMAY[i].meditationSessionLength;
+    // } else {
+    //   totalLengthOfMAY = 0;
+    // }
+    // //Total time in JUN
+    // if (dataFromJUN.length > 0) {
+    //   for (int i = 0; i < dataFromJUN.length; i++)
+    //     totalLengthOfJUN =
+    //         totalLengthOfJUN + dataFromJUN[i].meditationSessionLength;
+    // } else {
+    //   totalLengthOfJUN = 0;
+    // }
+    // //Total time in JUL
+    // if (dataFromJUL.length > 0) {
+    //   for (int i = 0; i < dataFromJUL.length; i++)
+    //     totalLengthOfJUL =
+    //         totalLengthOfJUL + dataFromJUL[i].meditationSessionLength;
+    // } else {
+    //   totalLengthOfJUL = 0;
+    // }
+    // //Total time in AUG
+    // if (dataFromAUG.length > 0) {
+    //   for (int i = 0; i < dataFromAUG.length; i++)
+    //     totalLengthOfAUG =
+    //         totalLengthOfAUG + dataFromAUG[i].meditationSessionLength;
+    // } else {
+    //   totalLengthOfAUG = 0;
+    // }
+    // //Total time in SEP
+    // if (dataFromSEP.length > 0) {
+    //   for (int i = 0; i < dataFromSEP.length; i++)
+    //     totalLengthOfSEP =
+    //         totalLengthOfSEP + dataFromSEP[i].meditationSessionLength;
+    // } else {
+    //   totalLengthOfSEP = 0;
+    // }
+    // //Total time in OCT
+    // if (dataFromOCT.length > 0) {
+    //   for (int i = 0; i < dataFromOCT.length; i++)
+    //     totalLengthOfOCT =
+    //         totalLengthOfOCT + dataFromOCT[i].meditationSessionLength;
+    // } else {
+    //   totalLengthOfOCT = 0;
+    // }
+    // //Total time in NOV
+    // if (dataFromNOV.length > 0) {
+    //   for (int i = 0; i < dataFromNOV.length; i++)
+    //     totalLengthOfNOV =
+    //         totalLengthOfNOV + dataFromNOV[i].meditationSessionLength;
+    // } else {
+    //   totalLengthOfNOV = 0;
+    // }
+    // //Total time in DEC
+    // if (dataFromDEC.length > 0) {
+    //   for (int i = 0; i < dataFromDEC.length; i++)
+    //     totalLengthOfDEC =
+    //         totalLengthOfDEC + dataFromDEC[i].meditationSessionLength;
+    // }
+
+    //get total length of meditation sessions in January
+    for (int k = 0; k < 12; k++)
+      for (int i = 0; i < dataFromAllMonths[k].length; i++) {
+        sessionLengthsPerMonth[k] =
+            sessionLengthsPerMonth[k] + dataFromAllMonths[k].length;
+        //[i][1][1]. dataFromJanuary[i].meditationSessionLength;
       }
-    }
-    print("Total length time per day $totalTimePerDay");
 
-    ///Value to hold list of meditation sessions
-    var data = <MeditationSessionSeries>[];
+    //loop to fill data of particular months
+    for (int k = 0; k < 12; k++)
+      for (int i = 0; i < dataFromAllMonths[k].length; i++)
+        //check if it's last day, week or month
+        sessionLengthsPerMonth[k] =
+            sessionLengthsPerMonth[k] + dataFromAllMonths[k].length;
 
-    ///
-    ///Preparing to show data PER WEEK///
-    ///
+    //   for (int i = 0;
+    //       i < meditationSessionNotifier.meditationSessionList.length;
+    //       i++)
+    //     //check if it's last day, week or month
+    //     if (DateTime(currentDate.year, 1, 1).isBefore(meditationSessionNotifier
+    //             .meditationSessionList[i].createdAt
+    //             .toDate()) &&
+    //         DateTime(currentDate.year, 2, 1).isAfter(meditationSessionNotifier
+    //             .meditationSessionList[i].createdAt
+    //             .toDate()))
+    //       new MeditationSessionSeries(
+    //           meditationSessionNotifier.meditationSessionList[i].createdAt
+    //               .toDate(),
+    //           int.parse(
+    //               meditationSessionNotifier.meditationSessionList[i].length))
+    // ];
 
-    final dataPerWeek = <MeditationSessionSeries>[
-      for (int i = 0;
-          i < meditationSessionNotifier.meditationSessionList.length;
-          i++)
-        if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()) &&
-            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()))
-          new MeditationSessionSeries(
-              meditationSessionNotifier.meditationSessionList[i].createdAt
-                  .toDate(),
-              int.parse(
-                  meditationSessionNotifier.meditationSessionList[i].length))
-    ];
+    // //get total length of meditation sessions in January
+    // int totalLengthOfSessionsJAN = 0;
+    // for (int i = 0; i < dataFromJAN.length; i++) {
+    //   totalLengthOfSessionsJAN =
+    //       totalLengthOfSessionsJAN + dataFromJanuary[i].meditationSessionLength;
+    // }
 
-    ///
-    ///Preparing to show data PER MONTH///
-    ///
-
-    //Get the number of days of particular month
-
-    DateTime lastDayOfMonth =
-        new DateTime(currentDate.year, currentDate.month + 1, 0);
-    print("Current date: ${currentDate}");
-    print("N days: ${lastDayOfMonth.day}");
-
-    final dataPerMonth = <MeditationSessionSeries>[
-      for (int i = 0;
-          i < meditationSessionNotifier.meditationSessionList.length;
-          i++)
-        if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()) &&
-            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
-                .meditationSessionList[i].createdAt
-                .toDate()))
-          new MeditationSessionSeries(
-              meditationSessionNotifier.meditationSessionList[i].createdAt
-                  .toDate(),
-              int.parse(
-                  meditationSessionNotifier.meditationSessionList[i].length))
-    ];
-
-    dataPerMonth
-        .add(MeditationSessionSeries((DateTime(2021, 5, 1, 12, 00)), 1));
-    dataPerMonth
-        .add(MeditationSessionSeries((DateTime(2021, 5, 31, 12, 00)), 1));
-
-    //Data value (complete list of meditation sessions) depends on what time frame has been chosen
-    if (selectedTimeFrame == 'DAY') {
-      data = dataPerDay;
-    }
-    if (selectedTimeFrame == 'WEEK') {
-      data = dataPerWeek;
-    }
-    if (selectedTimeFrame == 'MONTH') {
-      data = dataPerMonth;
-    }
+    // final dataOfTheYear = <MeditationSessionSeries>[
+    //   new MeditationSessionSeries(
+    //       DateTime(currentDate.year, 1, 1), totalLengthOfSessionsJAN)
+    // ];
 
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
@@ -193,7 +327,7 @@ class MeditationSessionsChartYear extends StatelessWidget {
         measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>
             meditationSessionSeries.meditationSessionLength,
         //holds the list which we created based on a time frame selection (day/week/month/year)
-        data: data,
+        data: dataFromJUL,
       )
     ];
   }
