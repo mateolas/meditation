@@ -39,9 +39,13 @@ class MeditationSessionsChartYear extends StatelessWidget {
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
 
+    ///TO - DO
+    ///get selected year properly
+
     //get selected Year (using month which provides proper DateTime date)
     DateTime selectedYear;
     selectedYear = meditationSessionNotifier.getSelectedMonth;
+    print("Selected year: ${selectedYear}");
 
     /// FOR DEBUG
     //print(
@@ -71,8 +75,7 @@ class MeditationSessionsChartYear extends StatelessWidget {
       defaultRenderer: new charts.BarRendererConfig<DateTime>(),
       domainAxis: new charts.DateTimeAxisSpec(
           tickFormatterSpec: new charts.AutoDateTimeTickFormatterSpec(
-              day: new charts.TimeFormatterSpec(
-                  format: 'D', transitionFormat: 'D')),
+              day: new charts.TimeFormatterSpec(format: 'M')),
           tickProviderSpec:
               new charts.StaticDateTimeTickProviderSpec(staticTicks)),
     );
@@ -96,12 +99,7 @@ class MeditationSessionsChartYear extends StatelessWidget {
     ///Preparing to show data PER YEAR///
     ///
 
-    //First step is to copy to new list proper items from the current date
-    //To make it, we're creating list of MedidationSessionSeries
-    //Looping through list of MeditationSessionNotifier list we're copying data
-    //when current date (which is date from time frame selected by user) is
-    //equal to the selected year / month
-
+    //integers to store summarize meditation sessions length per particular month
     int totalLengthOfJAN = 0;
     int totalLengthOfFEB = 0;
     int totalLengthOfMAR = 0;
@@ -115,6 +113,7 @@ class MeditationSessionsChartYear extends StatelessWidget {
     int totalLengthOfNOV = 0;
     int totalLengthOfDEC = 0;
 
+    //meditationSessions lists to store data per particular month
     final dataFromJAN = <MeditationSessionSeries>[];
     final dataFromFEB = <MeditationSessionSeries>[];
     final dataFromMAR = <MeditationSessionSeries>[];
@@ -127,6 +126,8 @@ class MeditationSessionsChartYear extends StatelessWidget {
     final dataFromOCT = <MeditationSessionSeries>[];
     final dataFromNOV = <MeditationSessionSeries>[];
     final dataFromDEC = <MeditationSessionSeries>[];
+
+    //list of integers to store meditation sessions length per particular month
     final sessionLengthsPerMonth = <int>[
       totalLengthOfJAN,
       totalLengthOfFEB,
@@ -141,7 +142,9 @@ class MeditationSessionsChartYear extends StatelessWidget {
       totalLengthOfNOV,
       totalLengthOfDEC,
     ];
-    final List<List> dataFromAllMonths = [
+
+    //list of meditdations sessions lists from particular months
+    final List<List> summarizedDataFromAllMonths = [
       dataFromJAN,
       dataFromFEB,
       dataFromMAR,
@@ -156,168 +159,51 @@ class MeditationSessionsChartYear extends StatelessWidget {
       dataFromDEC
     ];
 
-    //loop to fill data of particular months
+    ///Loop to fill data of particular month of the chosen year
+    ///k - loop through items in list summarizedDataFromAllMonths
+    ///i - loop through all items in the provider list
+    ///if - filtering proper range of dates
     for (int k = 0; k < 12; k++)
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
           i++)
-        //check if it's last day, week or month
+        //if chosen date is between "1st" of this month and "1st" the next month
         if (DateTime(currentDate.year, k + 1, 1).isBefore(
                 meditationSessionNotifier.meditationSessionList[i].createdAt
                     .toDate()) &&
             DateTime(currentDate.year, k + 2, 1).isAfter(
                 meditationSessionNotifier.meditationSessionList[i].createdAt
                     .toDate()))
-          dataFromAllMonths[k].add(new MeditationSessionSeries(
+          summarizedDataFromAllMonths[k].add(new MeditationSessionSeries(
               meditationSessionNotifier.meditationSessionList[i].createdAt
                   .toDate(),
               int.parse(
                   meditationSessionNotifier.meditationSessionList[i].length)));
 
-    // //Total time in JAN
-    // if (dataFromJAN.length != null) {
-    //   for (int i = 0; i < dataFromJAN.length; i++)
-    //     if (dataFromJAN[i].meditationSessionLength != null) {
-    //       totalLengthOfJAN =
-    //           totalLengthOfJAN + dataFromJAN[i].meditationSessionLength;
-    //     }
-    // }
-    // //Total time in FEB
-    // if (dataFromFEB.length != null) {
-    //   for (int i = 0; i < dataFromFEB.length; i++)
-    //     if (dataFromFEB[i].meditationSessionLength != null) {
-    //       totalLengthOfFEB =
-    //           totalLengthOfFEB + dataFromFEB[i].meditationSessionLength;
-    //     }
-    // }
+    ///Loop to calculate summarized time per particular month of the chosen year
+    /// k - loop through the items of the list summarizedDataFromAllMonths
+    /// k - summarize meditation session length of particular month (from particular item
+    /// from list summarizedDataFromAllMonths)
+    /// [k][i] - access to the attribute of the item in the list which is in
+    /// another list
 
-    // //Total time in MAR
-    // if (dataFromMAR.length != null) {
-    //   for (int i = 0; i < dataFromMAR.length; i++)
-    //     if (dataFromMAR[i].meditationSessionLength != null) {
-    //       totalLengthOfMAR =
-    //           totalLengthOfMAR + dataFromMAR[i].meditationSessionLength;
-    //     }
-    // }
-
-    // //Total time in APR
-    // if (dataFromAPR.length > 0) {
-    //   for (int i = 0; i < dataFromAPR.length; i++)
-    //     if (dataFromFEB[i].meditationSessionLength != null) {
-    //       totalLengthOfAPR =
-    //           totalLengthOfAPR + dataFromAPR[i].meditationSessionLength;
-    //     } else {
-    //       totalLengthOfAPR = 0;
-    //     }
-    // }
-
-    // //Total time in MAY
-    // if (dataFromMAY.length > 0) {
-    //   for (int i = 0; i < dataFromMAY.length; i++)
-    //     totalLengthOfMAY =
-    //         totalLengthOfMAY + dataFromMAY[i].meditationSessionLength;
-    // } else {
-    //   totalLengthOfMAY = 0;
-    // }
-    // //Total time in JUN
-    // if (dataFromJUN.length > 0) {
-    //   for (int i = 0; i < dataFromJUN.length; i++)
-    //     totalLengthOfJUN =
-    //         totalLengthOfJUN + dataFromJUN[i].meditationSessionLength;
-    // } else {
-    //   totalLengthOfJUN = 0;
-    // }
-    // //Total time in JUL
-    // if (dataFromJUL.length > 0) {
-    //   for (int i = 0; i < dataFromJUL.length; i++)
-    //     totalLengthOfJUL =
-    //         totalLengthOfJUL + dataFromJUL[i].meditationSessionLength;
-    // } else {
-    //   totalLengthOfJUL = 0;
-    // }
-    // //Total time in AUG
-    // if (dataFromAUG.length > 0) {
-    //   for (int i = 0; i < dataFromAUG.length; i++)
-    //     totalLengthOfAUG =
-    //         totalLengthOfAUG + dataFromAUG[i].meditationSessionLength;
-    // } else {
-    //   totalLengthOfAUG = 0;
-    // }
-    // //Total time in SEP
-    // if (dataFromSEP.length > 0) {
-    //   for (int i = 0; i < dataFromSEP.length; i++)
-    //     totalLengthOfSEP =
-    //         totalLengthOfSEP + dataFromSEP[i].meditationSessionLength;
-    // } else {
-    //   totalLengthOfSEP = 0;
-    // }
-    // //Total time in OCT
-    // if (dataFromOCT.length > 0) {
-    //   for (int i = 0; i < dataFromOCT.length; i++)
-    //     totalLengthOfOCT =
-    //         totalLengthOfOCT + dataFromOCT[i].meditationSessionLength;
-    // } else {
-    //   totalLengthOfOCT = 0;
-    // }
-    // //Total time in NOV
-    // if (dataFromNOV.length > 0) {
-    //   for (int i = 0; i < dataFromNOV.length; i++)
-    //     totalLengthOfNOV =
-    //         totalLengthOfNOV + dataFromNOV[i].meditationSessionLength;
-    // } else {
-    //   totalLengthOfNOV = 0;
-    // }
-    // //Total time in DEC
-    // if (dataFromDEC.length > 0) {
-    //   for (int i = 0; i < dataFromDEC.length; i++)
-    //     totalLengthOfDEC =
-    //         totalLengthOfDEC + dataFromDEC[i].meditationSessionLength;
-    // }
-
-    //get total length of meditation sessions in January
-    for (int k = 0; k < 12; k++)
-      for (int i = 0; i < dataFromAllMonths[k].length; i++) {
-        sessionLengthsPerMonth[k] =
-            sessionLengthsPerMonth[k] + dataFromAllMonths[k].length;
-        //[i][1][1]. dataFromJanuary[i].meditationSessionLength;
+    for (int k = 0; k < 12; k++) {
+      for (int i = 0; i < summarizedDataFromAllMonths[k].length; i++) {
+        sessionLengthsPerMonth[k] = sessionLengthsPerMonth[k] +
+            summarizedDataFromAllMonths[k][i].meditationSessionLength;
       }
+    }
 
-    //loop to fill data of particular months
-    for (int k = 0; k < 12; k++)
-      for (int i = 0; i < dataFromAllMonths[k].length; i++)
-        //check if it's last day, week or month
-        sessionLengthsPerMonth[k] =
-            sessionLengthsPerMonth[k] + dataFromAllMonths[k].length;
+    ///Final list where are stored Meditations Sessions:
+    ///First attribue - Month
+    ///Second attribute - Meditation session length per particular month
+    final dataWithTotalLengthsAllMonths = <MeditationSessionSeries>[
+      for (int i = 0; i < 12; i++)
+        new MeditationSessionSeries(
+            DateTime.utc(currentDate.year, i + 1), sessionLengthsPerMonth[i]),
+    ];
 
-    //   for (int i = 0;
-    //       i < meditationSessionNotifier.meditationSessionList.length;
-    //       i++)
-    //     //check if it's last day, week or month
-    //     if (DateTime(currentDate.year, 1, 1).isBefore(meditationSessionNotifier
-    //             .meditationSessionList[i].createdAt
-    //             .toDate()) &&
-    //         DateTime(currentDate.year, 2, 1).isAfter(meditationSessionNotifier
-    //             .meditationSessionList[i].createdAt
-    //             .toDate()))
-    //       new MeditationSessionSeries(
-    //           meditationSessionNotifier.meditationSessionList[i].createdAt
-    //               .toDate(),
-    //           int.parse(
-    //               meditationSessionNotifier.meditationSessionList[i].length))
-    // ];
-
-    // //get total length of meditation sessions in January
-    // int totalLengthOfSessionsJAN = 0;
-    // for (int i = 0; i < dataFromJAN.length; i++) {
-    //   totalLengthOfSessionsJAN =
-    //       totalLengthOfSessionsJAN + dataFromJanuary[i].meditationSessionLength;
-    // }
-
-    // final dataOfTheYear = <MeditationSessionSeries>[
-    //   new MeditationSessionSeries(
-    //       DateTime(currentDate.year, 1, 1), totalLengthOfSessionsJAN)
-    // ];
-
+    //draw the chart based on dataWithTotalLengthsAllMonths data
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
         id: 'Sales',
@@ -327,7 +213,7 @@ class MeditationSessionsChartYear extends StatelessWidget {
         measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>
             meditationSessionSeries.meditationSessionLength,
         //holds the list which we created based on a time frame selection (day/week/month/year)
-        data: dataFromJUL,
+        data: dataWithTotalLengthsAllMonths,
       )
     ];
   }
