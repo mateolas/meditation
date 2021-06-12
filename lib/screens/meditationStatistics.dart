@@ -65,6 +65,9 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     //setting to provider current day
     meditationSessionNotifier.setSelectedDay(currentDate);
 
+    //setting to provider current day
+    meditationSessionNotifier.setSelectedYear(currentDate);
+
     initCurrentDateStartOfTheWeek = findFirstDateOfTheWeek(currentDate);
     //setting to provider current day
     meditationSessionNotifier
@@ -275,6 +278,9 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime decreaseDatePerYear(DateTime time, String typeOfTimeFrame) {
+    //instance of MeditationSessionNotifier to set current year to provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     int timeFrameValue;
     if (typeOfTimeFrame == 'YEAR') {
       timeFrameValue = 1;
@@ -282,6 +288,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         currentDate =
             DateTime(time.year - timeFrameValue, time.month, time.day);
         isIncreaseSignNeedToVisible = true;
+        meditationSessionNotifier.setSelectedYear(currentDate);
       });
     }
     return currentDate;
@@ -289,6 +296,9 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //function to decrease the presented date based on chosen time frame
   DateTime increaseDatePerYear(DateTime time, String typeOfTimeFrame) {
+    //instance of MeditationSessionNotifier to set current year to provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
     int timeFrameValue;
     if (typeOfTimeFrame == 'YEAR') {
       timeFrameValue = 1;
@@ -296,6 +306,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         currentDate =
             DateTime(time.year + timeFrameValue, time.month, time.day);
         isIncreaseSignNeedToVisible = true;
+        meditationSessionNotifier.setSelectedYear(currentDate);
       });
     }
     return currentDate;
@@ -323,6 +334,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
     if (selectedTimeFrame == "YEAR") {
       whatDateToPresent = Text('${DateFormat.y().format(currentDate)}');
+      meditationSessionNotifier.setSelectedYear(currentDate);
     }
 
     return whatDateToPresent;

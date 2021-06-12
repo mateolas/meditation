@@ -15,6 +15,8 @@ class MeditationSessionNotifier with ChangeNotifier {
   DateTime _selectedWeekEndDay;
   //to store selected month in charts
   DateTime _selectedMonth;
+  //to store selected year in charts
+  DateTime _selectedYear;
 
   //to get meditationSessionList
   UnmodifiableListView<MeditationSession> get meditationSessionList =>
@@ -31,6 +33,8 @@ class MeditationSessionNotifier with ChangeNotifier {
   DateTime get getSelectedWeekEndDay => _selectedWeekEndDay;
   //to get from which date starts a new week in chart view
   DateTime get getSelectedMonth => _selectedMonth;
+  //to get from which date starts a new week in chart view
+  DateTime get getSelectedYear => _selectedYear;
 
   set meditationSessionList(List<MeditationSession> meditationSessionList) {
     _meditationSessionList = meditationSessionList;
@@ -66,5 +70,9 @@ class MeditationSessionNotifier with ChangeNotifier {
 
   setSelectedMOnth(DateTime selectedMonth) {
     _selectedMonth = selectedMonth;
+  }
+
+  setSelectedYear(DateTime selectedYear) {
+    _selectedYear = selectedYear;
   }
 }

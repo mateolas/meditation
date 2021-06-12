@@ -44,15 +44,8 @@ class MeditationSessionsChartYear extends StatelessWidget {
 
     //get selected Year (using month which provides proper DateTime date)
     DateTime selectedYear;
-    selectedYear = meditationSessionNotifier.getSelectedMonth;
+    selectedYear = meditationSessionNotifier.getSelectedYear;
     print("Selected year: ${selectedYear}");
-
-    /// FOR DEBUG
-    //print(
-    //    "Start week provider: ${meditationSessionNotifier.getSelectedWeekStartDay}");
-    //print(
-    //    "End week provider: ${meditationSessionNotifier.getSelectedWeekEndDay}");
-    ///
 
     final staticTicks = <charts.TickSpec<DateTime>>[
       new charts.TickSpec(DateTime.utc(selectedYear.year, 1), label: 'JAN'),
