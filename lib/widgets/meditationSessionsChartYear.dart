@@ -17,14 +17,14 @@ class MeditationSessionsChartYear extends StatelessWidget {
   /// 3. currentDateEndOfTheWeek - date which holds end of the particular week
   factory MeditationSessionsChartYear.withSampleData(
       MeditationSessionNotifier meditationSessionNotifier,
-      DateTime currentDate,
+      DateTime currentYear,
       DateTime currentDateStartOfTheWeek,
       DateTime currentDateEndOfTheWeek,
       String selectedTimeFrame) {
     return new MeditationSessionsChartYear(
       _createSampleData(
           meditationSessionNotifier,
-          currentDate,
+          currentYear,
           currentDateStartOfTheWeek,
           currentDateEndOfTheWeek,
           selectedTimeFrame),
