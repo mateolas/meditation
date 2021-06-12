@@ -42,6 +42,13 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   DateTime initCurrentDateStartOfTheWeek;
   //date to present last day of the week (based on provided date)
   DateTime currentDateEndOfTheWeek;
+  //date to present currently "active" month
+  DateTime currentMonth = DateTime.now();
+  //date to present currently "active" month
+  DateTime currentYear;
+
+  //reference date (to disable increasing year/month, week,day after current one)
+  final DateTime initCurrentDate = DateTime.now();
   DateTime initCurrentDateEndOfTheWeek;
 
   int weekCounter;
@@ -62,11 +69,21 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
     //screen starting from presenting "today"
     currentDate = DateTime.now();
+
+    //screen starting from presenting "today"
+    currentMonth = DateTime.now();
+
+    //screen starting from presenting "today"
+    currentYear = DateTime.now();
+
     //setting to provider current day
     meditationSessionNotifier.setSelectedDay(currentDate);
 
     //setting to provider current day
-    meditationSessionNotifier.setSelectedYear(currentDate);
+    meditationSessionNotifier.setSelectedYear(currentYear);
+
+    //setting to provider current month
+    meditationSessionNotifier.setSelectedMOnth(currentMonth);
 
     initCurrentDateStartOfTheWeek = findFirstDateOfTheWeek(currentDate);
     //setting to provider current day
@@ -81,9 +98,10 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     currentDateEndOfTheWeek = initCurrentDateEndOfTheWeek;
     currentDateStartOfTheWeek = initCurrentDateStartOfTheWeek;
 
+    //TO - DO - ">" sign to dissapear while on current date
     //on welcome screen we're starting from the actual day
     //so we need to hide ">" from presented day
-    isIncreaseSignNeedToVisible = false;
+    //isIncreaseSignNeedToVisible = false;
 
     weekCounter = 7;
   }
@@ -161,10 +179,10 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     if (typeOfTimeFrame == 'DAY') {
       timeFrameValue = 1;
       //value to compare currentDate
-      DateTime currentDay = DateTime.now();
+      DateTime actualDay = DateTime.now();
       if (DateTime(currentDate.year, currentDate.month, currentDate.day)
           .isAtSameMomentAs(
-              DateTime(currentDay.year, currentDay.month, currentDay.day))) {
+              DateTime(actualDay.year, actualDay.month, actualDay.day))) {
         setState(() {
           isIncreaseSignNeedToVisible = false;
           //set current day to provider
@@ -172,8 +190,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         });
       }
       if (DateTime(currentDate.year, currentDate.month, currentDate.day)
-          .isBefore(
-              DateTime(currentDay.year, currentDay.month, currentDay.day))) {
+          .isBefore(DateTime(actualDay.year, actualDay.month, actualDay.day))) {
         setState(() {
           currentDate =
               DateTime(time.year, time.month, time.day + timeFrameValue);
@@ -249,13 +266,13 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     if (typeOfTimeFrame == 'MONTH') {
       timeFrameValue = 1;
       setState(() {
-        currentDate =
+        currentMonth =
             DateTime(time.year, time.month - timeFrameValue, time.day);
         isIncreaseSignNeedToVisible = true;
-        meditationSessionNotifier.setSelectedMOnth(currentDate);
+        meditationSessionNotifier.setSelectedMOnth(currentMonth);
       });
     }
-    return currentDate;
+    return currentMonth;
   }
 
   //function to decrease the presented date based on chosen time frame
@@ -264,16 +281,16 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
     int timeFrameValue;
-    if (typeOfTimeFrame == 'MONTH') {
+    if (time.month == initCurrentDate.month) {
+    } else {
       timeFrameValue = 1;
       setState(() {
-        currentDate =
+        currentMonth =
             DateTime(time.year, time.month + timeFrameValue, time.day);
-        isIncreaseSignNeedToVisible = true;
-        meditationSessionNotifier.setSelectedMOnth(currentDate);
+        meditationSessionNotifier.setSelectedMOnth(currentMonth);
       });
     }
-    return currentDate;
+    return currentMonth;
   }
 
   //function to decrease the presented date based on chosen time frame
@@ -301,13 +318,18 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         Provider.of<MeditationSessionNotifier>(context, listen: false);
     int timeFrameValue;
     if (typeOfTimeFrame == 'YEAR') {
+      //value to compare currentDate
+      DateTime actualYear = DateTime.now();
       timeFrameValue = 1;
-      setState(() {
-        currentDate =
-            DateTime(time.year + timeFrameValue, time.month, time.day);
-        isIncreaseSignNeedToVisible = true;
-        meditationSessionNotifier.setSelectedYear(currentDate);
-      });
+      if (time.year == initCurrentDate.year) {
+      } else {
+        setState(() {
+          currentDate = DateTime(time.year + timeFrameValue);
+          meditationSessionNotifier.setSelectedYear(currentDate);
+        });
+      }
+      if (DateTime(actualYear.year).isBefore(DateTime(time.year)) ||
+          DateTime(actualYear.year).isAtSameMomentAs(DateTime(time.year))) {}
     }
     return currentDate;
   }
@@ -316,20 +338,23 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     //instance of MeditationSessionNotifier to get selected month
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
+    DateTime initDate = DateTime.now();
 
     Text whatDateToPresent;
     if (selectedTimeFrame == "DAY") {
       whatDateToPresent = Text('${DateFormat.yMMMd().format(currentDate)}');
+      meditationSessionNotifier.setSelectedDay(currentDate);
     }
 
     if (selectedTimeFrame == "WEEK") {
+      currentDate = DateTime.now();
       whatDateToPresent = Text(
           '${DateFormat.yMMMd().format(currentDateStartOfTheWeek)} - ${DateFormat.yMMMd().format(currentDateEndOfTheWeek)}');
     }
 
     if (selectedTimeFrame == "MONTH") {
-      whatDateToPresent = Text('${DateFormat.MMM().format(currentDate)}');
-      meditationSessionNotifier.setSelectedMOnth(currentDate);
+      whatDateToPresent = Text('${DateFormat.yMMM().format(currentMonth)}');
+      meditationSessionNotifier.setSelectedMOnth(currentMonth);
     }
 
     if (selectedTimeFrame == "YEAR") {
@@ -367,6 +392,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
       whatChartToPresent = MeditationSessionsChartMonth.withSampleData(
           meditationSessionNotifier,
           currentDate,
+          currentMonth,
           currentDateStartOfTheWeek,
           currentDateEndOfTheWeek,
           selectedTimeFrame);
@@ -388,6 +414,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
   Widget build(BuildContext context) {
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
+
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -462,7 +489,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
                       decreaseDatePerWeek();
                     }
                     if (selectedTimeFrame == 'MONTH') {
-                      decreaseDatePerMonth(currentDate, selectedTimeFrame);
+                      decreaseDatePerMonth(currentMonth, selectedTimeFrame);
                     }
                     if (selectedTimeFrame == 'YEAR') {
                       decreaseDatePerYear(currentDate, selectedTimeFrame);
@@ -485,7 +512,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
                     increaseDatePerWeek();
                   }
                   if (selectedTimeFrame == 'MONTH') {
-                    increaseDatePerMonth(currentDate, selectedTimeFrame);
+                    increaseDatePerMonth(currentMonth, selectedTimeFrame);
                   }
                   if (selectedTimeFrame == 'YEAR') {
                     increaseDatePerYear(currentDate, selectedTimeFrame);

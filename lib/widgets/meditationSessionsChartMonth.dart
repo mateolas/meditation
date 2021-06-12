@@ -18,6 +18,7 @@ class MeditationSessionsChartMonth extends StatelessWidget {
   factory MeditationSessionsChartMonth.withSampleData(
       MeditationSessionNotifier meditationSessionNotifier,
       DateTime currentDate,
+      DateTime currentMonth,
       DateTime currentDateStartOfTheWeek,
       DateTime currentDateEndOfTheWeek,
       String selectedTimeFrame) {
@@ -25,6 +26,7 @@ class MeditationSessionsChartMonth extends StatelessWidget {
       _createSampleData(
           meditationSessionNotifier,
           currentDate,
+          currentMonth,
           currentDateStartOfTheWeek,
           currentDateEndOfTheWeek,
           selectedTimeFrame),
@@ -63,6 +65,7 @@ class MeditationSessionsChartMonth extends StatelessWidget {
       _createSampleData(
           MeditationSessionNotifier meditationSessionNotifier,
           DateTime currentDate,
+          DateTime currentMonth,
           DateTime currentDateStartOfTheWeek,
           DateTime currentDateEndOfTheWeek,
           String selectedTimeFrame) {
@@ -75,13 +78,13 @@ class MeditationSessionsChartMonth extends StatelessWidget {
 
     //Set the date to the first day of current month
     DateTime firstDayOfMonth =
-        new DateTime(currentDate.year, currentDate.month, 1);
+        new DateTime(currentMonth.year, currentMonth.month, 1);
     //Set the date to the last day of current month
     DateTime lastDayOfMonth =
-        new DateTime(currentDate.year, currentDate.month + 1, 0);
+        new DateTime(currentMonth.year, currentMonth.month + 1, 0);
     //Set the date to first day of next month to current
     DateTime firstDayOfNextMonth =
-        new DateTime(currentDate.year, currentDate.month + 1, 1);
+        new DateTime(currentMonth.year, currentMonth.month + 1, 1);
 
     // For debugging //
     // print("Current date: ${currentDate}");
