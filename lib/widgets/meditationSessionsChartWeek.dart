@@ -113,10 +113,13 @@ class MeditationSessionsChartWeek extends StatelessWidget {
     ///Value to hold list of meditation sessions
     var data = <MeditationSessionSeries>[];
 
-    ///
-    ///Preparing to show data PER WEEK///
-    ///
+    //increase by one end date of the week to filter properly scope from MON to SUN
+    DateTime currentDateEndOfTheWeekIncreased = DateTime.utc(
+        currentDateEndOfTheWeek.year,
+        currentDateEndOfTheWeek.month,
+        currentDateEndOfTheWeek.day + 1);
 
+    ///filtering and getting data of current week from provider
     final dataPerWeek = <MeditationSessionSeries>[
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
@@ -124,7 +127,7 @@ class MeditationSessionsChartWeek extends StatelessWidget {
         if (currentDateStartOfTheWeek.isBefore(meditationSessionNotifier
                 .meditationSessionList[i].createdAt
                 .toDate()) &&
-            currentDateEndOfTheWeek.isAfter(meditationSessionNotifier
+            currentDateEndOfTheWeekIncreased.isAfter(meditationSessionNotifier
                 .meditationSessionList[i].createdAt
                 .toDate()))
           new MeditationSessionSeries(
@@ -134,9 +137,33 @@ class MeditationSessionsChartWeek extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
-    if (selectedTimeFrame == 'WEEK') {
-      data = dataPerWeek;
-    }
+    //creating empty list to store summarized values
+    var summarizedDataPerWeek = <MeditationSessionSeries>[
+      for (int i = 0; i < 7; i++)
+        new MeditationSessionSeries(
+            DateTime.utc(
+                currentDateStartOfTheWeek.year,
+                currentDateStartOfTheWeek.month,
+                currentDateStartOfTheWeek.day + i),
+            0)
+    ];
+
+    //two loops: i - loop, to iterate through "filtered" days of the current month
+    //k - loop, to iterate through all days of the empty/template list (the same month as current one)
+    for (int i = 0; i < dataPerWeek.length; i++)
+      for (int k = 0; k < 7; k++)
+        //when "filtered" day matches template day, add length to template day
+        if (summarizedDataPerWeek[k].date.day == dataPerWeek[i].date.day) {
+          //print("inLoop ${i}: ${dataPerMonth[i].date.day}");
+          summarizedDataPerWeek[k].meditationSessionLength =
+              summarizedDataPerWeek[k].meditationSessionLength +
+                  dataPerWeek[i].meditationSessionLength;
+        }
+
+//for debugging //
+    for (int i = 0; i < summarizedDataPerWeek.length; i++)
+      print(
+          "summarizedDataPerWeek ${i}: ${summarizedDataPerWeek[i].date} ${summarizedDataPerWeek[i].meditationSessionLength}");
 
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
@@ -147,7 +174,7 @@ class MeditationSessionsChartWeek extends StatelessWidget {
         measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>
             meditationSessionSeries.meditationSessionLength,
         //holds the list which we created based on a time frame selection (day/week/month/year)
-        data: data,
+        data: summarizedDataPerWeek,
       )
     ];
   }
@@ -156,7 +183,7 @@ class MeditationSessionsChartWeek extends StatelessWidget {
 /// Sample time series data type.
 class MeditationSessionSeries {
   final DateTime date;
-  final int meditationSessionLength;
+  int meditationSessionLength;
 
   MeditationSessionSeries(this.date, this.meditationSessionLength);
 }
