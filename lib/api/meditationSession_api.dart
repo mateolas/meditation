@@ -115,10 +115,11 @@ Future<String> getCurrentUID() async {
 }
 
 //
-//#################################
+//#### UPLOADING/DOWNLOADING DATA FROM FIREBASE #################
 //
 
-getMeditationSession(MeditationSessionNotifier meditationSessionNotifier) async {
+getMeditationSession(
+    MeditationSessionNotifier meditationSessionNotifier) async {
   //getting current firebaseUser
   FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
@@ -136,12 +137,13 @@ getMeditationSession(MeditationSessionNotifier meditationSessionNotifier) async 
   //inserting documents to list
   snapshot.documents.forEach((document) {
     //converting from firebase format to meditationSession
-    MeditationSession meditationSession = MeditationSession.fromMap(document.data);
+    MeditationSession meditationSession =
+        MeditationSession.fromMap(document.data);
     //adding element to the list
     _meditationSessionList.add(meditationSession);
   });
 
-  //setting the list and and notifing the notifier 
+  //setting the list and and notifing the notifier
   meditationSessionNotifier.meditationSessionList = _meditationSessionList;
 }
 

@@ -336,7 +336,6 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     //instance of MeditationSessionNotifier to get selected month
     MeditationSessionNotifier meditationSessionNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
-    DateTime initDate = DateTime.now();
 
     Text whatDateToPresent;
     if (selectedTimeFrame == "DAY") {
@@ -406,6 +405,62 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     }
 
     return whatChartToPresent;
+  }
+
+  Widget dailyStatistics(int sessionLength) {
+    return Column(
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 14,
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height / 22,
+          width: MediaQuery.of(context).size.width,
+          child: Text(
+            '$sessionLength min',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 24, color: Colors.orange),
+          ),
+        ),
+        Container(
+          height: MediaQuery.of(context).size.height / 14,
+          width: MediaQuery.of(context).size.width,
+          child: Text(
+            'Time spent today',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 13),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget whatInformationToPresent(String selectedTimeFrame) {
+    var whatInformationToPresent;
+
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
+    int totalTimePerDay = 0;
+
+    if (selectedTimeFrame == "DAY") {
+      for (int i = 0;
+          i < meditationSessionNotifier.meditationSessionList.length;
+          i++) {
+        totalTimePerDay = totalTimePerDay +
+            int.parse(
+                meditationSessionNotifier.meditationSessionList[i].length);
+      }
+
+      whatInformationToPresent = dailyStatistics(totalTimePerDay);
+    }
+
+    if (selectedTimeFrame == "WEEK") {}
+
+    if (selectedTimeFrame == "MONTH") {}
+
+    if (selectedTimeFrame == "YEAR") {}
+
+    return whatInformationToPresent;
   }
 
   @override
@@ -519,13 +574,19 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
               ),
             ],
           ),
-          Container(
-            height: MediaQuery.of(context).size.height / 3,
-            width: MediaQuery.of(context).size.width,
-            child: whatChartToPresent(selectedTimeFrame),
-            // if (selectedTimeFrame == 'DAY') {
-            //      MeditationSessionsChartDay.withSampleData(meditationSessionNotifier, currentDate, currentDateStartOfTheWeek, currentDateEndOfTheWeek, selectedTimeFrame);
-            //  }
+          Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.width,
+                child: whatChartToPresent(selectedTimeFrame),
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height / 3,
+                width: MediaQuery.of(context).size.width,
+                child: whatInformationToPresent(selectedTimeFrame),
+              ),
+            ],
           ),
         ],
       ),
