@@ -153,9 +153,6 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //Notifier to have possibility of loging in/out from the app
-    AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
-
     //Notifier to get data from the slider within "inner widget" function
     //Saves information about the length of the session
     MeditationSessionNotifier meditationSessionNotifier =
@@ -242,6 +239,8 @@ class _MeditationSessionScreenState extends State<MeditationSessionScreen> {
                   uploadMeditationSession(_currentMeditationSession);
                   //Function to show confirmation dialog and sent data to Firebase
                   _showMyDialog();
+                  //to update notifier list
+                  getMeditationSession(meditationSessionNotifier);
                 },
                 builder: (BuildContext ctx, Duration remaining) {
                   //One line function to present counter data as a XX:XX
