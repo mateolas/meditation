@@ -332,6 +332,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     return currentYear;
   }
 
+  //widget to present date based on chosen time frame
   Widget whatDateToPresent(String selectedTimeFrame) {
     //instance of MeditationSessionNotifier to get selected month
     MeditationSessionNotifier meditationSessionNotifier =
@@ -362,6 +363,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     return whatDateToPresent;
   }
 
+  //widghet to present chart based on chosen time frame
   Widget whatChartToPresent(String selectedTimeFrame) {
     var whatChartToPresent;
     MeditationSessionNotifier meditationSessionNotifier =
@@ -407,6 +409,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     return whatChartToPresent;
   }
 
+  //widget to present daily statistics
   Widget dailyStatistics(int sessionLength) {
     return Column(
       children: [
@@ -419,7 +422,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
           child: Text(
             '$sessionLength min',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 24, color: Colors.orange),
+            style: TextStyle(fontSize: 24, color: Colors.green),
           ),
         ),
         Container(
@@ -435,6 +438,110 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     );
   }
 
+  //widget to present weekly statistics
+  Widget weeklyStatistics() {
+    double mainTimeFontSize = 24;
+    double titleFontSize = 13;
+    double spaceBetweenRowsSize = 36;
+    Color mainTimeColor = Colors.green;
+
+    //draw a table
+    return Center(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
+            Widget>[
+      Container(
+        margin: EdgeInsets.fromLTRB(30, 4, 30, 4),
+        child: Table(
+          border: TableBorder(
+              horizontalInside: BorderSide(
+                  width: 1, color: Colors.orange, style: BorderStyle.solid),
+              verticalInside: BorderSide(
+                  width: 1, color: Colors.orange, style: BorderStyle.solid)),
+          children: [
+            TableRow(children: [
+              Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height /
+                        spaceBetweenRowsSize,
+                  ),
+                  Text(
+                    '... min',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: mainTimeColor, fontSize: mainTimeFontSize),
+                  ),
+                  Text(
+                    'Total time spent',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(color: Colors.black, fontSize: titleFontSize),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height /
+                        spaceBetweenRowsSize,
+                  ),
+                ],
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height /
+                        spaceBetweenRowsSize,
+                  ),
+                  Text(
+                    '... min',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: mainTimeColor, fontSize: mainTimeFontSize),
+                  ),
+                  Text(
+                    'Average time spent',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(color: Colors.black, fontSize: titleFontSize),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height /
+                        spaceBetweenRowsSize,
+                  ),
+                ],
+              ),
+            ]),
+            TableRow(children: [
+              Column(
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height /
+                        spaceBetweenRowsSize,
+                  ),
+                  Text(
+                    '... min',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: mainTimeColor, fontSize: mainTimeFontSize),
+                  ),
+                  Text(
+                    'Longest session',
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(color: Colors.black, fontSize: titleFontSize),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height /
+                        spaceBetweenRowsSize,
+                  ),
+                ],
+              ),
+              Text('', textAlign: TextAlign.center),
+            ]),
+          ],
+        ),
+      ),
+    ]));
+  }
+
+  //widget to present statistics (below chart) based on chosen time frame
   Widget whatInformationToPresent(String selectedTimeFrame) {
     var whatInformationToPresent;
 
@@ -442,19 +549,34 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
         Provider.of<MeditationSessionNotifier>(context, listen: false);
     int totalTimePerDay = 0;
 
+    //what widget (below the charts) to present when timeframe is "DAY"
     if (selectedTimeFrame == "DAY") {
+      //loop the get the total time per day (per current Date)
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
           i++) {
-        totalTimePerDay = totalTimePerDay +
-            int.parse(
-                meditationSessionNotifier.meditationSessionList[i].length);
+        //check if it's last day, week or month
+        if (currentDateDay.day ==
+            meditationSessionNotifier.meditationSessionList[i].createdAt
+                .toDate()
+                .day) {
+          totalTimePerDay = totalTimePerDay +
+              int.parse(
+                  meditationSessionNotifier.meditationSessionList[i].length);
+        }
       }
 
       whatInformationToPresent = dailyStatistics(totalTimePerDay);
     }
 
-    if (selectedTimeFrame == "WEEK") {}
+    //what widget (below the charts) to present when timeframe is "WEEK"
+    if (selectedTimeFrame == "WEEK") {
+      ///TO - DO
+      ///Create a list in provider to store "filtered" list of sessions from
+      ///particular list
+
+      whatInformationToPresent = weeklyStatistics();
+    }
 
     if (selectedTimeFrame == "MONTH") {}
 
