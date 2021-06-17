@@ -555,11 +555,19 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
       for (int i = 0;
           i < meditationSessionNotifier.meditationSessionList.length;
           i++) {
-        //check if it's last day, week or month
+        //filter data: only if the same date, year and month
         if (currentDateDay.day ==
-            meditationSessionNotifier.meditationSessionList[i].createdAt
-                .toDate()
-                .day) {
+                meditationSessionNotifier.meditationSessionList[i].createdAt
+                    .toDate()
+                    .day &&
+            currentDateDay.month ==
+                meditationSessionNotifier.meditationSessionList[i].createdAt
+                    .toDate()
+                    .month &&
+            currentDateDay.year ==
+                meditationSessionNotifier.meditationSessionList[i].createdAt
+                    .toDate()
+                    .year) {
           totalTimePerDay = totalTimePerDay +
               int.parse(
                   meditationSessionNotifier.meditationSessionList[i].length);

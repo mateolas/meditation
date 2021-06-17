@@ -118,10 +118,6 @@ class MeditationSessionsChartDay extends StatelessWidget {
           DateTime currentDateStartOfTheWeek,
           DateTime currentDateEndOfTheWeek,
           String selectedTimeFrame) {
-    var now = new DateTime.now();
-    var now_1d = now.subtract(Duration(days: 1));
-    var timePeriod;
-    timePeriod = now_1d;
     var totalTimePerDay = 0;
 
     ///
@@ -140,9 +136,17 @@ class MeditationSessionsChartDay extends StatelessWidget {
           i++)
         //check if it's last day, week or month
         if (currentDate.day ==
-            meditationSessionNotifier.meditationSessionList[i].createdAt
-                .toDate()
-                .day)
+                meditationSessionNotifier.meditationSessionList[i].createdAt
+                    .toDate()
+                    .day &&
+            currentDate.month ==
+                meditationSessionNotifier.meditationSessionList[i].createdAt
+                    .toDate()
+                    .month &&
+            currentDate.year ==
+                meditationSessionNotifier.meditationSessionList[i].createdAt
+                    .toDate()
+                    .year)
           new MeditationSessionSeries(
               meditationSessionNotifier.meditationSessionList[i].createdAt
                   .toDate(),
@@ -150,29 +154,31 @@ class MeditationSessionsChartDay extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
-    //loop the get the total time per day (per current Date)
-    for (int i = 0;
-        i < meditationSessionNotifier.meditationSessionList.length;
-        i++) {
-      //check if it's last day, week or month
-      if (currentDate.day ==
-          meditationSessionNotifier.meditationSessionList[i].createdAt
-              .toDate()
-              .day) {
-        totalTimePerDay = totalTimePerDay +
-            int.parse(
-                meditationSessionNotifier.meditationSessionList[i].length);
-      }
+    //loop the get the total time per day
+    for (int i = 0; i < dataPerDay.length; i++) {
+      print(
+          "Data per day[$i]: ${dataPerDay[i].date} ${dataPerDay[i].meditationSessionLength} }");
     }
+
+    for (int i = 0; i < dataPerDay.length; i++) {
+      totalTimePerDay = totalTimePerDay + dataPerDay[i].meditationSessionLength;
+    }
+
+    // //loop the get the total time per day (per current Date)
+    // for (int i = 0;
+    //     i < meditationSessionNotifier.meditationSessionList.length;
+    //     i++) {
+    //   //check if it's last day, week or month
+    //   if (currentDate.day ==
+    //       meditationSessionNotifier.meditationSessionList[i].createdAt
+    //           .toDate()
+    //           .day) {
+    //     totalTimePerDay = totalTimePerDay +
+    //         int.parse(
+    //             meditationSessionNotifier.meditationSessionList[i].length);
+    //   }
+    // }
     print("Total length time per day $totalTimePerDay");
-
-    ///Value to hold list of meditation sessions
-    var data = <MeditationSessionSeries>[];
-
-    //Data value (complete list of meditation sessions) depends on what time frame has been chosen
-    if (selectedTimeFrame == 'DAY') {
-      data = dataPerDay;
-    }
 
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
@@ -183,7 +189,7 @@ class MeditationSessionsChartDay extends StatelessWidget {
         measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>
             meditationSessionSeries.meditationSessionLength,
         //holds the list which we created based on a time frame selection (day/week/month/year)
-        data: data,
+        data: dataPerDay,
       )
     ];
   }
