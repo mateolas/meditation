@@ -17,6 +17,12 @@ class MeditationSessionNotifier with ChangeNotifier {
   DateTime _selectedMonth;
   //to store selected year in charts
   DateTime _selectedYear;
+  //total time spent week/month/year
+  int _totalTimeSpent;
+  //average time spent week/month/year
+  int _averageTimeSpent;
+  //longest session spent week/month/year
+  int _longestTimeSpent;
 
   //to get meditationSessionList
   UnmodifiableListView<MeditationSession> get meditationSessionList =>
@@ -35,6 +41,12 @@ class MeditationSessionNotifier with ChangeNotifier {
   DateTime get getSelectedMonth => _selectedMonth;
   //to get from which date starts a new week in chart view
   DateTime get getSelectedYear => _selectedYear;
+  //to get total time spent per per week/month/year
+  int get getTotalTimeSpent => _totalTimeSpent;
+  //to get average time spent per per week/month/year
+  int get getAverageTimeSpent => _averageTimeSpent;
+  //to get longest time spent per per week/month/year
+  int get getLongestTimeSpent => _longestTimeSpent;
 
   set meditationSessionList(List<MeditationSession> meditationSessionList) {
     _meditationSessionList = meditationSessionList;
@@ -74,5 +86,17 @@ class MeditationSessionNotifier with ChangeNotifier {
 
   setSelectedYear(DateTime selectedYear) {
     _selectedYear = selectedYear;
+  }
+
+  setTotalTimeSpent(int totalTimeSpent) {
+    _totalTimeSpent = totalTimeSpent;
+  }
+
+  setAverageTimeSpent(int averageTimeSpent) {
+    _averageTimeSpent = averageTimeSpent;
+  }
+
+  setLongestTimeSpent(int longestTimeSpent) {
+    _longestTimeSpent = longestTimeSpent;
   }
 }
