@@ -106,9 +106,12 @@ class MeditationSessionsChartWeek extends StatelessWidget {
           String selectedTimeFrame) {
     var now = new DateTime.now();
     var now_1d = now.subtract(Duration(days: 1));
-    var timePeriod;
-    timePeriod = now_1d;
-    var totalTimePerDay = 0;
+
+    //to present statistics
+    int totalTimeSpent = 0;
+    int averageTimeSpent = 0;
+    int nrOfNonEmptyDays = 0;
+    int longestSession = 0;
 
     ///Value to hold list of meditation sessions
     var data = <MeditationSessionSeries>[];
@@ -159,6 +162,32 @@ class MeditationSessionsChartWeek extends StatelessWidget {
               summarizedDataPerWeek[k].meditationSessionLength +
                   dataPerWeek[i].meditationSessionLength;
         }
+
+    //total time spent per week
+    for (int i = 0; i < 7; i++) {
+      totalTimeSpent =
+          totalTimeSpent + summarizedDataPerWeek[i].meditationSessionLength;
+    }
+
+    //setting notifier to present statistics
+    meditationSessionNotifier.setTotalTimeSpent(totalTimeSpent);
+
+    //how many days non empty
+    for (int i = 0; i < 7; i++) {
+      if (summarizedDataPerWeek[i].meditationSessionLength != 0)
+        nrOfNonEmptyDays = nrOfNonEmptyDays + 1;
+    }
+
+    print("Nr of empty days: $nrOfNonEmptyDays");
+    //average time spent
+    if (nrOfNonEmptyDays == 0) {
+      averageTimeSpent = 0;
+    } else {
+      averageTimeSpent = (totalTimeSpent / nrOfNonEmptyDays).round();
+    }
+
+    //setting notifier to present statistics
+    meditationSessionNotifier.setAverageTimeSpent(averageTimeSpent);
 
 //for debugging //
     for (int i = 0; i < summarizedDataPerWeek.length; i++)

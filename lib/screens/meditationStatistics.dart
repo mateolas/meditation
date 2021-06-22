@@ -440,105 +440,127 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   //widget to present weekly statistics
   Widget weeklyStatistics() {
-    double mainTimeFontSize = 24;
+    double mainTimeFontSize = 23;
     double titleFontSize = 13;
     double spaceBetweenRowsSize = 36;
-    Color mainTimeColor = Colors.green;
+    Color mainTextTimeColor = Colors.green;
+    Color titleTextColor = Colors.black;
+    Color tableFrameColor = Colors.orange;
+
+    //instance of MeditationSessionNotifier to get statistics from provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
 
     //draw a table
     return Center(
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <
-            Widget>[
-      Container(
-        margin: EdgeInsets.fromLTRB(30, 4, 30, 4),
-        child: Table(
-          border: TableBorder(
-              horizontalInside: BorderSide(
-                  width: 1, color: Colors.orange, style: BorderStyle.solid),
-              verticalInside: BorderSide(
-                  width: 1, color: Colors.orange, style: BorderStyle.solid)),
-          children: [
-            TableRow(children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height /
-                        spaceBetweenRowsSize,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30, 4, 30, 4),
+            child: Table(
+              border: TableBorder(
+                  horizontalInside: BorderSide(
+                      width: 1,
+                      color: tableFrameColor,
+                      style: BorderStyle.solid),
+                  verticalInside: BorderSide(
+                      width: 1,
+                      color: tableFrameColor,
+                      style: BorderStyle.solid)),
+              children: [
+                TableRow(children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      Text(
+                        "${meditationSessionNotifier.getTotalTimeSpent} min",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: mainTextTimeColor,
+                            fontSize: mainTimeFontSize),
+                      ),
+                      Text(
+                        'Total time spent',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
                   ),
-                  Text(
-                    '... min',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: mainTimeColor, fontSize: mainTimeFontSize),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      meditationSessionNotifier.getAverageTimeSpent == 0
+                          ? Text(
+                              " - ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getAverageTimeSpent} min",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Average time spent',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
                   ),
-                  Text(
-                    'Total time spent',
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Colors.black, fontSize: titleFontSize),
+                ]),
+                TableRow(children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      Text(
+                        '... min',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: mainTextTimeColor,
+                            fontSize: mainTimeFontSize),
+                      ),
+                      Text(
+                        'Longest session',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
                   ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height /
-                        spaceBetweenRowsSize,
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height /
-                        spaceBetweenRowsSize,
-                  ),
-                  Text(
-                    '... min',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: mainTimeColor, fontSize: mainTimeFontSize),
-                  ),
-                  Text(
-                    'Average time spent',
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Colors.black, fontSize: titleFontSize),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height /
-                        spaceBetweenRowsSize,
-                  ),
-                ],
-              ),
-            ]),
-            TableRow(children: [
-              Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height /
-                        spaceBetweenRowsSize,
-                  ),
-                  Text(
-                    '... min',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: mainTimeColor, fontSize: mainTimeFontSize),
-                  ),
-                  Text(
-                    'Longest session',
-                    textAlign: TextAlign.center,
-                    style:
-                        TextStyle(color: Colors.black, fontSize: titleFontSize),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height /
-                        spaceBetweenRowsSize,
-                  ),
-                ],
-              ),
-              Text('', textAlign: TextAlign.center),
-            ]),
-          ],
-        ),
-      ),
-    ]));
+                  Text('', textAlign: TextAlign.center),
+                ]),
+              ],
+            ),
+          ),
+        ]));
   }
 
   //widget to present statistics (below chart) based on chosen time frame
