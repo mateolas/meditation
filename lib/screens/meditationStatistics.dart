@@ -476,13 +476,22 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
                         height: MediaQuery.of(context).size.height /
                             spaceBetweenRowsSize,
                       ),
-                      Text(
-                        "${meditationSessionNotifier.getTotalTimeSpent} min",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: mainTextTimeColor,
-                            fontSize: mainTimeFontSize),
-                      ),
+                      //if meditation session total length is 0 present "-"
+                      meditationSessionNotifier.getTotalTimeSpent == 0
+                          ? Text(
+                              "-",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getTotalTimeSpent} min",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
                       Text(
                         'Total time spent',
                         textAlign: TextAlign.center,
@@ -501,6 +510,7 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
                         height: MediaQuery.of(context).size.height /
                             spaceBetweenRowsSize,
                       ),
+                      //if meditation session average length is 0 present "-"
                       meditationSessionNotifier.getAverageTimeSpent == 0
                           ? Text(
                               " - ",
