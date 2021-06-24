@@ -140,6 +140,25 @@ class MeditationSessionsChartWeek extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
+    //sorting meditations sessions to find the longest session and setting
+    //number of sessions
+    if (dataPerWeek.length != 0) {
+      meditationSessionNotifier.setNumberOfSessions(dataPerWeek.length);
+      dataPerWeek.sort((a, b) =>
+          b.meditationSessionLength.compareTo(a.meditationSessionLength));
+    }
+
+    //from sorted list setting the first item as the longest one
+    if (dataPerWeek.length != 0) {
+      meditationSessionNotifier
+          .setLongestTimeSpent(dataPerWeek[0].meditationSessionLength);
+    }
+
+    //if data is empty, set the session length to 0
+    if (dataPerWeek.length == 0) {
+      meditationSessionNotifier.setLongestTimeSpent(0);
+    }
+
     //creating empty list to store summarized values
     var summarizedDataPerWeek = <MeditationSessionSeries>[
       for (int i = 0; i < 7; i++)

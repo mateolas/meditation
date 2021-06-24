@@ -23,6 +23,8 @@ class MeditationSessionNotifier with ChangeNotifier {
   int _averageTimeSpent;
   //longest session spent week/month/year
   int _longestTimeSpent;
+  //number of sessions per week/month/year
+  int _numberOfSessions;
 
   //to get meditationSessionList
   UnmodifiableListView<MeditationSession> get meditationSessionList =>
@@ -47,6 +49,8 @@ class MeditationSessionNotifier with ChangeNotifier {
   int get getAverageTimeSpent => _averageTimeSpent;
   //to get longest time spent per per week/month/year
   int get getLongestTimeSpent => _longestTimeSpent;
+  //to get longest time spent per per week/month/year
+  int get getNumberOfSessions => _numberOfSessions;
 
   set meditationSessionList(List<MeditationSession> meditationSessionList) {
     _meditationSessionList = meditationSessionList;
@@ -98,5 +102,9 @@ class MeditationSessionNotifier with ChangeNotifier {
 
   setLongestTimeSpent(int longestTimeSpent) {
     _longestTimeSpent = longestTimeSpent;
+  }
+
+  setNumberOfSessions(int numberOfSessions) {
+    _numberOfSessions = numberOfSessions;
   }
 }
