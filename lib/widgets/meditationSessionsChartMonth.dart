@@ -174,7 +174,7 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     }
 
     //average time spent
-    if (nrOfNonEmptyDays == 0) {
+    if (dataPerMonth.length == 0) {
       averageTimeSpent = 0;
     } else {
       averageTimeSpent = (totalTimeSpent / dataPerMonth.length).round();
