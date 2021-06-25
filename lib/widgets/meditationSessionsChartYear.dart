@@ -151,6 +151,50 @@ class MeditationSessionsChartYear extends StatelessWidget {
       dataFromDEC
     ];
 
+    //list of all single meditations this year
+    final List<MeditationSessionSeries> dataPerYear = [];
+
+    for (int i = 0;
+        i < meditationSessionNotifier.meditationSessionList.length;
+        i++)
+      if (currentDate.year ==
+          (meditationSessionNotifier.meditationSessionList[i].createdAt
+                  .toDate())
+              .year) {
+        dataPerYear.add(new MeditationSessionSeries(
+            meditationSessionNotifier.meditationSessionList[i].createdAt
+                .toDate(),
+            int.parse(
+                meditationSessionNotifier.meditationSessionList[i].length)));
+      }
+
+    //sorting meditations sessions to find the longest session and setting
+    //number of sessions
+    if (dataPerYear.length != 0) {
+      meditationSessionNotifier.setNumberOfSessions(dataPerYear.length);
+      dataPerYear.sort((a, b) =>
+          b.meditationSessionLength.compareTo(a.meditationSessionLength));
+    }
+
+    //from sorted list setting the first item as the longest one
+    if (dataPerYear.length != 0) {
+      meditationSessionNotifier
+          .setLongestTimeSpent(dataPerYear[0].meditationSessionLength);
+    }
+
+    //if data is empty, set the session length to 0
+    if (dataPerYear.length == 0) {
+      meditationSessionNotifier.setLongestTimeSpent(0);
+    }
+
+    //sorting meditations sessions to find the longest session and setting
+    //number of sessions
+    // if (dataPerMonth.length != 0) {
+    //   meditationSessionNotifier.setNumberOfSessions(dataPerMonth.length);
+    //   dataPerMonth.sort((a, b) =>
+    //       b.meditationSessionLength.compareTo(a.meditationSessionLength));
+    // }
+
     ///Loop to fill data of particular month of the chosen year
     ///k - loop through items in list summarizedDataFromAllMonths
     ///i - loop through all items in the provider list
@@ -195,11 +239,35 @@ class MeditationSessionsChartYear extends StatelessWidget {
             DateTime.utc(currentDate.year, i + 1), sessionLengthsPerMonth[i]),
     ];
 
+    //total time spent per month
+    for (int i = 0; i < dataPerYear.length; i++) {
+      totalTimeSpent = totalTimeSpent + dataPerYear[i].meditationSessionLength;
+    }
+
+    //how many days non empty
+    for (int i = 0; i < dataPerYear.length; i++) {
+      if (dataPerYear[i].meditationSessionLength != 0)
+        nrOfNonEmptyDays = nrOfNonEmptyDays + 1;
+    }
+
+    //average time spent
+    if (nrOfNonEmptyDays == 0) {
+      averageTimeSpent = 0;
+    } else {
+      averageTimeSpent = (totalTimeSpent / nrOfNonEmptyDays).round();
+    }
+
+    //setting notifier to present statistics
+    meditationSessionNotifier.setAverageTimeSpent(averageTimeSpent);
+
+    //setting notifier to present statistics
+    meditationSessionNotifier.setTotalTimeSpent(totalTimeSpent);
+
     //draw the chart based on dataWithTotalLengthsAllMonths data
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
         id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         domainFn: (MeditationSessionSeries meditationSessionSeries, _) =>
             meditationSessionSeries.date,
         measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>

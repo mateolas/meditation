@@ -72,6 +72,11 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     ///Value to hold list of meditation sessions
     var data = <MeditationSessionSeries>[];
 
+    //to present statistics
+    int totalTimeSpent = 0;
+    int averageTimeSpent = 0;
+    int nrOfNonEmptyDays = 0;
+
     ///
     ///Preparing to show data PER MONTH///
     ///
@@ -113,6 +118,25 @@ class MeditationSessionsChartMonth extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
+    //sorting meditations sessions to find the longest session and setting
+    //number of sessions
+    if (dataPerMonth.length != 0) {
+      meditationSessionNotifier.setNumberOfSessions(dataPerMonth.length);
+      dataPerMonth.sort((a, b) =>
+          b.meditationSessionLength.compareTo(a.meditationSessionLength));
+    }
+
+    //from sorted list setting the first item as the longest one
+    if (dataPerMonth.length != 0) {
+      meditationSessionNotifier
+          .setLongestTimeSpent(dataPerMonth[0].meditationSessionLength);
+    }
+
+    //if data is empty, set the session length to 0
+    if (dataPerMonth.length == 0) {
+      meditationSessionNotifier.setLongestTimeSpent(0);
+    }
+
     //creating empty list to store summarized values
     var summarizedDataPerMonth = <MeditationSessionSeries>[
       for (int i = 0; i < lastDayOfMonth.day; i++)
@@ -134,6 +158,31 @@ class MeditationSessionsChartMonth extends StatelessWidget {
                   dataPerMonth[i].meditationSessionLength;
         }
 
+    //total time spent per week
+    for (int i = 0; i < summarizedDataPerMonth.length; i++) {
+      totalTimeSpent =
+          totalTimeSpent + summarizedDataPerMonth[i].meditationSessionLength;
+    }
+
+    //setting notifier to present statistics
+    meditationSessionNotifier.setTotalTimeSpent(totalTimeSpent);
+
+    //how many days non empty
+    for (int i = 0; i < summarizedDataPerMonth.length; i++) {
+      if (summarizedDataPerMonth[i].meditationSessionLength != 0)
+        nrOfNonEmptyDays = nrOfNonEmptyDays + 1;
+    }
+
+    //average time spent
+    if (nrOfNonEmptyDays == 0) {
+      averageTimeSpent = 0;
+    } else {
+      averageTimeSpent = (totalTimeSpent / dataPerMonth.length).round();
+    }
+
+    //setting notifier to present statistics
+    meditationSessionNotifier.setAverageTimeSpent(averageTimeSpent);
+
     // for debugging //
     // for (int i = 0; i < dataPerMonth.length; i++)
     //   print(
@@ -151,7 +200,7 @@ class MeditationSessionsChartMonth extends StatelessWidget {
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
         id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
         domainFn: (MeditationSessionSeries meditationSessionSeries, _) =>
             meditationSessionSeries.date,
         measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>

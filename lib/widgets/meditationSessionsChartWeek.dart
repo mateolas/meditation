@@ -201,7 +201,7 @@ class MeditationSessionsChartWeek extends StatelessWidget {
     if (nrOfNonEmptyDays == 0) {
       averageTimeSpent = 0;
     } else {
-      averageTimeSpent = (totalTimeSpent / nrOfNonEmptyDays).round();
+      averageTimeSpent = (totalTimeSpent / dataPerWeek.length).round();
     }
 
     //setting notifier to present statistics

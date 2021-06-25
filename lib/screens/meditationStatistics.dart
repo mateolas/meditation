@@ -443,7 +443,361 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
     double mainTimeFontSize = 24;
     double titleFontSize = 13;
     double spaceBetweenRowsSize = 48;
-    Color mainTextTimeColor = Colors.green;
+    Color mainTextTimeColor = Colors.orange;
+    Color titleTextColor = Colors.black;
+    Color tableFrameColor = Colors.black;
+
+    //instance of MeditationSessionNotifier to get statistics from provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
+
+    //draw a table
+    return Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30, 4, 30, 4),
+            child: Table(
+              border: TableBorder(
+                  horizontalInside: BorderSide(
+                      width: 1,
+                      color: tableFrameColor,
+                      style: BorderStyle.solid),
+                  verticalInside: BorderSide(
+                      width: 1,
+                      color: tableFrameColor,
+                      style: BorderStyle.solid)),
+              children: [
+                TableRow(children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+
+                      //if number of meditation sessions is 0 present "-"
+                      meditationSessionNotifier.getLongestTimeSpent == 0
+                          ? Text(
+                              "-",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getNumberOfSessions}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Number of sessions',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      //if meditation session average length is 0 present "-"
+                      meditationSessionNotifier.getTotalTimeSpent == 0
+                          ? Text(
+                              " - ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getTotalTimeSpent} min",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Total time spent',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
+                  ),
+                ]),
+                TableRow(children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      //if meditation session total length is 0 present "-"
+                      meditationSessionNotifier.getAverageTimeSpent == 0
+                          ? Text(
+                              "-",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getAverageTimeSpent} min",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Average time spent',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      //if meditation session longest session is 0 present "-"
+                      meditationSessionNotifier.getLongestTimeSpent == 0
+                          ? Text(
+                              "-",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getLongestTimeSpent} min",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Longest session',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        ]));
+  }
+
+  Widget monthlyStatistics() {
+    double mainTimeFontSize = 24;
+    double titleFontSize = 13;
+    double spaceBetweenRowsSize = 48;
+    Color mainTextTimeColor = Colors.orange;
+    Color titleTextColor = Colors.black;
+    Color tableFrameColor = Colors.black;
+
+    //instance of MeditationSessionNotifier to get statistics from provider
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context, listen: false);
+
+    //draw a table
+    return Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+          Container(
+            margin: EdgeInsets.fromLTRB(30, 4, 30, 4),
+            child: Table(
+              border: TableBorder(
+                  horizontalInside: BorderSide(
+                      width: 1,
+                      color: tableFrameColor,
+                      style: BorderStyle.solid),
+                  verticalInside: BorderSide(
+                      width: 1,
+                      color: tableFrameColor,
+                      style: BorderStyle.solid)),
+              children: [
+                TableRow(children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+
+                      //if number of meditation sessions is 0 present "-"
+                      meditationSessionNotifier.getLongestTimeSpent == 0
+                          ? Text(
+                              "-",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getNumberOfSessions}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Number of sessions',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      //if meditation session average length is 0 present "-"
+                      meditationSessionNotifier.getTotalTimeSpent == 0
+                          ? Text(
+                              " - ",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getTotalTimeSpent} min",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Total time spent',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
+                  ),
+                ]),
+                TableRow(children: [
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      //if meditation session total length is 0 present "-"
+                      meditationSessionNotifier.getAverageTimeSpent == 0
+                          ? Text(
+                              "-",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getAverageTimeSpent} min",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Average time spent',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                      //if meditation session longest session is 0 present "-"
+                      meditationSessionNotifier.getLongestTimeSpent == 0
+                          ? Text(
+                              "-",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            )
+                          : Text(
+                              "${meditationSessionNotifier.getLongestTimeSpent} min",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: mainTextTimeColor,
+                                  fontSize: mainTimeFontSize),
+                            ),
+                      Text(
+                        'Longest session',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: titleTextColor, fontSize: titleFontSize),
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height /
+                            spaceBetweenRowsSize,
+                      ),
+                    ],
+                  ),
+                ]),
+              ],
+            ),
+          ),
+        ]));
+  }
+
+  Widget yearlyStatistics() {
+    double mainTimeFontSize = 24;
+    double titleFontSize = 13;
+    double spaceBetweenRowsSize = 48;
+    Color mainTextTimeColor = Colors.orange;
     Color titleTextColor = Colors.black;
     Color tableFrameColor = Colors.black;
 
@@ -661,9 +1015,13 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
       whatInformationToPresent = weeklyStatistics();
     }
 
-    if (selectedTimeFrame == "MONTH") {}
+    if (selectedTimeFrame == "MONTH") {
+      whatInformationToPresent = monthlyStatistics();
+    }
 
-    if (selectedTimeFrame == "YEAR") {}
+    if (selectedTimeFrame == "YEAR") {
+      whatInformationToPresent = yearlyStatistics();
+    }
 
     return whatInformationToPresent;
   }
