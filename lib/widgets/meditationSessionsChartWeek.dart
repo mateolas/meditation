@@ -111,7 +111,6 @@ class MeditationSessionsChartWeek extends StatelessWidget {
     int totalTimeSpent = 0;
     int averageTimeSpent = 0;
     int nrOfNonEmptyDays = 0;
-    int longestSession = 0;
 
     ///Value to hold list of meditation sessions
     var data = <MeditationSessionSeries>[];

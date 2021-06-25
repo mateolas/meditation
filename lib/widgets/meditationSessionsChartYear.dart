@@ -82,11 +82,10 @@ class MeditationSessionsChartYear extends StatelessWidget {
           DateTime currentDateStartOfTheWeek,
           DateTime currentDateEndOfTheWeek,
           String selectedTimeFrame) {
-    var now = new DateTime.now();
-    var now_1d = now.subtract(Duration(days: 1));
-    var timePeriod;
-    timePeriod = now_1d;
-    var totalTimePerDay = 0;
+    //to present statistics
+    int totalTimeSpent = 0;
+    int averageTimeSpent = 0;
+    int nrOfNonEmptyDays = 0;
 
     ///
     ///Preparing to show data PER YEAR///
