@@ -37,10 +37,11 @@ class _HomeScreenState extends State<HomeScreen> {
   //Names of screens to present at the bottom of the app
   List listOfScreens = [
     'Home',
+    ' ',
     'Progress',
-    'Literature',
-    'News',
-    'Profile'
+    //'Literature',
+    //'News',
+    //'Profile'
   ];
 
   //function to present proper page depends on the item
@@ -83,8 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     selectedTypeOfScreen = 'Home';
     super.initState();
-
-    
   }
 
   @override
@@ -102,10 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: ConvexAppBar(
             items: [
               TabItem(icon: Icons.home, title: 'Home'),
-              TabItem(icon: Icons.map, title: 'Progress'),
-              TabItem(icon: Icons.add, title: 'Literature'),
-              TabItem(icon: Icons.message, title: 'News'),
-              TabItem(icon: Icons.people, title: 'Profile'),
+              TabItem(icon: Icons.trending_up_rounded, title: 'Progress'),
+              TabItem(icon: Icons.settings, title: 'Settings'),
             ],
             backgroundColor: Colors.orange[700],
             height: MediaQuery.of(context).size.height / 15,

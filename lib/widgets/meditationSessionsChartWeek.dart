@@ -104,9 +104,6 @@ class MeditationSessionsChartWeek extends StatelessWidget {
           DateTime currentDateStartOfTheWeek,
           DateTime currentDateEndOfTheWeek,
           String selectedTimeFrame) {
-    var now = new DateTime.now();
-    var now_1d = now.subtract(Duration(days: 1));
-
     //to present statistics
     int totalTimeSpent = 0;
     int averageTimeSpent = 0;
@@ -190,15 +187,8 @@ class MeditationSessionsChartWeek extends StatelessWidget {
     //setting notifier to present statistics
     meditationSessionNotifier.setTotalTimeSpent(totalTimeSpent);
 
-    //how many days non empty
-    for (int i = 0; i < 7; i++) {
-      if (summarizedDataPerWeek[i].meditationSessionLength != 0)
-        nrOfNonEmptyDays = nrOfNonEmptyDays + 1;
-    }
-
-    print("Nr of empty days: $nrOfNonEmptyDays");
     //average time spent
-    if (nrOfNonEmptyDays == 0) {
+    if (dataPerWeek.length == 0) {
       averageTimeSpent = 0;
     } else {
       averageTimeSpent = (totalTimeSpent / dataPerWeek.length).round();

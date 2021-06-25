@@ -34,9 +34,6 @@ class MeditationSessionsChartDay extends StatelessWidget {
     );
   }
 
-  //Interesting link about static tick provider
-  //https://google.github.io/charts/flutter/example/axes/statically_provided_ticks.html
-
   @override
   Widget build(BuildContext context) {
     //instance of MeditationSessionNotifier to get current selected day
@@ -120,6 +117,11 @@ class MeditationSessionsChartDay extends StatelessWidget {
           String selectedTimeFrame) {
     var totalTimePerDay = 0;
 
+    //to present statistics
+    int totalTimeSpent = 0;
+    int averageTimeSpent = 0;
+    int nrOfNonEmptyDays = 0;
+
     ///
     ///Preparing to show data PER DAY///
     ///
@@ -154,31 +156,47 @@ class MeditationSessionsChartDay extends StatelessWidget {
                   meditationSessionNotifier.meditationSessionList[i].length))
     ];
 
-    //loop the get the total time per day
-    for (int i = 0; i < dataPerDay.length; i++) {
-      print(
-          "Data per day[$i]: ${dataPerDay[i].date} ${dataPerDay[i].meditationSessionLength} }");
+    //sorting meditations sessions to find the longest session and setting
+    //number of sessions
+    if (dataPerDay.length != 0) {
+      meditationSessionNotifier.setNumberOfSessions(dataPerDay.length);
+      dataPerDay.sort((a, b) =>
+          b.meditationSessionLength.compareTo(a.meditationSessionLength));
     }
 
+    //from sorted list setting the first item as the longest one
+    if (dataPerDay.length != 0) {
+      meditationSessionNotifier
+          .setLongestTimeSpent(dataPerDay[0].meditationSessionLength);
+    }
+
+    //if data is empty, set the session length to 0
+    if (dataPerDay.length == 0) {
+      meditationSessionNotifier.setLongestTimeSpent(0);
+    }
+
+    //total time spent per week
     for (int i = 0; i < dataPerDay.length; i++) {
       totalTimePerDay = totalTimePerDay + dataPerDay[i].meditationSessionLength;
     }
 
-    // //loop the get the total time per day (per current Date)
-    // for (int i = 0;
-    //     i < meditationSessionNotifier.meditationSessionList.length;
-    //     i++) {
-    //   //check if it's last day, week or month
-    //   if (currentDate.day ==
-    //       meditationSessionNotifier.meditationSessionList[i].createdAt
-    //           .toDate()
-    //           .day) {
-    //     totalTimePerDay = totalTimePerDay +
-    //         int.parse(
-    //             meditationSessionNotifier.meditationSessionList[i].length);
-    //   }
-    // }
-    print("Total length time per day $totalTimePerDay");
+    //setting notifier to present statistics
+    meditationSessionNotifier.setTotalTimeSpent(totalTimePerDay);
+
+    //average time spent
+    if (dataPerDay.length == 0) {
+      averageTimeSpent = 0;
+    } else {
+      averageTimeSpent = (totalTimePerDay / dataPerDay.length).round();
+    }
+
+    print("Total time $totalTimeSpent");
+    print("Length dataPerDay${dataPerDay.length}");
+    print("Average time spent per day $averageTimeSpent");
+
+    //setting notifier to present statistics
+    meditationSessionNotifier.setAverageTimeSpent(averageTimeSpent);
+    print("Average time spent per day $averageTimeSpent");
 
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
