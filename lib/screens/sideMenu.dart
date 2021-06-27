@@ -7,7 +7,6 @@ import 'package:take_a_breath/api/meditationSession_api.dart';
 import 'package:provider/provider.dart';
 
 class SideMenu extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
@@ -23,8 +22,8 @@ class SideMenu extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xff56ab2f),
-                    Color(0xffa8e063),
+                    Color(0xffe65c00),
+                    Color(0xffFFE000),
                   ],
                 ),
               ),
@@ -35,26 +34,24 @@ class SideMenu extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                    child: Text('Health',
-                        style: TextStyle(fontSize: 26, color: Colors.white)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                    child: Text('Parameters',
-                        style: TextStyle(fontSize: 26, color: Colors.white)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                    child: Text('Tracker',
+                    child: Text('Take a breath',
                         style: TextStyle(fontSize: 26, color: Colors.white)),
                   ),
                 ],
               ),
             ),
             decoration: BoxDecoration(
-              color: Colors.green,
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xffe65c00),
+                  Color(0xffFFE000),
+                ],
+              ),
             ),
           ),
+
           ListTile(
             leading: Icon(Icons.input),
             title: Text('Welcome'),

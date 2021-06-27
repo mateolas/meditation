@@ -5,6 +5,7 @@ import 'package:take_a_breath/notifier/units_notifier.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:countdown_flutter/countdown_flutter.dart';
+import 'package:take_a_breath/screens/settingsScreen.dart';
 import 'package:take_a_breath/screens/sideMenu.dart';
 import 'package:take_a_breath/screens/meditationSessionScreen.dart';
 import 'package:take_a_breath/screens/meditationStatistics.dart';
@@ -37,8 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
   //Names of screens to present at the bottom of the app
   List listOfScreens = [
     'Home',
-    ' ',
     'Progress',
+    'Settings',
     //'Literature',
     //'News',
     //'Profile'
@@ -60,9 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
         }
         break;
 
-      case 'Literature':
+      case 'Settings':
         {
-          return MeditationStatistics();
+          return SettingsScreen();
         }
         break;
 

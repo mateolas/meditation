@@ -13,8 +13,8 @@ class SettingsScreen extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xff56ab2f),
-                Color(0xffa8e063),
+                Color(0xffe65c00),
+                Color(0xffFFE000),
               ],
             ),
           ),
