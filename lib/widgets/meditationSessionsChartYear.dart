@@ -267,7 +267,7 @@ class MeditationSessionsChartYear extends StatelessWidget {
     return [
       new charts.Series<MeditationSessionSeries, DateTime>(
         id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.green.shadeDefault,
+        colorFn: (_, __) => charts.MaterialPalette.yellow.shadeDefault,
         domainFn: (MeditationSessionSeries meditationSessionSeries, _) =>
             meditationSessionSeries.date,
         measureFn: (MeditationSessionSeries meditationSessionSeries, _) =>

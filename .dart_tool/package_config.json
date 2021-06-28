@@ -638,6 +638,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "webview_media",
+      "rootUri": "file:///D:/=01=%20Development/=01=%20Sofware/flutter/.pub-cache/hosted/pub.dartlang.org/webview_media-0.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.2"
+    },
+    {
       "name": "win32",
       "rootUri": "file:///D:/=01=%20Development/=01=%20Sofware/flutter/.pub-cache/hosted/pub.dartlang.org/win32-2.0.5",
       "packageUri": "lib/",
@@ -656,13 +662,19 @@
       "languageVersion": "2.7"
     },
     {
+      "name": "youtube_player_flutter",
+      "rootUri": "file:///D:/=01=%20Development/=01=%20Sofware/flutter/.pub-cache/hosted/pub.dartlang.org/youtube_player_flutter-6.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.5"
+    },
+    {
       "name": "take_a_breath",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-06-07T04:22:31.841383Z",
+  "generated": "2021-06-28T04:06:58.375806Z",
   "generator": "pub",
   "generatorVersion": "2.12.3"
 }
