@@ -5,11 +5,11 @@ import 'package:take_a_breath/model/channel_model.dart';
 import 'package:take_a_breath/model/video_model.dart';
 import 'package:take_a_breath/utilities/keys.dart';
 
-class APIService {
+class YouToubeAPIService {
   //in order to keep track of our nextPageToken throughtout lifetime of our app
   //turning APIService class into a singleton
-  APIService._instantiate();
-  static final APIService instance = APIService._instantiate();
+  YouToubeAPIService._instantiate();
+  static final YouToubeAPIService instance = YouToubeAPIService._instantiate();
 
   //stores first part of URL
   final String _baseUrl = 'www.googleapis.com';
