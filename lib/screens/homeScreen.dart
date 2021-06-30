@@ -5,6 +5,7 @@ import 'package:take_a_breath/notifier/units_notifier.dart';
 import 'package:take_a_breath/notifier/meditationSession_notifier.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:countdown_flutter/countdown_flutter.dart';
+import 'package:take_a_breath/screens/youTubeChannel.dart';
 import 'package:take_a_breath/screens/youTubeHome.dart';
 import 'package:take_a_breath/screens/sideMenu.dart';
 import 'package:take_a_breath/screens/meditationSessionScreen.dart';
@@ -103,7 +104,7 @@ class _HomeScreenState extends State<HomeScreen> {
             items: [
               TabItem(icon: Icons.home, title: 'Home'),
               TabItem(icon: Icons.trending_up_rounded, title: 'Progress'),
-              TabItem(icon: Icons.settings, title: 'Videos'),
+              TabItem(icon: Icons.video_collection, title: 'Videos'),
             ],
             backgroundColor: Colors.orange[700],
             height: MediaQuery.of(context).size.height / 15,

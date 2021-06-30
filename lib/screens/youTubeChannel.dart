@@ -4,44 +4,34 @@ import 'package:take_a_breath/model/channel_model.dart';
 import 'package:take_a_breath/model/video_model.dart';
 import 'package:take_a_breath/screens/videoScreen.dart';
 
-class YouTubeHome extends StatefulWidget {
+class YouTubeChannel extends StatefulWidget {
+  String channelId;
+
+  YouTubeChannel(this.channelId);
+
   @override
-  _YouTubeHomeState createState() => _YouTubeHomeState();
+  _YouTubeChannelState createState() => _YouTubeChannelState();
 }
 
-class _YouTubeHomeState extends State<YouTubeHome> {
+class _YouTubeChannelState extends State<YouTubeChannel> {
   Channel _channel;
   bool _isLoading = false;
 
-  Channel _headspaceChannel;
-  Channel _calmChannel;
-
-  List<Channel> listOfChannels = [];
-  List<String> listOfChannelsIDs = [];
-
-  String _headspaceChannelID = 'UC3JhfsgFPLSLNEROQCdj-GQ';
-  String _calmID = 'UChSpME3QaSFAWK8Hpmg-Dyw';
-
   @override
   void initState() {
-    _initLists();
+    // TODO: implement initState
     _initChannel();
   }
 
-  _initLists() {
-    listOfChannels = [_headspaceChannel, _calmChannel];
-    listOfChannelsIDs = [_headspaceChannelID, _calmID];
-  }
-
-  //assigning to every channel a proper ID
   _initChannel() async {
-    for (int i = 0; i < 2; i++) {
-      listOfChannels[i] = await YouToubeAPIService.instance
-          .fetchChannel(channelId: listOfChannelsIDs[i]);
-    }
+    Channel channel = await YouToubeAPIService.instance
+        .fetchChannel(channelId: widget.channelId);
+    setState(() {
+      _channel = channel;
+    });
   }
 
-  _buildProfileInfo(int i) {
+  _buildProfileInfo() {
     return Container(
       margin: EdgeInsets.all(20.0),
       padding: EdgeInsets.all(20.0),
@@ -61,7 +51,7 @@ class _YouTubeHomeState extends State<YouTubeHome> {
           CircleAvatar(
             backgroundColor: Colors.white,
             radius: 35.0,
-            backgroundImage: NetworkImage(listOfChannels[i].profilePictureUrl),
+            backgroundImage: NetworkImage(_channel.profilePictureUrl),
           ),
           SizedBox(width: 12.0),
           Expanded(
@@ -70,7 +60,7 @@ class _YouTubeHomeState extends State<YouTubeHome> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  listOfChannels[i].title,
+                  _channel.title,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 20.0,
@@ -79,7 +69,7 @@ class _YouTubeHomeState extends State<YouTubeHome> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '${listOfChannels[i].subscriberCount} subscribers',
+                  '${_channel.subscriberCount} subscribers',
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 16.0,
@@ -95,13 +85,69 @@ class _YouTubeHomeState extends State<YouTubeHome> {
     );
   }
 
+  _buildVideo(Video video) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => VideoScreen(id: video.id),
+        ),
+      ),
+      child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
+        padding: EdgeInsets.all(10.0),
+        height: 140.0,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              offset: Offset(0, 1),
+              blurRadius: 6.0,
+            ),
+          ],
+        ),
+        child: Row(
+          children: <Widget>[
+            Image(
+              width: 150.0,
+              image: NetworkImage(video.thumbnailUrl),
+            ),
+            SizedBox(width: 10.0),
+            Expanded(
+              child: Text(
+                video.title,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18.0,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  _loadMoreVideos() async {
+    _isLoading = true;
+    List<Video> moreVideos = await YouToubeAPIService.instance
+        .fetchVideosFromPlaylist(playlistId: _channel.uploadPlaylistId);
+    //combine current video list with new batch
+    List<Video> allVideos = _channel.videos..addAll(moreVideos);
+    setState(() {
+      _channel.videos = allVideos;
+    });
+    _isLoading = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('YouTube Channel'),
       ),
-      body: listOfChannels != null
+      body: _channel != null
           //scroll notification checks if user is scrolling
           ? NotificationListener<ScrollNotification>(
               //load more videos if:
@@ -111,13 +157,19 @@ class _YouTubeHomeState extends State<YouTubeHome> {
                 if (!_isLoading &&
                     _channel.videos.length != int.parse(_channel.videoCount) &&
                     scrollDetails.metrics.pixels ==
-                        scrollDetails.metrics.maxScrollExtent) {}
+                        scrollDetails.metrics.maxScrollExtent) {
+                  _loadMoreVideos();
+                }
                 return false;
               },
               child: ListView.builder(
-                itemCount: 2,
+                itemCount: 1 + _channel.videos.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _buildProfileInfo(index);
+                  if (index == 0) {
+                    return _buildProfileInfo();
+                  }
+                  Video video = _channel.videos[index - 1];
+                  return _buildVideo(video);
                 },
               ),
             )
