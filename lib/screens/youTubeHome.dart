@@ -10,35 +10,40 @@ class YouTubeHome extends StatefulWidget {
 }
 
 class _YouTubeHomeState extends State<YouTubeHome> {
-  Channel _channel;
+  Channel _channel1;
+  Channel _channel2;
   bool _isLoading = false;
-
-  Channel _headspaceChannel;
-  Channel _calmChannel;
-
   List<Channel> listOfChannels = [];
-  List<String> listOfChannelsIDs = [];
-
+  List<Channel> listOfChannelsID = [];
   String _headspaceChannelID = 'UC3JhfsgFPLSLNEROQCdj-GQ';
   String _calmID = 'UChSpME3QaSFAWK8Hpmg-Dyw';
 
   @override
   void initState() {
-    _initLists();
-    _initChannel();
+    _initChannel1();
+    _initChannel2();
+    //listOfChannels = [_channel1, _channel2];
+    // TODO: implement initState
+    listOfChannels = [_channel1, _channel2];
+    List<String> listOfChannelsIDs = [];
+
+    super.initState();
   }
 
-  _initLists() {
-    listOfChannels = [_headspaceChannel, _calmChannel];
-    listOfChannelsIDs = [_headspaceChannelID, _calmID];
+  _initChannel1() async {
+    Channel channel = await YouToubeAPIService.instance
+        .fetchChannel(channelId: 'UC3JhfsgFPLSLNEROQCdj-GQ');
+    setState(() {
+      _channel1 = channel;
+    });
   }
 
-  //assigning to every channel a proper ID
-  _initChannel() async {
-    for (int i = 0; i < 2; i++) {
-      listOfChannels[i] = await YouToubeAPIService.instance
-          .fetchChannel(channelId: listOfChannelsIDs[i]);
-    }
+  _initChannel2() async {
+    Channel channel = await YouToubeAPIService.instance
+        .fetchChannel(channelId: 'UChSpME3QaSFAWK8Hpmg-Dyw');
+    setState(() {
+      _channel2 = channel;
+    });
   }
 
   _buildProfileInfo(int i) {
@@ -97,11 +102,12 @@ class _YouTubeHomeState extends State<YouTubeHome> {
 
   @override
   Widget build(BuildContext context) {
+    listOfChannels = [_channel1, _channel2];
     return Scaffold(
       appBar: AppBar(
-        title: Text('YouTube Channel'),
+        title: Text('YouTube Channels'),
       ),
-      body: listOfChannels != null
+      body: listOfChannels[0] != null
           //scroll notification checks if user is scrolling
           ? NotificationListener<ScrollNotification>(
               //load more videos if:
@@ -109,15 +115,26 @@ class _YouTubeHomeState extends State<YouTubeHome> {
               //and we are at the bottom of the list view
               onNotification: (ScrollNotification scrollDetails) {
                 if (!_isLoading &&
-                    _channel.videos.length != int.parse(_channel.videoCount) &&
+                    _channel1.videos.length !=
+                        int.parse(_channel1.videoCount) &&
                     scrollDetails.metrics.pixels ==
                         scrollDetails.metrics.maxScrollExtent) {}
                 return false;
               },
               child: ListView.builder(
-                itemCount: 2,
+                itemCount: listOfChannels.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return _buildProfileInfo(index);
+                  if (listOfChannels[index].profilePictureUrl == null) {
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Theme.of(context).primaryColor, // Red
+                        ),
+                      ),
+                    );
+                  } else {
+                    return _buildProfileInfo(index);
+                  }
                 },
               ),
             )
