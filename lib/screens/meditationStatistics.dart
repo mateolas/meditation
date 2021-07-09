@@ -1154,9 +1154,6 @@ class _MeditationStatisticsState extends State<MeditationStatistics>
 
   @override
   Widget build(BuildContext context) {
-    MeditationSessionNotifier meditationSessionNotifier =
-        Provider.of<MeditationSessionNotifier>(context, listen: false);
-
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,

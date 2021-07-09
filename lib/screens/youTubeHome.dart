@@ -20,13 +20,17 @@ class _YouTubeHomeState extends State<YouTubeHome> {
   Channel _theMindfulMovementChannel;
   Channel _sriSriChannel;
   Channel _buddhistSocietyOfWAChannel;
+  Channel _wisdomChannel;
+  Channel _mindfulMusicChannel;
   String _headspaceChannelID = 'UC3JhfsgFPLSLNEROQCdj-GQ';
   String _calmID = 'UChSpME3QaSFAWK8Hpmg-Dyw';
   String _goodfulID = 'UCEMArgthHuEtX-04qL_8puQ';
   String _theMindfulMovementID = 'UCu_mPlZbomAgNzfAUElRL7w';
   String _sriSriID = 'UC4qz5w2M-Xmju7WC9ynqRtw';
   String _buddhistSocietyOfWAID = 'UC6M_EhnSSdTG_SXUp6IAWmQ';
-  bool _hasLoaded = false;
+  String _wisdomID = 'UCEhl4Grr46IolhzGhZ3agNw';
+  String _mindfulMusicID = 'UCK7X0kE4vCbOXPi1VPVQYFw';
+  bool _channelsAreLoaded = false;
   List<Channel> listOfChannels = [];
   List<String> listOfChannelsID = [];
 
@@ -39,23 +43,18 @@ class _YouTubeHomeState extends State<YouTubeHome> {
       _sriSriID,
       _goodfulID,
       _theMindfulMovementID,
+      _wisdomID,
+      _mindfulMusicID
     ];
 
-    _hasLoaded = false;
+    _channelsAreLoaded = false;
 
-    _initChannel1();
-    //_initChannel2();
-    // _initChannel3();
-    // _initChannel4();
-    // _initChannel5();
-    // _initChannel6();
-    //listOfChannels = [_channel1, _channel2];
-    // TODO: implement initState
+    _initChannels();
 
     super.initState();
   }
 
-  _initChannel1() async {
+  _initChannels() async {
     Channel channel = await YouToubeAPIService.instance
         .fetchChannel(channelId: _headspaceChannelID);
     setState(() {
@@ -92,24 +91,20 @@ class _YouTubeHomeState extends State<YouTubeHome> {
       _buddhistSocietyOfWAChannel = channel6;
     });
 
-    _hasLoaded = true;
+    Channel channel7 =
+        await YouToubeAPIService.instance.fetchChannel(channelId: _wisdomID);
+    setState(() {
+      _wisdomChannel = channel7;
+    });
+
+    Channel channel8 = await YouToubeAPIService.instance
+        .fetchChannel(channelId: _mindfulMusicID);
+    setState(() {
+      _mindfulMusicChannel = channel8;
+    });
+
+    _channelsAreLoaded = true;
   }
-
-  // _initChannel2() async {
-  //   Channel channel =
-  //       await YouToubeAPIService.instance.fetchChannel(channelId: _calmID);
-  //   setState(() {
-  //     _calmChannel = channel;
-  //   });
-  // }
-
-  // _initChannel3() async {}
-
-  // _initChannel4() async {}
-
-  // _initChannel5() async {}
-
-  // _initChannel6() async {}
 
   Widget _buildProfileInfo(int i) {
     return Container(
@@ -174,44 +169,65 @@ class _YouTubeHomeState extends State<YouTubeHome> {
       _sriSriChannel,
       _goodfulChannel,
       _theMindfulMovementChannel,
+      _wisdomChannel,
+      _mindfulMusicChannel
     ];
     return Scaffold(
-      appBar: AppBar(
-        title: Text('YouTube Channels'),
-      ),
-      body: _hasLoaded == true
-          //scroll notification checks if user is scrolling
-          ? ListView.builder(
-              itemCount: listOfChannels.length,
-              itemBuilder: (BuildContext context, int index) {
-                if (listOfChannels[index].profilePictureUrl == null) {
-                  return Center(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color(0xffe65c00),
+                  Color(0xffFFE000),
+                ],
+              ),
+            ),
+            height: MediaQuery.of(context).size.height / 9,
+            width: MediaQuery.of(context).size.width,
+          ),
+          Expanded(
+            flex: 4,
+            child: _channelsAreLoaded == true
+                //scroll notification checks if user is scrolling
+                ? ListView.builder(
+                    itemCount: listOfChannels.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (listOfChannels[index].profilePictureUrl == null) {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Theme.of(context).primaryColor, // Red
+                            ),
+                          ),
+                        );
+                      } else {
+                        return GestureDetector(
+                            onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) =>
+                                        YouTubeChannel(listOfChannelsID[index]),
+                                  ),
+                                ),
+                            child: _buildProfileInfo(index));
+                      }
+                    },
+                  )
+                : Center(
                     child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation<Color>(
                         Theme.of(context).primaryColor, // Red
                       ),
                     ),
-                  );
-                } else {
-                  return GestureDetector(
-                      onTap: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>
-                                  YouTubeChannel(listOfChannelsID[index]),
-                            ),
-                          ),
-                      child: _buildProfileInfo(index));
-                }
-              },
-            )
-          : Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(
-                  Theme.of(context).primaryColor, // Red
-                ),
-              ),
-            ),
+                  ),
+          ),
+        ],
+      ),
     );
   }
 }
