@@ -46,7 +46,7 @@ class YouToubeAPIService {
       //decode body of our response and store the first value of the items list
       //json which contains the channel information in a map
       Map<String, dynamic> data = json.decode(response.body)['items'][0];
-      //using factory methond to convert Map to a channel object
+      //using factory method to convert Map to a channel object
       Channel channel = Channel.fromMap(data);
 
       // Fetch first batch of videos from uploads playlist
