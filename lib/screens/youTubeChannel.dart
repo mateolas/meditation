@@ -145,7 +145,25 @@ class _YouTubeChannelState extends State<YouTubeChannel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('YouTube Channel'),
+        title: _channel != null
+            ? Text('${_channel.title} YouTube Channel')
+            : Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor, // Red
+                  ),
+                ),
+              ),
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[
+                Color(0xffe65c00),
+                Color(0xffFFE000),
+              ])),
+        ),
       ),
       body: _channel != null
           //scroll notification checks if user is scrolling
