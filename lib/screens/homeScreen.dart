@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    selectedTypeOfScreen = 'Home';
+    //selectedTypeOfScreen = 'Home';
     super.initState();
   }
 
@@ -97,6 +97,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     //Notifier to have possibility of loging in/out from the app
     AuthNotifier authNotifier = Provider.of<AuthNotifier>(context);
+    MeditationSessionNotifier meditationSessionNotifier =
+        Provider.of<MeditationSessionNotifier>(context);
     print('$selectedTypeOfScreen');
     return MaterialApp(
       home: Scaffold(
@@ -111,11 +113,14 @@ class _HomeScreenState extends State<HomeScreen> {
             curve: Curves.easeInOut,
             top: -8,
             initialActiveIndex: 0, //optional, default as 0
+            //TO-DO Implemented proper tab view after coming brack from channels views windows
             //function which gives number of the selected item
             onTap: (int i) => {
                   setState(() {
                     //assign item from the list of the screen names to the selected screen
-                    selectedTypeOfScreen = listOfScreens[i];
+                    //selectedTypeOfScreen = listOfScreens[i];
+                    meditationSessionNotifier.setSelectedPage(listOfScreens[i]);
+
                     //if function to define AppBar title
                     //if home screen set title to 'Take a breath'
                     //in any other case assign proper name based on the list
@@ -153,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         //what type of screen to present based on a chosen tabBar selection
-        body: whatScreenToPresent(selectedTypeOfScreen),
+        body: whatScreenToPresent(meditationSessionNotifier.getSelectedPage),
       ),
     );
   }

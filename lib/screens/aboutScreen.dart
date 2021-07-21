@@ -70,65 +70,34 @@ class AboutScreen extends StatelessWidget {
                         padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
                         alignment: Alignment.topLeft,
                         child: Text(
-                            'Thank you for checking up the Take a Breath app. Thanks to it you\'re able to monitor and record the basic health parameters. ',
+                            'Thank you for checking up the Take a Breath app. Thanks to it you\'re able to control length of your meditation sessions. Set a timer, press start and Take a breath (by sound and/or vibration) will inform you that time has elapsed.',
                             style: TextStyle(fontSize: 18))),
                     Container(
                         padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
                         alignment: Alignment.topLeft,
                         child: Text(
-                            'All the data is securely kept at Google servers and you can access them from any Android device.',
+                            'All sessions are recorded and archived that you could monitor your meditation progress through the time.',
                             style: TextStyle(fontSize: 18))),
                     Container(
                         padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
                         alignment: Alignment.topLeft,
                         child: Text(
-                            'Currently app supports recording below parameters: ',
+                            'In the Videos section we added few YouTube channels related to mindfulness topic to help you stayed inspired.',
                             style: TextStyle(fontSize: 18))),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
-                        alignment: Alignment.topLeft,
-                        child: Text('- Temperature ',
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black))),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
-                        alignment: Alignment.topLeft,
-                        child: Text('- Pulse (with measurement functionality) ',
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black))),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
-                        alignment: Alignment.topLeft,
-                        child: Text('- Saturation ',
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black))),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
-                        alignment: Alignment.topLeft,
-                        child: Text('- Weight ',
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black))),
-                    Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
-                        alignment: Alignment.topLeft,
-                        child: Text(
-                            'Please remember that pulse measurement functionality embedded into app can be used only for reference and can\'t replace professional clinical tests.',
-                            style:
-                                TextStyle(fontSize: 18, color: Colors.black))),
                     SizedBox(height: 18),
                     Container(
                         padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
                         alignment: Alignment.topLeft,
-                        child: Text('Stay safe ! ',
+                        child: Text('Wish you a wonderful journey !',
                             style: TextStyle(fontSize: 18))),
-                    SizedBox(height: 12),
+                    SizedBox(height: 18),
                     Container(
                         padding: EdgeInsets.fromLTRB(20, 0, 4, 8),
                         alignment: Alignment.topLeft,
                         child: Text('Take a breath team',
                             style: TextStyle(fontSize: 18))),
                     Container(
-                        padding: EdgeInsets.fromLTRB(20, 0, 4, 0),
+                        padding: EdgeInsets.fromLTRB(20, 0, 4, 10),
                         alignment: Alignment.topLeft,
                         child: Text('', style: TextStyle(fontSize: 18))),
                   ],
