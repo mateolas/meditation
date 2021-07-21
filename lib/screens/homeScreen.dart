@@ -112,7 +112,8 @@ class _HomeScreenState extends State<HomeScreen> {
             height: MediaQuery.of(context).size.height / 15,
             curve: Curves.easeInOut,
             top: -8,
-            initialActiveIndex: 0, //optional, default as 0
+            initialActiveIndex: meditationSessionNotifier
+                .getSelectedPageIndex, //optional, default as 0
             //TO-DO Implemented proper tab view after coming brack from channels views windows
             //function which gives number of the selected item
             onTap: (int i) => {
@@ -120,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     //assign item from the list of the screen names to the selected screen
                     //selectedTypeOfScreen = listOfScreens[i];
                     meditationSessionNotifier.setSelectedPage(listOfScreens[i]);
+                    meditationSessionNotifier.setSelectedPageIndex(i);
 
                     //if function to define AppBar title
                     //if home screen set title to 'Take a breath'

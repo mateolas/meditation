@@ -27,6 +27,8 @@ class MeditationSessionNotifier with ChangeNotifier {
   int _numberOfSessions;
   //to get the current page
   String _selectedPage = 'Home';
+  //to get the current page
+  int _selectedPageIndex = 0;
 
   //to get meditationSessionList
   UnmodifiableListView<MeditationSession> get meditationSessionList =>
@@ -55,6 +57,8 @@ class MeditationSessionNotifier with ChangeNotifier {
   int get getNumberOfSessions => _numberOfSessions;
   //to get longest time spent per per week/month/year
   String get getSelectedPage => _selectedPage;
+  //to get longest time spent per per week/month/year
+  int get getSelectedPageIndex => _selectedPageIndex;
 
   set meditationSessionList(List<MeditationSession> meditationSessionList) {
     _meditationSessionList = meditationSessionList;
@@ -114,5 +118,9 @@ class MeditationSessionNotifier with ChangeNotifier {
 
   setSelectedPage(String selectedPage) {
     _selectedPage = selectedPage;
+  }
+
+  setSelectedPageIndex(int selectedPageIndex) {
+    _selectedPageIndex = selectedPageIndex;
   }
 }
