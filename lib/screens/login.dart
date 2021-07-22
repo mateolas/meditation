@@ -83,10 +83,10 @@ class _LoginState extends State<Login> {
   Widget _buildLogoPicture() {
     return Column(
       children: [
-        SizedBox(height: 48.0),
-        //Image.asset('lib/assets/images/pulse_logo.png', scale: 1.2),
+        SizedBox(height: 2.0),
+        Image.asset('lib/assets/images/lotus.png', scale: 3.8),
         SizedBox(height: 6.0),
-        Text('Meditation',
+        Text('Take a breath',
             style: TextStyle(
               color: Colors.white,
               fontSize: 24,
@@ -396,7 +396,7 @@ class _LoginState extends State<Login> {
                     //Endless River
                     //Color(0xff16A085),
                     //Color(0xffffffff),
-                    
+
                     Color(0xffe65c00),
                     Color(0xffFFE000),
                     //Color(0xffffff),
