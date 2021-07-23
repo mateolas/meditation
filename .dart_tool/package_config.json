@@ -260,6 +260,12 @@
       "languageVersion": "2.1"
     },
     {
+      "name": "flutter_launcher_icons",
+      "rootUri": "file:///D:/=01=%20Development/=01=%20Sofware/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_launcher_icons-0.8.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.3"
+    },
+    {
       "name": "flutter_native_timezone",
       "rootUri": "file:///D:/=01=%20Development/=01=%20Sofware/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_native_timezone-1.0.4",
       "packageUri": "lib/",
@@ -662,6 +668,12 @@
       "languageVersion": "2.7"
     },
     {
+      "name": "yaml",
+      "rootUri": "file:///D:/=01=%20Development/=01=%20Sofware/flutter/.pub-cache/hosted/pub.dartlang.org/yaml-2.2.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.4"
+    },
+    {
       "name": "youtube_player_flutter",
       "rootUri": "file:///D:/=01=%20Development/=01=%20Sofware/flutter/.pub-cache/hosted/pub.dartlang.org/youtube_player_flutter-6.1.1",
       "packageUri": "lib/",
@@ -674,7 +686,7 @@
       "languageVersion": "2.7"
     }
   ],
-  "generated": "2021-06-28T04:06:58.375806Z",
+  "generated": "2021-07-23T04:38:52.927405Z",
   "generator": "pub",
   "generatorVersion": "2.12.3"
 }

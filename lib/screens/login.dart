@@ -84,7 +84,7 @@ class _LoginState extends State<Login> {
     return Column(
       children: [
         SizedBox(height: 2.0),
-        Image.asset('lib/assets/images/lotus.png', scale: 3.8),
+        Image.asset('lib/assets/images/lotus.png', scale: 3.5),
         SizedBox(height: 6.0),
         Text('Take a breath',
             style: TextStyle(
@@ -201,7 +201,7 @@ class _LoginState extends State<Login> {
         borderRadius: BorderRadius.circular(30.0),
       ),
       child: Container(
-        padding: EdgeInsets.fromLTRB(0, 72, 0, 12),
+        padding: EdgeInsets.fromLTRB(0, 58, 0, 12),
         width: double.infinity,
         child: RaisedButton(
           elevation: 5.0,
@@ -393,13 +393,8 @@ class _LoginState extends State<Login> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomRight,
                   colors: [
-                    //Endless River
-                    //Color(0xff16A085),
-                    //Color(0xffffffff),
-
                     Color(0xffe65c00),
                     Color(0xffFFE000),
-                    //Color(0xffffff),
                   ],
                   //stops: [0.1, 0.4],
                 ),
