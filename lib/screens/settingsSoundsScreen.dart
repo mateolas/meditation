@@ -45,7 +45,8 @@ class _UnitsScreenState extends State<UnitsScreen> {
     }
     //if unitsNotifier is not empty, check what type of sound was chosen
 
-    print('Get sound name from notifier from init ${soundTypeNotifier.getSoundName}');
+    print(
+        'Get sound name from notifier from init ${soundTypeNotifier.getSoundName}');
     if (soundTypeNotifier.getSoundName == "medium_bell.mp3") {
       _pickedSoundTypeRadioValue = SoundTypes.mediumBell;
     }
@@ -65,7 +66,8 @@ class _UnitsScreenState extends State<UnitsScreen> {
     MeditationSessionNotifier soundTypeNotifier =
         Provider.of<MeditationSessionNotifier>(context, listen: false);
 
-      print('Get sound name from notifier from buil ${soundTypeNotifier.getSoundName}');
+    print(
+        'Get sound name from notifier from buil ${soundTypeNotifier.getSoundName}');
     // print('BUILD Pounds boolean: ${unitsNotifier.getIsPound}');
     return Scaffold(
       appBar: AppBar(
@@ -76,8 +78,8 @@ class _UnitsScreenState extends State<UnitsScreen> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xff56ab2f),
-                Color(0xffa8e063),
+                Color(0xffe65c00),
+                Color(0xffFFE000),
               ],
             ),
           ),
